@@ -1,0 +1,26 @@
+{
+  "keywords": {
+    "developer": [
+      "Frontend",
+      "Backend",
+      "Node.js",
+      "JavaScript",
+      "Typescript",
+      "PHP",
+      "C#",
+      "HTML",
+      "CSS",
+      "SCSS",
+      "SQL",
+      "React",
+      "Next.js",
+      "Svelt",
+      "Laravel",
+      ".NET",
+      "Wordpress",
+      "Headless",
+      "Sanity"
+    ],
+    "design": ["Wireframing", "Figma", "Animation", "Motion", "UI/UX", "3D"]
+  }
+}
