@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--nr-5, 32px);
+  background-color: #d9d9d9;
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  font-size: 25px;
+  margin-top: 18px;
+  padding: var(--nr-3, 16px);
+  height: 365px;
+}
