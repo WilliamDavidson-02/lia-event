@@ -1,0 +1,26 @@
+button {
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  border: none;
+  padding: 5px;
+  width: fit-content;
+}
+
+.default {
+  /* Needs styling */
+  background-color: tomato;
+}
+
+.skip {
+  /* Needs styling */
+  background-color: lightsteelblue;
+}
+
+.previous {
+  /* Needs styling */
+  background-color: palegreen;
+}
+
+.continue {
+  /* Needs styling */
+  background-color: paleturquoise;
+}
