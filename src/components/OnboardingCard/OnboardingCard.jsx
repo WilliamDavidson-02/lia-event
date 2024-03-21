@@ -1,4 +1,4 @@
-import React, { cloneElement } from "react";
+import React from "react";
 import styles from "./OnboardingCard.module.css";
 
 function OnboardingCard({ children }) {

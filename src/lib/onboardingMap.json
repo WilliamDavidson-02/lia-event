@@ -2,50 +2,59 @@
   "copmpany": [
     {
       "type": "text",
-      "question": "Company name",
+      "property": "name",
+      "question": "What's yout company name?",
       "required": true
     },
     {
       "type": "check",
+      "property": "area",
       "question": "Select the main focus of your company",
       "required": true,
       "options": ["Development", "Design"]
     },
     {
       "type": "link",
+      "property": "href",
       "question": "Link your website",
       "required": false
     },
     {
       "type": "check",
+      "property": "workStyle",
       "question": "Select the primary working style of your company",
       "required": false,
       "options": ["Hybrid", "Remote", "On site"]
     },
     {
       "type": "map",
+      "property": "location",
       "question": "specify the primary location of your company",
       "required": false
     },
     {
       "type": "radio",
+      "property": "employees",
       "question": "Select the approximate number of employees in your company",
       "required": false,
       "options": ["1 - 10", "10 - 50", "50 - 100", "100 - 500", "500+"]
     },
     {
       "type": "radio",
+      "property": "companyType",
       "question": "Specify the type of your organization",
       "required": false,
       "options": ["Agency", "Product Owner"]
     },
     {
       "type": "chip",
+      "property": "keywords",
       "question": "Select keywords that best describe your company",
       "required": false
     },
     {
       "type": "text",
+      "property": "description",
       "question": "Provide a brief description of your company",
       "required": false
     }
@@ -53,37 +62,44 @@
   "student": [
     {
       "type": "text",
+      "property": "name",
       "question": "What's your name?",
       "required": true
     },
     {
       "type": "link",
+      "property": "href",
       "question": "Provide portfolio, SoMe, Figma ...",
       "required": false
     },
     {
       "type": "radio",
+      "property": "program",
       "question": "What are you currently studying",
       "required": true,
       "options": ["Web Development", "Digital design"]
     },
     {
       "type": "chip",
+      "property": "keywords",
       "question": "Select keywords that best describe your interest",
       "required": false
     },
     {
       "type": "map",
+      "property": "location",
       "question": "Specify the primary location of your school",
       "required": false
     },
     {
       "type": "text",
+      "property": "educations",
       "question": "Provide any additional educations",
       "required": false
     },
     {
       "type": "text",
+      "property": "description",
       "question": "Provide a brief description of your self",
       "required": false
     }
