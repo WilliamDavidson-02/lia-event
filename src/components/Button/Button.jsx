@@ -1,8 +1,10 @@
-import React, { cloneElement } from "react";
+import React from "react";
 import styles from "./Button.module.css";
 
-function Button({ children, type }) {
-  return <button className={`${styles.button} ${styles[type]}`}>{children}</button>;
+export default function Button({ children, variant = "default", ...props }) {
+  return (
+    <button {...props} className={`${styles.button} ${styles[variant]}`}>
+      {children}
+    </button>
+  );
 }
-
-export default Button;

@@ -1,12 +1,6 @@
-import React, { cloneElement } from "react";
+import React from "react";
 import styles from "./OnboardingHeader.module.css";
 
-function OnboardingHeader({ header }) {
-  return (
-    <div>
-      <h1>{header}</h1>
-    </div>
-  );
+export default function OnboardingHeader({ children }) {
+  return <div>{children}</div>;
 }
-
-export default OnboardingHeader;
