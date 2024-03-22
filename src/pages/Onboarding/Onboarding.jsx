@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import X from "../../components/X/X";
 import Button from "../../components/Button/Button";
 import OnboardingHeader from "../../components/OnboardingHeader/OnboardingHeader";
@@ -8,6 +7,7 @@ import styles from "./Onboarding.module.css";
 import OnboardingTextArea from "../../components/OnboardingTextArea/OnboardingTextArea";
 import onboardingMap from "../../lib/onboardingMap.json";
 import ChipsGrid from "../../components/ChipsGrid/ChipsGrid";
+import { ArrowRight } from "lucide-react";
 
 export default function Onboarding() {
   const [onboaring, setOnboarding] = useState({});
@@ -46,8 +46,8 @@ export default function Onboarding() {
             handleProperty={setOnboardingValues}
           /> */}
           <ChipsGrid isEdit handleProperty={setOnboardingValues} />
-          <Button type="submit" variant="continue">
-            Continue
+          <Button square type="submit">
+            <ArrowRight size={24} />
           </Button>
         </OnboardingCard>
       </form>
