@@ -7,6 +7,7 @@ import OnboardingCard from "../../components/OnboardingCard/OnboardingCard";
 import styles from "./Onboarding.module.css";
 import OnboardingTextArea from "../../components/OnboardingTextArea/OnboardingTextArea";
 import onboardingMap from "../../lib/onboardingMap.json";
+import ChipsGrid from "../../components/ChipsGrid/ChipsGrid";
 
 export default function Onboarding() {
   const [onboaring, setOnboarding] = useState({});
@@ -40,10 +41,11 @@ export default function Onboarding() {
           <h1>{currentField.question}</h1>
         </OnboardingHeader>
         <OnboardingCard>
-          <OnboardingTextArea
+          {/* <OnboardingTextArea
             handleSubmit={handleSubmit}
             handleProperty={setOnboardingValues}
-          />
+          /> */}
+          <ChipsGrid isEdit handleProperty={setOnboardingValues} />
           <Button type="submit" variant="continue">
             Continue
           </Button>
