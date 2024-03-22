@@ -7,4 +7,23 @@
   --yrgo-light-yellow: #fcfa58;
   --yrgo-grey: #e4e9eb8a;
   --yrgo-black: #000000;
+
+  /* Spacing */
+  --p-xs: 4px;
+  --p-sm: 8px;
+  --p-md: 16px;
+  --p-lg: 24px;
+  --p-xl: 32px;
+
+  --m-xs: 4px;
+  --m-sm: 8px;
+  --m-md: 16px;
+  --m-lg: 24px;
+  --m-xl: 32px;
+
+  --gap-xs: 4px;
+  --gap-sm: 8px;
+  --gap-md: 16px;
+  --gap-lg: 24px;
+  --gap-xl: 32px;
 }
