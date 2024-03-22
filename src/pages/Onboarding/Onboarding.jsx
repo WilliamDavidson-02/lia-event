@@ -6,14 +6,13 @@ import OnboardingHeader from "../../components/OnboardingHeader/OnboardingHeader
 import OnboardingCard from "../../components/OnboardingCard/OnboardingCard";
 import styles from "./Onboarding.module.css";
 import OnboardingTextArea from "../../components/OnboardingTextArea/OnboardingTextArea";
+import OnboardingRadio from "../../components/OnboardingRadio/OnboardingRadio";
 import onboardingMap from "../../lib/onboardingMap.json";
 
 export default function Onboarding() {
   const [onboaring, setOnboarding] = useState({});
   const [currentFieldIndex, setCurrentFieldIndex] = useState(0);
-  const [currentField, setCurrentField] = useState(
-    onboardingMap.copmpany[currentFieldIndex]
-  );
+  const [currentField, setCurrentField] = useState(onboardingMap.copmpany[currentFieldIndex]);
 
   const setOnboardingValues = (value) => {
     const property = currentField.property;
@@ -40,10 +39,12 @@ export default function Onboarding() {
           <h1>{currentField.question}</h1>
         </OnboardingHeader>
         <OnboardingCard>
-          <OnboardingTextArea
+          {/* <OnboardingRadio
             handleSubmit={handleSubmit}
             handleProperty={setOnboardingValues}
-          />
+            options={options}
+          /> */}
+          <OnboardingTextArea handleSubmit={handleSubmit} handleProperty={setOnboardingValues} />
           <Button type="submit" variant="continue">
             Continue
           </Button>

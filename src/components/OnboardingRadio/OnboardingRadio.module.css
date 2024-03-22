@@ -1,0 +1,12 @@
+.radioContainer {
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
