@@ -1,0 +1,23 @@
+.mapboxgl-ctrl-logo {
+  scale: 60%;
+}
+
+.mapboxgl-ctrl-top-left {
+  padding-left: var(--p-sm);
+  padding-top: var(--p-sm);
+}
+
+.mapboxgl-ctrl-attrib {
+  border-radius: 100vmax;
+  overflow: hidden;
+}
+
+.mapboxgl-ctrl-attrib-button:focus {
+  box-shadow: none !important;
+}
+
+@media (min-width: 680px) {
+  .mapboxgl-ctrl-top-left {
+    padding-left: var(--p-xl);
+  }
+}
