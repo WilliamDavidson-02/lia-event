@@ -34,7 +34,7 @@ export default function Onboarding() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <X />
+        <X to={"/"} />
       </div>
       <form onSubmit={handleSubmit}>
         <OnboardingHeader>

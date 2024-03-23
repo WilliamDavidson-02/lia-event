@@ -1,19 +1,5 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  width: fit-content;
-}
-
-h1 {
-  font-family: Inter, Arial, Helvetica, sans-serif;
-  font-weight: 400;
-  font-size: 34px;
-  margin: 0;
-}
-
-p {
-  font-family: Inter, Arial, Helvetica, sans-serif;
-  font-size: 12px;
-  margin: 0;
+.x {
+  font-size: 2.5rem;
+  color: var(--yrgo-black);
+  letter-spacing: 2px;
 }

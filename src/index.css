@@ -1,3 +1,36 @@
+:root {
+  /* Colors */
+  --yrgo-red: #f52a3b;
+  --yrgo-dark-blue: #001a52;
+  --yrgo-light-blue: #35d4d1;
+  --yrgo-light-green: #c5ebd8;
+  --yrgo-light-yellow: #fcfa58;
+  --yrgo-grey: #e4e9eb8a;
+  --yrgo-grey-600: #4f4f4f;
+  --yrgo-grey-300: #c4c4c4;
+  --yrgo-white: #ffffff;
+  --yrgo-black: #000000;
+
+  /* Spacing */
+  --p-xs: 0.25rem;
+  --p-sm: 0.5rem;
+  --p-md: 1rem;
+  --p-lg: 1.5rem;
+  --p-xl: 2rem;
+
+  --m-xs: 0.25rem;
+  --m-sm: 0.5rem;
+  --m-md: 1rem;
+  --m-lg: 1.5rem;
+  --m-xl: 2rem;
+
+  --gap-xs: 0.25rem;
+  --gap-sm: 0.5rem;
+  --gap-md: 1rem;
+  --gap-lg: 1.5rem;
+  --gap-xl: 2rem;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -9,4 +42,8 @@
 
 button {
   cursor: pointer;
+}
+
+a {
+  text-decoration: none;
 }
