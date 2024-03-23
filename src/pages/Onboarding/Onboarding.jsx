@@ -32,20 +32,18 @@ export default function Onboarding() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.wrapper}>
       <div className={styles.header}>
         <X to={"/"} />
       </div>
-      <form onSubmit={handleSubmit}>
-        <OnboardingHeader>
-          <h1>{currentField.question}</h1>
-        </OnboardingHeader>
+      <form className={styles.container} onSubmit={handleSubmit}>
+        <OnboardingHeader>{currentField.question}</OnboardingHeader>
         <OnboardingCard>
-          {/* <OnboardingTextArea
+          <OnboardingTextArea
             handleSubmit={handleSubmit}
             handleProperty={setOnboardingValues}
-          /> */}
-          <ChipsGrid isEdit handleProperty={setOnboardingValues} />
+          />
+          {/* <ChipsGrid isEdit handleProperty={setOnboardingValues} /> */}
           <Button square type="submit">
             <ArrowRight size={24} />
           </Button>
