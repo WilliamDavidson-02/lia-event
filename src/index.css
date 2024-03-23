@@ -29,6 +29,12 @@
   --gap-md: 1rem;
   --gap-lg: 1.5rem;
   --gap-xl: 2rem;
+
+  --rounded-xs: 0.25rem;
+  --rounded-sm: 0.5rem;
+  --rounded-md: 1rem;
+  --rounded-lg: 1.5rem;
+  --rounded-xl: 2rem;
 }
 
 * {
