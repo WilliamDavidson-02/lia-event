@@ -8,6 +8,7 @@ import OnboardingTextArea from "../../components/OnboardingTextArea/OnboardingTe
 import onboardingMap from "../../lib/onboardingMap.json";
 import ChipsGrid from "../../components/ChipsGrid/ChipsGrid";
 import { ArrowRight } from "lucide-react";
+import OnboardingFooter from "../../components/OnboardingFooter/OnboardingFooter";
 
 export default function Onboarding() {
   const [onboaring, setOnboarding] = useState({});
@@ -44,9 +45,11 @@ export default function Onboarding() {
             handleProperty={setOnboardingValues}
           />
           {/* <ChipsGrid isEdit handleProperty={setOnboardingValues} /> */}
-          <Button square type="submit">
-            <ArrowRight size={24} />
-          </Button>
+          <OnboardingFooter>
+            <Button square type="submit">
+              <ArrowRight size={24} />
+            </Button>
+          </OnboardingFooter>
         </OnboardingCard>
       </form>
     </div>

@@ -1,0 +1,10 @@
+.container {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--gap-md);
+}
+
+.vertical {
+  align-items: flex-end;
+  flex-direction: column;
+}
