@@ -9,6 +9,7 @@ import onboardingMap from "../../lib/onboardingMap.json";
 import ChipsGrid from "../../components/ChipsGrid/ChipsGrid";
 import { ArrowRight } from "lucide-react";
 import OnboardingFooter from "../../components/OnboardingFooter/OnboardingFooter";
+import GeoLocation from "../../components/GeoLocation/GeoLocation";
 
 export default function Onboarding() {
   const [onboaring, setOnboarding] = useState({});
@@ -40,10 +41,11 @@ export default function Onboarding() {
       <form className={styles.container} onSubmit={handleSubmit}>
         <OnboardingHeader>{currentField.question}</OnboardingHeader>
         <OnboardingCard>
-          <OnboardingTextArea
+          <GeoLocation handleProperty={setOnboardingValues} />
+          {/* <OnboardingTextArea
             handleSubmit={handleSubmit}
             handleProperty={setOnboardingValues}
-          />
+          /> */}
           {/* <ChipsGrid isEdit handleProperty={setOnboardingValues} /> */}
           <OnboardingFooter>
             <Button square type="submit">
