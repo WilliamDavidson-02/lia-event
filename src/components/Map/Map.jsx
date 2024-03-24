@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import mapboxgl from "mapbox-gl";
+import mapboxgl, { Marker } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import styles from "./Map.module.css";
 import "./mapboxOverride.css";
@@ -8,7 +8,7 @@ mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
 export const defaultCords = { lat: 57.70590087708176, lng: 11.936338877853077 };
 
-export default function Map({ position = defaultCords }) {
+export default function Map({ position = defaultCords, getMap }) {
   const mapContainer = useRef(null);
   const map = useRef(null);
 
@@ -26,6 +26,9 @@ export default function Map({ position = defaultCords }) {
       attributionControl: false,
     });
 
+    // GeoLocation needs acces to map.current
+    if (getMap) getMap(map.current);
+
     map.current.addControl(
       new mapboxgl.AttributionControl({ compact: true }),
       "top-left"
@@ -42,22 +45,6 @@ export default function Map({ position = defaultCords }) {
       setLat(lat);
     });
   }, []);
-
-  useEffect(() => {
-    const { lat, lng } = position;
-
-    if (
-      !map.current ||
-      (lat === defaultCords.lat && lng === defaultCords.lng)
-    ) {
-      return;
-    }
-
-    map.current.flyTo({
-      center: [lng, lat],
-      zoom: 14,
-    });
-  }, [position]);
 
   return <div className={styles.container} ref={mapContainer} />;
 }

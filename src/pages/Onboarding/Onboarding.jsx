@@ -41,7 +41,7 @@ export default function Onboarding() {
       <form className={styles.container} onSubmit={handleSubmit}>
         <OnboardingHeader>{currentField.question}</OnboardingHeader>
         <OnboardingCard>
-          <GeoLocation />
+          <GeoLocation handleProperty={setOnboardingValues} />
           {/* <OnboardingTextArea
             handleSubmit={handleSubmit}
             handleProperty={setOnboardingValues}
