@@ -6,12 +6,14 @@ import "./mapboxOverride.css";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
-export default function Map() {
+export const defaultCords = { lat: 57.70590087708176, lng: 11.936338877853077 };
+
+export default function Map({ position = defaultCords }) {
   const mapContainer = useRef(null);
   const map = useRef(null);
-  const [lng, setLng] = useState(11.936338877853077);
-  const [lat, setLat] = useState(57.70590087708176);
-  const [zoom, setZoom] = useState(11);
+
+  const [lng, setLng] = useState(position.lng);
+  const [lat, setLat] = useState(position.lat);
 
   useEffect(() => {
     if (map.current) return;
@@ -20,16 +22,42 @@ export default function Map() {
       container: mapContainer.current,
       style: "mapbox://styles/oatmeal02/clu2g5ydm01ql01nrfpbihe3r",
       center: [lng, lat],
-      zoom: zoom,
+      zoom: 11,
       attributionControl: false,
     });
 
-    map.current.addControl(new mapboxgl.AttributionControl(), "top-left");
+    map.current.addControl(
+      new mapboxgl.AttributionControl({ compact: true }),
+      "top-left"
+    );
+
+    //   Navigation
+    map.current.addControl(new mapboxgl.NavigationControl());
+
+    // Mapbox event handlers
+    map.current.on("moveend", () => {
+      const { lng, lat } = map.current.getCenter();
+
+      setLng(lng);
+      setLat(lat);
+    });
   }, []);
 
-  return (
-    <div className={styles.container}>
-      <div ref={mapContainer} className={styles.map} />
-    </div>
-  );
+  useEffect(() => {
+    const { lat, lng } = position;
+
+    if (
+      !map.current ||
+      (lat === defaultCords.lat && lng === defaultCords.lng)
+    ) {
+      return;
+    }
+
+    map.current.flyTo({
+      center: [lng, lat],
+      zoom: 14,
+    });
+  }, [position]);
+
+  return <div className={styles.container} ref={mapContainer} />;
 }

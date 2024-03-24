@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mapbox/mapbox-gl-geocoder": "^5.0.2",
     "@supabase/supabase-js": "^2.39.8",
     "lucide-react": "^0.362.0",
     "mapbox-gl": "^3.2.0",

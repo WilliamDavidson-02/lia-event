@@ -1,9 +1,4 @@
 .container {
   border-radius: var(--rounded-xl);
-  overflow: hidden;
   flex-grow: 1;
-}
-
-.map {
-  height: 100%;
 }
