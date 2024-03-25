@@ -14,6 +14,7 @@ export default function OnboardingRadio({ handleProperty, options }) {
       {options.map((option) => (
         <label key={option}>
           <input
+            className="radioButton"
             type="radio"
             value={option}
             checked={option === selectedOption}

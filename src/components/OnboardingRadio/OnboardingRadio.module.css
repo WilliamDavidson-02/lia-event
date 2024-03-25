@@ -44,7 +44,7 @@ input[type="radio"]:checked::before {
 }
 
 /* Enable Focus for extra visibility - temporarily highlights selected option */
-/* input[type="radio"]:focus {
+/* .radioButton[type="radio"]:focus {
   outline: max(2px, 0.15em) solid currentColor;
   outline-offset: max(2px, 0.15em);
 } */

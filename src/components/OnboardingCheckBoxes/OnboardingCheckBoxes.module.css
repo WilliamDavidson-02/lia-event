@@ -1,0 +1,34 @@
+.checkboxContainer {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: var();
+}
+
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: var(--yrgo-grey);
+  margin: 0;
+  font: inherit;
+  color: currentColor;
+  width: 1.15em;
+  height: 1.15em;
+  border: 1px solid currentColor;
+  border-radius: 15%;
+  display: grid;
+  place-content: center;
+}
+
+input[type="checkbox"]::before {
+  content: "X";
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em var(--form-control-color);
+  background-color: var(--yrgo-grey);
+  color: var(--yrgo-black);
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
