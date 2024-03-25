@@ -1,0 +1,14 @@
+.mapboxgl-ctrl-geocoder {
+  width: 100%;
+  max-width: none;
+  border-radius: 100vmax;
+  box-shadow: none !important;
+}
+
+.mapboxgl-ctrl-geocoder--input {
+  outline: none !important;
+}
+
+.suggestions-wrapper .suggestions {
+  border-radius: var(--rounded-md);
+}

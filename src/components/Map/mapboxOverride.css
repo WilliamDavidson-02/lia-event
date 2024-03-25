@@ -1,0 +1,39 @@
+.mapboxgl-ctrl-logo {
+  scale: 70%;
+}
+
+.mapboxgl-ctrl-attrib {
+  border-radius: 100vmax;
+  overflow: hidden;
+}
+
+.mapboxgl-ctrl-attrib-button:focus {
+  box-shadow: none !important;
+}
+
+.mapboxgl-ctrl-top-left {
+  padding-left: var(--p-sm);
+  padding-top: var(--p-sm);
+}
+
+.mapboxgl-ctrl-top-right {
+  padding-right: var(--p-sm);
+  padding-top: var(--p-sm);
+}
+
+.mapboxgl-ctrl-bottom-left {
+  padding-left: var(--p-md);
+  padding-bottom: var(--p-md);
+}
+
+.mapboxgl-ctrl-bottom-left .mapboxgl-compact,
+.mapboxgl-ctrl-bottom-left .mapboxgl-ctrl {
+  margin: 0 !important;
+}
+
+.mapboxgl-ctrl-top-left,
+.mapboxgl-ctrl-bottom-left,
+.mapboxgl-ctrl-top-right,
+.mapboxgl-ctrl-bottom-right {
+  z-index: 0;
+}

@@ -1,17 +1,10 @@
-import React, { cloneElement } from "react";
+import { Link } from "react-router-dom";
 import styles from "./X.module.css";
 
-function X() {
+export default function X({ ...props }) {
   return (
-    <div className={styles.container}>
-      <div>
-        <h1>(X)</h1>
-      </div>
-      <div>
-        <p>close</p>
-      </div>
-    </div>
+    <Link {...props} className={styles.x}>
+      <div>(X)</div>
+    </Link>
   );
 }
-
-export default X;

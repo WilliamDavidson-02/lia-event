@@ -1,11 +1,19 @@
-.container {
-  margin-left: 20px;
-  margin-right: 20px;
+.wrapper {
+  padding: 2.25rem 1.25rem;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-lg);
 }
 
 .header {
   display: flex;
-  flex-direction: row;
-  justify-content: end;
-  margin-top: 36px;
+  justify-content: flex-end;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-lg);
+  flex-grow: 1;
 }
