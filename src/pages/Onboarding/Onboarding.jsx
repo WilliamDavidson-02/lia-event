@@ -40,15 +40,12 @@ export default function Onboarding() {
       <form className={styles.container} onSubmit={handleSubmit}>
         <OnboardingHeader>{currentField.question}</OnboardingHeader>
         <OnboardingCard>
-          <OnboardingRadio options={currentField.options} handleProperty={setOnboardingValues} />
-          {/* <GeoLocation handleProperty={setOnboardingValues} /> */}
-          {/* <OnboardingTextArea
-            handleSubmit={handleSubmit}
-            handleProperty={setOnboardingValues}
-          /> */}
+          {/* <OnboardingRadio options={currentField.options} handleProperty={setOnboardingValues} /> */}
+          <GeoLocation handleProperty={setOnboardingValues} />
+          {/* <OnboardingTextArea handleSubmit={handleSubmit} handleProperty={setOnboardingValues} /> */}
           {/* <ChipsGrid isEdit handleProperty={setOnboardingValues} /> */}
           <OnboardingFooter>
-            <Button square type="submit">
+            <Button square type="submit" style={{ marginBottom: "16px", marginRight: "16px" }}>
               <ArrowRight size={24} />
             </Button>
           </OnboardingFooter>

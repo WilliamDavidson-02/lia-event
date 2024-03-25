@@ -4,6 +4,7 @@
   flex-grow: 1;
   gap: var(--gap-md);
   margin-bottom: var(--m-md);
+  padding: var(--p-md);
 
   overflow-y: auto;
   scrollbar-width: none;
