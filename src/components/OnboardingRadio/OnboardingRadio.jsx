@@ -11,8 +11,8 @@ export default function OnboardingRadio({ handleProperty, options }) {
 
   return (
     <div className={styles.radioContainer}>
-      {options.map((option, index) => (
-        <label>
+      {options.map((option) => (
+        <label key={option}>
           <input
             type="radio"
             value={option}
