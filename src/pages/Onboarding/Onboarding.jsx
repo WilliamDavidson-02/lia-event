@@ -14,7 +14,7 @@ import GeoLocation from "../../components/GeoLocation/GeoLocation";
 
 export default function Onboarding() {
   const [onboaring, setOnboarding] = useState({});
-  const [currentFieldIndex, setCurrentFieldIndex] = useState(0);
+  const [currentFieldIndex, setCurrentFieldIndex] = useState(1);
   const [currentField, setCurrentField] = useState(onboardingMap.copmpany[currentFieldIndex]);
 
   const setOnboardingValues = (value) => {
@@ -40,7 +40,8 @@ export default function Onboarding() {
       <form className={styles.container} onSubmit={handleSubmit}>
         <OnboardingHeader>{currentField.question}</OnboardingHeader>
         <OnboardingCard>
-          <GeoLocation handleProperty={setOnboardingValues} />
+          <OnboardingRadio options={currentField.options} handleProperty={setOnboardingValues} />
+          {/* <GeoLocation handleProperty={setOnboardingValues} /> */}
           {/* <OnboardingTextArea
             handleSubmit={handleSubmit}
             handleProperty={setOnboardingValues}
