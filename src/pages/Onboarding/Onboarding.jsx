@@ -11,6 +11,7 @@ import ChipsGrid from "../../components/ChipsGrid/ChipsGrid";
 import { ArrowRight } from "lucide-react";
 import OnboardingFooter from "../../components/OnboardingFooter/OnboardingFooter";
 import GeoLocation from "../../components/GeoLocation/GeoLocation";
+import OnboardingCheckBoxes from "../../components/OnboardingCheckBoxes/OnboardingCheckBoxes";
 
 export default function Onboarding() {
   const [onboaring, setOnboarding] = useState({});
@@ -40,8 +41,9 @@ export default function Onboarding() {
       <form className={styles.container} onSubmit={handleSubmit}>
         <OnboardingHeader>{currentField.question}</OnboardingHeader>
         <OnboardingCard>
+          {/* <GeoLocation handleProperty={setOnboardingValues} /> */}
+          <OnboardingCheckBoxes options={currentField.options} />
           {/* <OnboardingRadio options={currentField.options} handleProperty={setOnboardingValues} /> */}
-          <GeoLocation handleProperty={setOnboardingValues} />
           {/* <OnboardingTextArea handleSubmit={handleSubmit} handleProperty={setOnboardingValues} /> */}
           {/* <ChipsGrid isEdit handleProperty={setOnboardingValues} /> */}
           <OnboardingFooter>
