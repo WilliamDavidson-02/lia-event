@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.inputField {
+  display: flex;
+  align-items: center;
+  padding: var(--p-sm);
+  border-radius: 1em;
+  box-shadow: none;
+  border: 1px solid var(--yrgo-black);
+}

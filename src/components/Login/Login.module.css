@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  font-family: "Inter", sans-serif;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--rounded-xl);
+  gap: var(--gap-md);
+  padding: var(--p-md);
+  background: #d9d9d9;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+}

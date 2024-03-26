@@ -4,11 +4,12 @@ import Nav from "../../components/Nav/Nav";
 import Button from "../../components/Button/Button";
 import { Link } from "react-router-dom";
 import CountDown from "../../components/CountDown/CountDown";
+import Login from "../../components/Login/Login";
 
 export default function Home() {
   return (
     <main className={styles.container}>
-      <Nav />
+      {/* <Nav />
       <section className={styles.hero}>
         <CountDown target={"Apr 23, 2024, 15:00:00"} />
         <div className={styles.content}>
@@ -21,7 +22,8 @@ export default function Home() {
             <Button>Atend event</Button>
           </Link>
         </div>
-      </section>
+      </section> */}
+      <Login />
     </main>
   );
 }
