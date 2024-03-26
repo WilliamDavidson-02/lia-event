@@ -8,6 +8,7 @@
   --yrgo-grey: #e4e9eb8a;
   --yrgo-grey-600: #4f4f4f;
   --yrgo-grey-300: #c4c4c4;
+  --yrgo-grey-100: #f0f3f4;
   --yrgo-white: #ffffff;
   --yrgo-black: #000000;
 
@@ -46,10 +47,15 @@
   font-style: normal;
 }
 
+body {
+  overflow: hidden;
+}
+
 button {
   cursor: pointer;
 }
 
 a {
   text-decoration: none;
+  color: var(--yrgo-black);
 }
