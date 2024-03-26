@@ -4,6 +4,7 @@ import Nav from "../../components/Nav/Nav";
 import Button from "../../components/Button/Button";
 import { Link } from "react-router-dom";
 import CountDown from "../../components/CountDown/CountDown";
+import Image from "../../components/Image/Image";
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
           </Link>
         </div>
       </section>
+      <Image src="/IMG_9049.JPG" width={"100%"} aspect={1 / 1} />
     </main>
   );
 }
