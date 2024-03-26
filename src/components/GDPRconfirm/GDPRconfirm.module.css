@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "Inter", sans-serif;
+  text-align: center;
+  border-radius: var(--nr-3, 16px);
+  color: var(--yrgo-white);
+  background: var(--color-brand-blue, #001a52);
+}

@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+}
+
+.select {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--nr-3, 16px);
+  background-color: var(--yrgo-gray);
+  cursor: pointer;
+}
