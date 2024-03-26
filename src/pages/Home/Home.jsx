@@ -1,3 +1,4 @@
+import GDPR from "../../components/GDPR/GDPR";
 import styles from "./Home.module.css";
 import Nav from "../../components/Nav/Nav";
 import Button from "../../components/Button/Button";
