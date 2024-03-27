@@ -1,0 +1,7 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 3.25rem;
+  flex-grow: 1;
+  user-select: none;
+}
