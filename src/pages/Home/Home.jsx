@@ -1,36 +1,38 @@
-import GDPR from "../../components/GDPR/GDPR";
 import styles from "./Home.module.css";
 import Nav from "../../components/Nav/Nav";
 import Button from "../../components/Button/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CountDown from "../../components/CountDown/CountDown";
 import Image from "../../components/Image/Image";
 import Tabs from "../../components/Tabs/Tabs";
 import Tab from "../../components/Tab/Tab";
 import Map from "../../components/Map/Map";
+import Footer from "../../components/Footer/Footer";
 
 export default function Home() {
   const navigate = useNavigate();
 
   return (
-    <main className={styles.container}>
-      <Nav />
-      <section className={styles.hero}>
-        <CountDown target={"Apr 23, 2024, 15:00:00"} />
-        <div className={styles.content}>
-          <h1>Welcome to our industry meetup!</h1>
-          <p>
-            Meet students from webdeveloper- and digital designer courses at
-            YRGO.
-          </p>
-          <Button onClick={() => navigate("/onboarding")}>Attend event</Button>
-        </div>
-      </section>
-      <Image
-        src="/IMG_9049.JPG"
-        style={{ width: "100%", aspectRatio: 1 / 1 }}
-      />
-      <section className={styles["info-container"]}>
+    <>
+      <main className={styles.container}>
+        <Nav />
+        <section className={styles.hero}>
+          <CountDown target={"Apr 23, 2024, 15:00:00"} />
+          <div className={styles.content}>
+            <h1>Welcome to our industry meetup!</h1>
+            <p>
+              Meet students from webdeveloper- and digital designer courses at
+              YRGO.
+            </p>
+            <Button onClick={() => navigate("/onboarding")}>
+              Attend event
+            </Button>
+          </div>
+        </section>
+        <Image
+          src="/IMG_9049.JPG"
+          style={{ width: "100%", aspectRatio: 1 / 1 }}
+        />
         <Tabs style={{ height: "48.125rem" }}>
           <Tab>
             <div className={styles["arena-card"]}>
@@ -84,7 +86,8 @@ export default function Home() {
             </Button>
           </Tab>
         </Tabs>
-      </section>
-    </main>
+      </main>
+      <Footer />
+    </>
   );
 }

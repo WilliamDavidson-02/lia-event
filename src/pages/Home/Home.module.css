@@ -34,10 +34,6 @@
 }
 
 /* Event info section */
-.info-container {
-  padding: var(--p-md);
-}
-
 .info-container p {
   margin-bottom: 3.25rem;
 }
