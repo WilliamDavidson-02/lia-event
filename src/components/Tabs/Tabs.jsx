@@ -5,7 +5,7 @@ export default function Tabs({ children, ...props }) {
   const [activeTab, setActiveTab] = useState(0);
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [touchStartX, setTouchStartX] = useState(null);
-  const movement = 8;
+  const movement = 10;
 
   const handleTabClick = (index) => {
     if (index >= children.length) index = 0;
