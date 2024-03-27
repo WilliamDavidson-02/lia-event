@@ -5,6 +5,7 @@ export default function Tabs({ children, ...props }) {
   const [activeTab, setActiveTab] = useState(0);
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [touchStartX, setTouchStartX] = useState(null);
+  const [touchStartY, setTouchStartY] = useState(null);
   const movement = 10;
 
   const handleTabClick = (index) => {
@@ -25,11 +26,23 @@ export default function Tabs({ children, ...props }) {
     }
   };
 
+  const handleTouchStart = (ev) => {
+    const { clientX, clientY } = ev.touches[0];
+
+    setTouchStartX(clientX);
+    setTouchStartY(clientY);
+  };
+
   const handleTouchMove = (ev) => {
     if (!touchStartX) return;
 
     const touchMoveX = ev.touches[0].clientX;
     const movementX = touchMoveX - touchStartX;
+
+    const touchMoveY = ev.touches[0].clientY;
+    const movementY = touchMoveY - touchStartY;
+
+    if (Math.abs(movementY) > movement) return;
 
     if (movementX >= movement) {
       setActiveTab((prev) => (prev - 1 >= 0 ? prev - 1 : children.length - 1));
@@ -59,7 +72,7 @@ export default function Tabs({ children, ...props }) {
           onMouseDown={() => setIsMouseDown(true)}
           onMouseUp={() => setIsMouseDown(false)}
           onTouchMove={handleTouchMove}
-          onTouchStart={(ev) => setTouchStartX(ev.touches[0].clientX)}
+          onTouchStart={handleTouchStart}
           onTouchEnd={() => setTouchStartX(null)}
           className={styles.content}
           style={{ display: activeTab !== index ? "none" : "flex" }}
