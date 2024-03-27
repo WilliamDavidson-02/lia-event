@@ -12,7 +12,7 @@ export default function OnboardingRadio({ handleProperty, options }) {
   return (
     <div className={styles.radioContainer}>
       {options.map((option) => (
-        <label key={option}>
+        <label className={styles.label} key={option}>
           <input
             className="radioButton"
             type="radio"

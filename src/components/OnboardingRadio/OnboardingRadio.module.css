@@ -5,7 +5,7 @@
   flex-grow: 1;
 }
 
-label {
+.label {
   display: flex;
   flex-direction: row;
   padding: var(--p-md);
