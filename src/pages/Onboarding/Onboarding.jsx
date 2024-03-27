@@ -71,7 +71,12 @@ export default function Onboarding() {
       <div className={styles.header}>
         <X to={"/"} />
       </div>
-      <form className={styles.container} onSubmit={handleSubmit}>
+      <form
+        autoComplete="off"
+        autoCorrect="off"
+        className={styles.container}
+        onSubmit={handleSubmit}
+      >
         <OnboardingHeader>{currentField.question}</OnboardingHeader>
         <OnboardingCard>
           {currentField.type === "map" && (
