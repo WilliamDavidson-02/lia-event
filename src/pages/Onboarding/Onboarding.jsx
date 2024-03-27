@@ -16,7 +16,9 @@ import OnboardingCheckBoxes from "../../components/OnboardingCheckBoxes/Onboardi
 export default function Onboarding() {
   const [onboaring, setOnboarding] = useState({});
   const [currentFieldIndex, setCurrentFieldIndex] = useState(1);
-  const [currentField, setCurrentField] = useState(onboardingMap.copmpany[currentFieldIndex]);
+  const [currentField, setCurrentField] = useState(
+    onboardingMap.copmpany[currentFieldIndex]
+  );
 
   const setOnboardingValues = (value) => {
     const property = currentField.property;
@@ -41,13 +43,17 @@ export default function Onboarding() {
       <form className={styles.container} onSubmit={handleSubmit}>
         <OnboardingHeader>{currentField.question}</OnboardingHeader>
         <OnboardingCard>
-          {/* <GeoLocation handleProperty={setOnboardingValues} /> */}
-          <OnboardingCheckBoxes options={currentField.options} />
+          <GeoLocation handleProperty={setOnboardingValues} />
+          {/* <OnboardingCheckBoxes options={currentField.options} /> */}
           {/* <OnboardingRadio options={currentField.options} handleProperty={setOnboardingValues} /> */}
           {/* <OnboardingTextArea handleSubmit={handleSubmit} handleProperty={setOnboardingValues} /> */}
           {/* <ChipsGrid isEdit handleProperty={setOnboardingValues} /> */}
           <OnboardingFooter>
-            <Button square type="submit" style={{ marginBottom: "16px", marginRight: "16px" }}>
+            <Button
+              square
+              type="submit"
+              style={{ marginBottom: "16px", marginRight: "16px" }}
+            >
               <ArrowRight size={24} />
             </Button>
           </OnboardingFooter>

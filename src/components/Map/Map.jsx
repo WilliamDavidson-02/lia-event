@@ -8,7 +8,7 @@ mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
 export const defaultCords = { lat: 57.70590087708176, lng: 11.936338877853077 };
 
-export default function Map({ position = defaultCords, getMap }) {
+export default function Map({ position = defaultCords, getMap, ...props }) {
   const mapContainer = useRef(null);
   const map = useRef(null);
 
@@ -44,7 +44,14 @@ export default function Map({ position = defaultCords, getMap }) {
       setLng(lng);
       setLat(lat);
     });
+
+    return () => {
+      if (map.current) {
+        map.current.remove();
+        map.current = null;
+      }
+    };
   }, []);
 
-  return <div className={styles.container} ref={mapContainer} />;
+  return <div {...props} className={styles.container} ref={mapContainer} />;
 }
