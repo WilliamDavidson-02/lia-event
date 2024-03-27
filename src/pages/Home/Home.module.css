@@ -32,3 +32,18 @@
   line-height: 1.4375rem;
   margin-bottom: 3.25rem;
 }
+
+/* Event info section */
+.info-container {
+  padding: var(--p-md);
+}
+
+.info-container p {
+  margin-bottom: 3.25rem;
+}
+
+.arena-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap-sm);
+}

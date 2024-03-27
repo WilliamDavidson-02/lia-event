@@ -23,6 +23,7 @@ export default function GeoLocation({ handleProperty }) {
     geocoder.current = new MapboxGeocoder({
       accessToken: mapboxgl.accessToken,
       mapboxgl,
+      language: "se-SV",
     });
 
     geocoder.current.addTo("#geocoder-container");

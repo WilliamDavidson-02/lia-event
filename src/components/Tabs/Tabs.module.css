@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+  overscroll-behavior: contain;
+}
+
+.pill-container {
+  display: flex;
+  gap: var(--gap-xs);
+}
+
+.pill {
+  transition: flex-grow 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.27);
+  background-color: var(--yrgo-grey-300);
+  flex-grow: 1;
+  height: 10px;
+  border-radius: 100vmax;
+}
+
+.pill-selected {
+  transition: flex-grow 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.27);
+  background-color: var(--yrgo-black);
+  flex-grow: 2;
+}
+
+.content {
+  flex-grow: 1;
+}
