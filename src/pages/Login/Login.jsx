@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styles from "./Login.module.css";
-import Input from "../Input/Input";
+import Input from "../../components/Input/Input.jsx";
 import supabase from "../../config/supabaseConfig";
-import Button from "../Button/Button";
+import Button from "../../components/Button/Button";
 import OnboardingFooter from "../../components/OnboardingFooter/OnboardingFooter";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
