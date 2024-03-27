@@ -1,0 +1,7 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+  padding: var(--p-md);
+  flex-grow: 1;
+}

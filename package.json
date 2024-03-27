@@ -4,13 +4,16 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mapbox/mapbox-gl-geocoder": "^5.0.2",
     "@supabase/supabase-js": "^2.39.8",
+    "lucide-react": "^0.362.0",
+    "mapbox-gl": "^3.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3"

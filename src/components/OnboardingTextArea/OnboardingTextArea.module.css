@@ -1,0 +1,29 @@
+.textarea {
+  resize: none;
+  outline: none;
+  border: none;
+  background: none;
+  scrollbar-width: none;
+
+  padding: var(--p-md);
+  color: var(--yrgo-black);
+  font-size: 2.125rem;
+  font-weight: 400;
+  line-height: 2.25rem;
+
+  flex-grow: 1;
+}
+
+.textarea::-webkit-scrollbar {
+  display: none;
+}
+
+.textarea::placeholder {
+  transition: color 0.2s ease-out;
+  color: #a6a6a6;
+}
+
+.textarea:focus::placeholder {
+  transition: color 0.2s ease-out;
+  color: var(--yrgo-black);
+}

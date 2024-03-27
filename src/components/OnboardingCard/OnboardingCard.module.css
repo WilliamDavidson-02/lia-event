@@ -1,0 +1,7 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  border-radius: var(--rounded-xl);
+  background: #d9d9d9;
+}

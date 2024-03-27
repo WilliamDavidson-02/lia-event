@@ -1,0 +1,54 @@
+.nav-btn-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.nav-btn-container div {
+  height: 0.5rem;
+  width: 4.25rem;
+  background: var(--yrgo-grey-300);
+  border-radius: 100vmax;
+}
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 100%;
+  z-index: 9999;
+  background: var(--yrgo-grey-100);
+  width: 100vw;
+  height: 100vh;
+  padding: 2.25rem 1.25rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 2.25rem;
+  text-transform: uppercase;
+  text-align: end;
+
+  transition: all 0.4s;
+}
+
+.toggled {
+  transition: all 0.4s;
+  transform: translateX(-100%);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-lg);
+  padding-bottom: 10rem;
+}
+
+.space {
+  margin-top: 4rem;
+}

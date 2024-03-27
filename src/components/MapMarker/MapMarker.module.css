@@ -1,0 +1,7 @@
+.pin {
+  color: var(--yrgo-red);
+}
+
+.hidden {
+  display: none;
+}

@@ -1,0 +1,19 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--gap-md);
+  justify-content: center;
+  height: 100%;
+}
+
+.select {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--nr-3, 16px);
+  background-color: #d9d9d9;
+  cursor: pointer;
+  padding: var(--p-md);
+  height: 100%;
+}

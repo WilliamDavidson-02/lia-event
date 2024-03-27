@@ -1,0 +1,45 @@
+.container {
+  padding: 2.25rem 1.25rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero {
+  height: calc(100vh - 2.25rem - 24px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8rem;
+  padding: var(--p-md);
+}
+
+.hero .content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+}
+
+.hero .content h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 2.25rem;
+}
+
+.hero .content p {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.4375rem;
+  margin-bottom: 3.25rem;
+}
+
+/* Event info section */
+.info-container p {
+  margin-bottom: 3.25rem;
+}
+
+.arena-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap-sm);
+}
