@@ -92,3 +92,33 @@
   cursor: default;
   text-decoration: line-through;
 }
+
+.login {
+  background-color: inherit;
+  border: 1px solid var(--yrgo-black);
+  color: var(--yrgo-black);
+  transition: boder 0.2s, background-color 0.2s, color 0.2s;
+}
+
+.login:hover {
+  transition: 0.2s;
+  border: 1px solid var(--yrgo-white);
+  background: var(--yrgo-black);
+  color: var(--yrgo-white);
+}
+
+.login:hover svg path {
+  fill: var(--yrgo-white);
+}
+
+.login:active {
+  border: 1px solid rgba(0, 0, 0, 0);
+}
+
+.login:disabled {
+  transition: 0.2s;
+  border: 1px solid var(--yrgo-grey-600);
+  background: var(--yrgo-grey-600);
+  color: var(--yrgo-grey-300);
+  cursor: default;
+}
