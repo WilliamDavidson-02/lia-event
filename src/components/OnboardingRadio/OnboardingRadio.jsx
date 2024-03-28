@@ -1,14 +1,11 @@
 import { useState } from "react";
 import styles from "./OnboardingRadio.module.css";
 
-export default function OnboardingRadio({ handleProperty, options }) {
-  const [selectedOption, setSelectedOption] = useState("");
-  const handleOptionChange = (event) => {
-    const selectedValue = event.target.value;
-    setSelectedOption(selectedValue);
-    handleProperty(selectedValue);
-  };
-
+export default function OnboardingRadio({
+  handleProperty,
+  options,
+  selectedValue = "",
+}) {
   return (
     <div className={styles.radioContainer}>
       {options.map((option) => (
@@ -17,8 +14,8 @@ export default function OnboardingRadio({ handleProperty, options }) {
             className="radioButton"
             type="radio"
             value={option}
-            checked={option === selectedOption}
-            onChange={handleOptionChange}
+            checked={option === selectedValue}
+            onChange={(event) => handleProperty(event.target.value)}
           />
           <p>{option}</p>
         </label>

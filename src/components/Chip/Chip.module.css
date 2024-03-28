@@ -1,4 +1,8 @@
 .container {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+
   width: fit-content;
   height: fit-content;
   padding: var(--p-sm) var(--p-md);
@@ -14,16 +18,16 @@
 
   scroll-snap-align: start;
 
-  transition: opacity 0.3s;
+  transition: opacity 0.4s;
   opacity: 0;
 }
 
 .selected {
-  transition: background-color 0.3s ease-in-out;
+  transition: background-color 0.3s ease-in-out, opacity 0.4s;
   background-color: var(--yrgo-grey);
 }
 
 .visible {
-  transition: opacity 0.3s;
+  transition: opacity 0.4s;
   opacity: 1;
 }

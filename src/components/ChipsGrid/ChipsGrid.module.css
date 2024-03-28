@@ -2,8 +2,8 @@
   display: flex;
   flex-wrap: wrap;
   flex-grow: 1;
+  flex-basis: 0;
   gap: var(--gap-md);
-  margin-bottom: var(--m-md);
   padding: var(--p-md);
 
   overflow-y: auto;
@@ -11,6 +11,7 @@
   scroll-behavior: smooth;
   overscroll-behavior: contain;
   scroll-snap-type: y mandatory;
+  scroll-padding-top: var(--p-md);
 }
 
 .container::-webkit-scrollbar {

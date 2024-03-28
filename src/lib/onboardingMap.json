@@ -3,12 +3,14 @@
     {
       "type": "text",
       "property": "name",
+      "defaultValue": "",
       "question": "What's yout company name?",
       "required": true
     },
     {
       "type": "check",
       "property": "area",
+      "defaultValue": [],
       "question": "Select the main focus of your company",
       "required": true,
       "options": ["Development", "Design"]
@@ -16,12 +18,14 @@
     {
       "type": "link",
       "property": "href",
+      "defaultValue": "",
       "question": "Link your website",
       "required": false
     },
     {
       "type": "check",
       "property": "workStyle",
+      "defaultValue": [],
       "question": "Select the primary working style of your company",
       "required": false,
       "options": ["Hybrid", "Remote", "On site"]
@@ -29,12 +33,14 @@
     {
       "type": "map",
       "property": "location",
+      "defaultValue": [],
       "question": "specify the primary location of your company",
       "required": false
     },
     {
       "type": "radio",
       "property": "employees",
+      "defaultValue": "",
       "question": "Select the approximate number of employees in your company",
       "required": false,
       "options": ["1 - 10", "10 - 50", "50 - 100", "100 - 500", "500+"]
@@ -42,6 +48,7 @@
     {
       "type": "radio",
       "property": "companyType",
+      "defaultValue": "",
       "question": "Specify the type of your organization",
       "required": false,
       "options": ["Agency", "Product Owner"]
@@ -49,12 +56,14 @@
     {
       "type": "chip",
       "property": "keywords",
+      "defaultValue": [],
       "question": "Select keywords that best describe your company",
       "required": false
     },
     {
       "type": "text",
       "property": "description",
+      "defaultValue": "",
       "question": "Provide a brief description of your company",
       "required": false
     }
@@ -63,18 +72,21 @@
     {
       "type": "text",
       "property": "name",
+      "defaultValue": "",
       "question": "What's your name?",
       "required": true
     },
     {
       "type": "link",
       "property": "href",
+      "defaultValue": "",
       "question": "Provide portfolio, SoMe, Figma ...",
       "required": false
     },
     {
       "type": "radio",
       "property": "program",
+      "defaultValue": "",
       "question": "What are you currently studying",
       "required": true,
       "options": ["Web Development", "Digital design"]
@@ -82,24 +94,28 @@
     {
       "type": "chip",
       "property": "keywords",
+      "defaultValue": [],
       "question": "Select keywords that best describe your interest",
       "required": false
     },
     {
       "type": "map",
       "property": "location",
+      "defaultValue": [],
       "question": "Specify the primary location of your school",
       "required": false
     },
     {
       "type": "text",
       "property": "educations",
+      "defaultValue": "",
       "question": "Provide any additional educations",
       "required": false
     },
     {
       "type": "text",
       "property": "description",
+      "defaultValue": "",
       "question": "Provide a brief description of your self",
       "required": false
     }
