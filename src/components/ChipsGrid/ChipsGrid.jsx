@@ -1,11 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Chip from "../Chip/Chip";
 import keywords from "../../lib/keywords.json";
 import styles from "./ChipsGrid.module.css";
 import chipStyles from "../Chip/Chip.module.css";
+import { CircleX } from "lucide-react";
 
-export default function ChipsGrid({ handleProperty, isEdit = false }) {
-  const [selectedChips, setSelectedChips] = useState([]);
+export default function ChipsGrid({
+  handleProperty,
+  isEdit = false,
+  selectedChips,
+}) {
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -43,7 +47,6 @@ export default function ChipsGrid({ handleProperty, isEdit = false }) {
       chips.push(word);
     }
 
-    setSelectedChips(chips);
     handleProperty(chips);
   };
 
@@ -56,7 +59,8 @@ export default function ChipsGrid({ handleProperty, isEdit = false }) {
           id="chip-observer"
           key={word}
         >
-          {word}
+          <p>{word}</p>
+          {isEdit && selectedChips.includes(word) && <CircleX size={20} />}
         </Chip>
       ))}
     </div>

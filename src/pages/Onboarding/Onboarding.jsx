@@ -16,7 +16,7 @@ import UserTypeSelect from "../../components/UserTypeSelect/UserTypeSelect";
 import GDPR from "../../components/GDPR/GDPR";
 
 export default function Onboarding() {
-  const [onboaring, setOnboarding] = useState({});
+  const [onboarding, setOnboarding] = useState({});
   const [currentFieldIndex, setCurrentFieldIndex] = useState(0);
   const [currentField, setCurrentField] = useState(null);
   const [isGdprConfirmed, setIsGdprConfirmed] = useState(false);
@@ -41,7 +41,7 @@ export default function Onboarding() {
       setCurrentFieldIndex(nextIndex);
     } else {
       // All questions answered
-      console.log(onboaring);
+      console.log(onboarding);
     }
   };
 
@@ -50,7 +50,28 @@ export default function Onboarding() {
   }, [userType]);
 
   const nextField = (index) => {
-    setCurrentField(onboardingMap[userType][index]);
+    const current = onboardingMap[userType][index];
+
+    // Set default value for property
+    setOnboarding((prev) => ({
+      ...prev,
+      [current.property]: current.defaultValue,
+    }));
+
+    setCurrentField(current);
+  };
+
+  const handleSkip = () => {
+    // Check if user alreay enter a value in field
+    if (onboarding[currentField.property]) {
+      const onboardinObj = onboarding;
+
+      delete onboardinObj[currentField.property];
+
+      setOnboarding(onboardinObj);
+    }
+
+    handleSubmit(new Event("submit"));
   };
 
   if (!currentField) {
@@ -83,29 +104,42 @@ export default function Onboarding() {
             <GeoLocation handleProperty={setOnboardingValues} />
           )}
           {currentField.type === "check" && (
-            <OnboardingCheckBoxes options={currentField.options} />
+            <OnboardingCheckBoxes
+              handleProperty={setOnboardingValues}
+              options={currentField.options}
+              checkedValues={onboarding[currentField.property]}
+            />
           )}
           {currentField.type === "radio" && (
             <OnboardingRadio
               options={currentField.options}
               handleProperty={setOnboardingValues}
+              selectedValue={onboarding[currentField.property]}
             />
           )}
           {["text", "link"].includes(currentField.type) && (
             <OnboardingTextArea
               handleSubmit={handleSubmit}
               handleProperty={setOnboardingValues}
+              propertyValue={onboarding[currentField.property]}
             />
           )}
           {currentField.type === "chip" && (
-            <ChipsGrid isEdit handleProperty={setOnboardingValues} />
+            <ChipsGrid
+              isEdit
+              handleProperty={setOnboardingValues}
+              selectedChips={onboarding[currentField.property]}
+            />
           )}
-          <OnboardingFooter>
-            <Button
-              square
-              type="submit"
-              style={{ marginBottom: "16px", marginRight: "16px" }}
-            >
+          <OnboardingFooter
+            style={{ marginBottom: "16px", marginRight: "16px" }}
+          >
+            {!currentField.required && (
+              <Button onClick={handleSkip} type="button" variant="secondary">
+                Skip
+              </Button>
+            )}
+            <Button square type="submit">
               <ArrowRight size={24} />
             </Button>
           </OnboardingFooter>
