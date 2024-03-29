@@ -1,19 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import mapboxgl, { Marker } from "mapbox-gl";
+import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import styles from "./Map.module.css";
 import "./mapboxOverride.css";
+import { defaultCords } from "../../lib/mapData.js";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
-
-export const defaultCords = { lat: 57.70590087708176, lng: 11.936338877853077 };
 
 export default function Map({ position = defaultCords, getMap, ...props }) {
   const mapContainer = useRef(null);
   const map = useRef(null);
 
-  const [lng, setLng] = useState(position.lng);
-  const [lat, setLat] = useState(position.lat);
+  const [lngLat, setLngLat] = useState([position.lng, position.lat]);
 
   useEffect(() => {
     if (map.current) return;
@@ -21,7 +19,7 @@ export default function Map({ position = defaultCords, getMap, ...props }) {
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/oatmeal02/clu2g5ydm01ql01nrfpbihe3r",
-      center: [lng, lat],
+      center: lngLat,
       zoom: 11,
       attributionControl: false,
     });
@@ -40,9 +38,7 @@ export default function Map({ position = defaultCords, getMap, ...props }) {
     // Mapbox event handlers
     map.current.on("moveend", () => {
       const { lng, lat } = map.current.getCenter();
-
-      setLng(lng);
-      setLat(lat);
+      setLngLat([lng, lat]);
     });
 
     return () => {

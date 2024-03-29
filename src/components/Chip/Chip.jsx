@@ -1,11 +1,6 @@
 import styles from "./Chip.module.css";
 
-export default function Chip({
-  children,
-  className = "",
-  selected = false,
-  ...props
-}) {
+export default function Chip({ children, selected = false, ...props }) {
   return (
     <span
       {...props}

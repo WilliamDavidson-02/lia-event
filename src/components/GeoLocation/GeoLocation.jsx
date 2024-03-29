@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import ReactDOMServer from "react-dom/server";
-import mapboxgl, { LngLat } from "mapbox-gl";
+import mapboxgl from "mapbox-gl";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import styles from "./GeoLocation.module.css";
 import Map from "../Map/Map";
-import { defaultCords } from "../Map/Map";
+import { defaultCords } from "../../lib/mapData";
 import "./geocoderOverride.css";
 import MapMarker from "../MapMarker/MapMarker";
 import markerStyles from "../MapMarker/MapMarker.module.css";
