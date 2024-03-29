@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import styles from "./X.module.css";
 
-export default function X({ className, ...props }) {
+export default function X({ ...props }) {
   return (
-    <Link {...props} className={`${styles.x} ${className}`}>
+    <Link {...props} className={styles.x}>
       <div>(X)</div>
     </Link>
   );

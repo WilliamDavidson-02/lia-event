@@ -1,33 +1,27 @@
 import styles from "./Nav.module.css";
 import X from "../X/X";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import useUserContext from "../../hooks/useUserContext";
+import { Loader2 } from "lucide-react";
 
 export default function Nav() {
-  const { user } = useUserContext();
+  const { user, signOut } = useUserContext();
+  const [isSigningOutLoading, setIsSigningOutLoading] = useState(false);
   const nav = useRef(null);
-
-  const navLinks = [
-    {
-      path: "/home",
-      name: "Home",
-    },
-    {
-      path: "https://www.yrgo.se/",
-      name: "Yrgo.se",
-    },
-    {
-      path: user ? "/logout" : "/login",
-      name: user ? "Logout" : "Login",
-      className: styles.space,
-    },
-  ];
 
   const handleNavToggle = () => {
     if (!nav) return;
 
     nav.current.classList.toggle(styles.toggled);
+  };
+
+  const handleSignOut = async () => {
+    setIsSigningOutLoading(true);
+    await signOut();
+
+    setIsSigningOutLoading(false);
+    handleNavToggle();
   };
 
   return (
@@ -39,16 +33,38 @@ export default function Nav() {
       <nav ref={nav} className={styles.nav}>
         <X onClick={handleNavToggle} />
         <div className={styles.content}>
-          {navLinks.map((link, idx) => (
-            <Link
-              className={link.className || ""}
-              onClick={handleNavToggle}
-              to={link.path}
-              key={`${link.name}-${idx}`}
-            >
-              {link.name}
-            </Link>
-          ))}
+          <Link onClick={handleNavToggle} to={"/"}>
+            Home
+          </Link>
+          <Link onClick={handleNavToggle} to={"https://www.yrgo.se/"}>
+            Yrgo.se
+          </Link>
+          {user ? (
+            <div className={styles.space} onClick={handleSignOut}>
+              {isSigningOutLoading && (
+                <Loader2
+                  className="loader"
+                  size={24}
+                  strokeWidth={3}
+                  style={{ marginRight: "10px" }}
+                />
+              )}
+              <span>Logout</span>
+            </div>
+          ) : (
+            <>
+              <Link
+                onClick={handleNavToggle}
+                className={styles.space}
+                to={"/login"}
+              >
+                Login
+              </Link>
+              <Link onClick={handleNavToggle} to={"/onboarding"}>
+                Create account
+              </Link>
+            </>
+          )}
         </div>
       </nav>
     </>

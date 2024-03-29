@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  font-family: "Inter", sans-serif;
+  padding: var(--p-md);
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--rounded-xl);
+  margin: var(--m-md);
+  padding: var(--p-md);
+  background: #d9d9d9;
+  gap: var(--gap-sm);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+}
+
+.providers {
+  display: flex;
+  justify-content: center;
+  gap: var(--gap-md);
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
