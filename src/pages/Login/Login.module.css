@@ -21,14 +21,13 @@
   gap: var(--gap-md);
 }
 
-.loginOptions {
+.providers {
   display: flex;
-  flex-direction: column;
-  margin-top: var(--m-md);
-  gap: var(--gap-sm);
+  justify-content: center;
+  gap: var(--gap-md);
 }
 
-.buttons {
+.form-field {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }

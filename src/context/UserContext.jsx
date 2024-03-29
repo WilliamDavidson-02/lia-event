@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import supabase from "../config/supabaseConfig";
 
 export const UserContext = createContext(null);
@@ -6,18 +6,30 @@ export const UserContext = createContext(null);
 export default function UserContextProvider({ children }) {
   const [user, setUser] = useState(null);
 
+  useEffect(() => {
+    getUser();
+  }, []);
+
   const signUp = async (credentials) => {
-    const { email, password } = credentials;
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
+    const { error } = await supabase.auth.signUp(credentials);
 
     if (error) {
       console.log("Sign up failed", error);
-      return;
+      return error;
     }
-    setUser(data.user);
+
+    const { error: signInError } = signInWithPassword({
+      email: credentials.email,
+      password: credentials.password,
+    });
+
+    if (signInError) {
+      console.log("Account created sign in failed", signInError);
+      error = signInError;
+      return error;
+    }
+
+    return error;
   };
 
   const signInWithPassword = async (credentials) => {
@@ -25,10 +37,12 @@ export default function UserContextProvider({ children }) {
 
     if (error) {
       console.log("Sign in failed, check credentials", error);
-      return;
+      return error;
     }
 
     setUser(data.user);
+
+    return error;
   };
 
   const signOut = async () => {
@@ -57,7 +71,9 @@ export default function UserContextProvider({ children }) {
   };
 
   return (
-    <UserContext.Provider value={{ user, signInWithPassword, signOut, signUp, getUser }}>
+    <UserContext.Provider
+      value={{ user, signInWithPassword, signOut, signUp, getUser }}
+    >
       {children}
     </UserContext.Provider>
   );

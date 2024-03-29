@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import X from "../../components/X/X";
 import Button from "../../components/Button/Button";
-import OnboardingHeader from "../../components/OnboardingHeader/OnboardingHeader";
 import OnboardingCard from "../../components/OnboardingCard/OnboardingCard";
 import styles from "./Onboarding.module.css";
 import OnboardingTextArea from "../../components/OnboardingTextArea/OnboardingTextArea";
@@ -14,6 +13,10 @@ import GeoLocation from "../../components/GeoLocation/GeoLocation";
 import OnboardingCheckBoxes from "../../components/OnboardingCheckBoxes/OnboardingCheckBoxes";
 import UserTypeSelect from "../../components/UserTypeSelect/UserTypeSelect";
 import GDPR from "../../components/GDPR/GDPR";
+import Input from "../../components/Input/Input";
+import keywords from "../../lib/keywords.json";
+import useUserContext from "../../hooks/useUserContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Onboarding() {
   const [onboarding, setOnboarding] = useState({});
@@ -21,6 +24,11 @@ export default function Onboarding() {
   const [currentField, setCurrentField] = useState(null);
   const [isGdprConfirmed, setIsGdprConfirmed] = useState(false);
   const [userType, setUserType] = useState(null);
+  const [isLoading, setIsloading] = useState(false);
+
+  const { signUp } = useUserContext();
+
+  const navigate = useNavigate();
 
   const setOnboardingValues = (value) => {
     const property = currentField.property;
@@ -31,7 +39,7 @@ export default function Onboarding() {
     }));
   };
 
-  const handleSubmit = (ev) => {
+  const handleSubmit = async (ev) => {
     ev.preventDefault();
 
     if (currentFieldIndex !== onboardingMap[userType].length - 1) {
@@ -41,7 +49,46 @@ export default function Onboarding() {
       setCurrentFieldIndex(nextIndex);
     } else {
       // All questions answered
-      console.log(onboarding);
+      setIsloading(true);
+
+      const { email, password, name, area } = onboarding;
+
+      // Default credentials
+      let credentials = {
+        email,
+        password,
+        options: {
+          data: {
+            name,
+            area,
+            userType,
+          },
+        },
+      };
+
+      if (onboarding.href) {
+        credentials.options.data.href = onboarding.href;
+      }
+      if (onboarding.employees) {
+        credentials.options.data.employees = onboarding.employees;
+      }
+      if (onboarding.keywords) {
+        credentials.options.data.keywords = onboarding.keywords;
+      }
+      if (userType === "company") {
+        credentials.options.data.contact = email;
+      }
+
+      const { error } = signUp(credentials);
+
+      if (error) {
+        console.log(error);
+        setIsloading(false);
+        return;
+      }
+
+      setIsloading(false);
+      navigate("/");
     }
   };
 
@@ -62,16 +109,30 @@ export default function Onboarding() {
   };
 
   const handleSkip = () => {
-    // Check if user alreay enter a value in field
-    if (onboarding[currentField.property]) {
-      const onboardinObj = onboarding;
+    // Remvoe skipped property
+    const onboardinObj = onboarding;
 
-      delete onboardinObj[currentField.property];
+    delete onboardinObj[currentField.property];
 
-      setOnboarding(onboardinObj);
-    }
+    setOnboarding(onboardinObj);
 
     handleSubmit(new Event("submit"));
+  };
+
+  const getKeywords = (area) => {
+    // Student can only select one area/program, Check if area is a string and wrapp it in an array
+    if (typeof area === "string") area = [area];
+
+    let keywordsArray = [];
+
+    // Add selected areas of work keywords
+    area.forEach((item) => {
+      if (keywords[item]) {
+        keywordsArray = [...keywordsArray, ...keywords[item]];
+      }
+    });
+
+    return keywordsArray;
   };
 
   if (!currentField) {
@@ -98,7 +159,7 @@ export default function Onboarding() {
         className={styles.container}
         onSubmit={handleSubmit}
       >
-        <OnboardingHeader>{currentField.question}</OnboardingHeader>
+        <h1 className={styles.title}>{currentField.question}</h1>
         <OnboardingCard>
           {currentField.type === "map" && (
             <GeoLocation handleProperty={setOnboardingValues} />
@@ -119,14 +180,29 @@ export default function Onboarding() {
           )}
           {["text", "link"].includes(currentField.type) && (
             <OnboardingTextArea
+              autoFocus
+              id={currentField.property}
               handleSubmit={handleSubmit}
               handleProperty={setOnboardingValues}
               propertyValue={onboarding[currentField.property]}
             />
           )}
+          {currentField.type === "password" && (
+            <Input
+              autoFocus
+              id={currentField.property}
+              variant="lg-transparent"
+              style={{ marginBottom: "auto" }}
+              type="password"
+              placeholder="Type ..."
+              value={onboarding[currentField.property]}
+              onChange={(event) => setOnboardingValues(event.target.value)}
+            />
+          )}
           {currentField.type === "chip" && (
             <ChipsGrid
               isEdit
+              chipValues={getKeywords(onboarding.area)}
               handleProperty={setOnboardingValues}
               selectedChips={onboarding[currentField.property]}
             />
@@ -135,11 +211,21 @@ export default function Onboarding() {
             style={{ marginBottom: "16px", marginRight: "16px" }}
           >
             {!currentField.required && (
-              <Button onClick={handleSkip} type="button" variant="secondary">
+              <Button
+                disabled={isLoading}
+                onClick={handleSkip}
+                type="button"
+                variant="secondary"
+              >
                 Skip
               </Button>
             )}
-            <Button square type="submit">
+            <Button
+              disabled={isLoading}
+              isLoading={isLoading}
+              square
+              type="submit"
+            >
               <ArrowRight size={24} />
             </Button>
           </OnboardingFooter>

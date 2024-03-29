@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import ReactDOMServer from "react-dom/server";
-import mapboxgl from "mapbox-gl";
+import mapboxgl, { LngLat } from "mapbox-gl";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import styles from "./GeoLocation.module.css";
@@ -81,6 +81,8 @@ export default function GeoLocation({ handleProperty }) {
   const handleMarker = (lngLat) => {
     marker.current.setLngLat(lngLat);
     marker.current.removeClassName(markerStyles.hidden);
+
+    handleProperty([lngLat.lng, lngLat.lat]);
   };
 
   return (
