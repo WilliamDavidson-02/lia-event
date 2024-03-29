@@ -12,31 +12,31 @@ export default function CountDown({ target }) {
   });
 
   useEffect(() => {
+    const calcTimeDiff = () => {
+      const currentTime = new Date();
+      const timeDiff = eventDate.getTime() - currentTime.getTime();
+
+      const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+      return {
+        days: days,
+        hours: hours,
+        min: minutes,
+        sec: seconds,
+      };
+    };
+
     const timer = setInterval(() => {
       setTimeLeft(calcTimeDiff());
     }, 1000);
 
     return () => clearInterval(timer);
   }, []);
-
-  const calcTimeDiff = () => {
-    const currentTime = new Date();
-    const timeDiff = eventDate.getTime() - currentTime.getTime();
-
-    const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor(
-      (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-    );
-    const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-
-    return {
-      days: days,
-      hours: hours,
-      min: minutes,
-      sec: seconds,
-    };
-  };
 
   return (
     <div className={styles.container}>
