@@ -1,67 +1,48 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./Login.module.css";
 import Input from "../../components/Input/Input.jsx";
 import Label from "../../components/Label/Label.jsx";
 import Nav from "../../components/Nav/Nav.jsx";
-import supabase from "../../config/supabaseConfig";
 import Button from "../../components/Button/Button";
 import OnboardingFooter from "../../components/OnboardingFooter/OnboardingFooter";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import useWindowSize from "../../hooks/useWindowSize.jsx";
+import useUserContext from "../../hooks/useUserContext.jsx";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { width } = useWindowSize();
 
   const navigate = useNavigate();
 
+  const { signInWithProvider, signInWithPassword } = useUserContext();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    try {
-      const { user, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+    if (!email || !password) return;
 
-      if (error) {
-        setError(error.message);
-      } else {
-        console.log("User logged in: ", user);
-        //redirect?
-        navigate("/");
-      }
-    } catch (error) {
-      console.log("Error logging in: ", error.message);
-      setError(error.message);
-    }
+    setIsLoading(true);
+
+    const { error } = await signInWithPassword({ email, password });
+
+    if (error) return;
+
+    navigate("/");
   };
 
-  const withProvider = (event) => {
-    event.preventDefault();
+  const handleSignInProvider = async (provider) => {
+    const { error } = await signInWithProvider(provider);
+
+    if (error) return;
+
+    setIsLoading(false);
+
+    navigate("/");
   };
-
-  async function signInWithLinkedIn() {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "linkedin_oidc",
-    });
-    //console.log(data);
-  }
-
-  async function signInWithDiscord() {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "discord",
-    });
-  }
-
-  async function signInWithGithub() {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "github",
-    });
-  }
 
   return (
     <main className={styles.container}>
@@ -91,13 +72,12 @@ export default function Login() {
               onChange={(event) => setPassword(event.target.value)}
             />
           </div>
-          {error && <p>{error}</p>}
           <div className={styles.providers}>
             <Button
+              type="button"
               square={width < 500}
               className={styles.buttons}
-              onSubmit={withProvider}
-              onClick={signInWithLinkedIn}
+              onClick={() => handleSignInProvider("linkedin_oidc")}
               variant="login"
             >
               <svg
@@ -122,10 +102,10 @@ export default function Login() {
               {width > 500 && <p>Linkedin</p>}
             </Button>
             <Button
+              type="button"
               square={width < 500}
               className={styles.buttons}
-              onSubmit={withProvider}
-              onClick={signInWithDiscord}
+              onClick={() => handleSignInProvider("discord")}
               variant="login"
             >
               <svg
@@ -150,10 +130,10 @@ export default function Login() {
               {width > 500 && <p>Discord</p>}
             </Button>
             <Button
+              type="button"
               square={width < 500}
               className={styles.buttons}
-              onSubmit={withProvider}
-              onClick={signInWithGithub}
+              onClick={() => handleSignInProvider("github")}
               variant="login"
             >
               <svg
@@ -180,6 +160,7 @@ export default function Login() {
           </div>
           <OnboardingFooter>
             <Button
+              isLoading={isLoading}
               square
               type="submit"
               style={{ marginBottom: "16px", marginRight: "16px" }}
