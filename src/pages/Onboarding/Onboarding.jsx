@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import X from "../../components/X/X";
 import Button from "../../components/Button/Button";
-import OnboardingCard from "../../components/OnboardingCard/OnboardingCard";
 import styles from "./Onboarding.module.css";
 import OnboardingTextArea from "../../components/OnboardingTextArea/OnboardingTextArea";
 import OnboardingRadio from "../../components/OnboardingRadio/OnboardingRadio";
@@ -160,7 +159,7 @@ export default function Onboarding() {
         onSubmit={handleSubmit}
       >
         <h1 className={styles.title}>{currentField.question}</h1>
-        <OnboardingCard>
+        <div className={styles.card}>
           {currentField.type === "map" && (
             <GeoLocation handleProperty={setOnboardingValues} />
           )}
@@ -229,7 +228,7 @@ export default function Onboarding() {
               <ArrowRight size={24} />
             </Button>
           </OnboardingFooter>
-        </OnboardingCard>
+        </div>
       </form>
     </div>
   );
