@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
 import Chip from "../Chip/Chip";
-import keywords from "../../lib/keywords.json";
 import styles from "./ChipsGrid.module.css";
 import chipStyles from "../Chip/Chip.module.css";
 import { CircleX } from "lucide-react";
 
 export default function ChipsGrid({
-  handleProperty,
   isEdit = false,
+  chipValues,
+  handleProperty,
   selectedChips,
 }) {
   const containerRef = useRef(null);
@@ -52,7 +52,7 @@ export default function ChipsGrid({
 
   return (
     <div ref={containerRef} className={styles.container}>
-      {keywords.developer.map((word) => (
+      {chipValues.map((word) => (
         <Chip
           onClick={() => handleSelect(word)}
           selected={selectedChips.includes(word)}

@@ -21,15 +21,15 @@ export default function OnboardingCheckBoxes({
   return (
     <div className={styles.checkboxContainer}>
       {options.map((option) => (
-        <label className={styles.label} key={option}>
+        <label className={styles.label} key={option.value}>
           <input
             className="checkbox"
             type="checkbox"
-            value={option}
-            checked={checkedValues.includes(option)}
+            value={option.value}
+            checked={checkedValues.includes(option.value)}
             onChange={checkHandler}
           />
-          <p>{option}</p>
+          <p>{option.title}</p>
         </label>
       ))}
     </div>

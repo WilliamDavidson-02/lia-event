@@ -1,10 +1,9 @@
 .container {
   display: flex;
   flex-wrap: wrap;
-  flex-grow: 1;
-  flex-basis: 0;
   gap: var(--gap-md);
   padding: var(--p-md);
+  margin-bottom: auto;
 
   overflow-y: auto;
   scrollbar-width: none;
