@@ -19,20 +19,6 @@
   padding: var(--p-sm);
 }
 
-.loader {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .primary {
   background-color: var(--yrgo-red);
   transition: boder 0.2s, background-color 0.2s, color 0.2s;

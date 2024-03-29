@@ -25,11 +25,11 @@ export default function UserContextProvider({ children }) {
 
     if (signInError) {
       console.log("Account created sign in failed", signInError);
-      error = signInError;
+      const error = signInError;
       return error;
     }
 
-    return error;
+    return { error: null };
   };
 
   const signInWithPassword = async (credentials) => {
@@ -42,7 +42,22 @@ export default function UserContextProvider({ children }) {
 
     setUser(data.user);
 
-    return error;
+    return { error: null };
+  };
+
+  const signInWithProvider = async (provider) => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      provider,
+    });
+
+    if (error) {
+      console.log("Sign in with provider failed", error);
+      return error;
+    }
+
+    setUser(data.user);
+
+    return { error: null };
   };
 
   const signOut = async () => {
@@ -72,7 +87,14 @@ export default function UserContextProvider({ children }) {
 
   return (
     <UserContext.Provider
-      value={{ user, signInWithPassword, signOut, signUp, getUser }}
+      value={{
+        user,
+        signInWithPassword,
+        signInWithProvider,
+        signOut,
+        signUp,
+        getUser,
+      }}
     >
       {children}
     </UserContext.Provider>

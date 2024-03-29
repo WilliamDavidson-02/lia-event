@@ -1,11 +1,13 @@
 import styles from "./Nav.module.css";
 import X from "../X/X";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import useUserContext from "../../hooks/useUserContext";
+import { Loader2 } from "lucide-react";
 
 export default function Nav() {
   const { user, signOut } = useUserContext();
+  const [isSigningOutLoading, setIsSigningOutLoading] = useState(false);
   const nav = useRef(null);
 
   const handleNavToggle = () => {
@@ -15,8 +17,10 @@ export default function Nav() {
   };
 
   const handleSignOut = async () => {
+    setIsSigningOutLoading(true);
     await signOut();
 
+    setIsSigningOutLoading(false);
     handleNavToggle();
   };
 
@@ -37,7 +41,15 @@ export default function Nav() {
           </Link>
           {user ? (
             <div className={styles.space} onClick={handleSignOut}>
-              Logout
+              {isSigningOutLoading && (
+                <Loader2
+                  className="loader"
+                  size={24}
+                  strokeWidth={3}
+                  style={{ marginRight: "10px" }}
+                />
+              )}
+              <span>Logout</span>
             </div>
           ) : (
             <>

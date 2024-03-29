@@ -16,7 +16,7 @@ export default function Button({
         square ? styles.square : ""
       }`}
     >
-      {isLoading ? <Loader2 className={styles.loader} /> : children}
+      {isLoading ? <Loader2 className="loader" /> : children}
     </button>
   );
 }
