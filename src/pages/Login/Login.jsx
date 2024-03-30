@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import styles from "./Login.module.css";
 import Input from "../../components/Input/Input.jsx";
 import Label from "../../components/Label/Label.jsx";
