@@ -6,7 +6,7 @@ This project is aimed at fostering connections between industry professionals an
 
 The DD+WU project entails the creation of a digital solution for the Branschevent 2024. Winning teams, selected by a jury, will have their solution utilized for the event. The chosen team will also have the opportunity to present their solution and discuss their development process during the event, providing invaluable exposure to visiting companies.
 
-### Digital Solution Requirements
+## Digital Solution Requirements
 
 - Mobile-first design
 - Accessibility compliant with EN 301 549 (WCAG 2.1 AA)
@@ -19,7 +19,7 @@ The DD+WU project entails the creation of a digital solution for the Branscheven
 ## Table of Contents
 
 - [DD+WU Project 2024](#ddwu-project-2024)
-  - [Digital Solution Requirements](#digital-solution-requirements)
+- [Digital Solution Requirements](#digital-solution-requirements)
 - [Table of Contents](#table-of-contents)
 - [Prerequisite](#prerequisite)
 - [Mapbox](#mapbox)
