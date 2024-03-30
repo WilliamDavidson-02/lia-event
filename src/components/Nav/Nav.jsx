@@ -1,6 +1,6 @@
 import styles from "./Nav.module.css";
 import X from "../X/X";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import useUserContext from "../../hooks/useUserContext";
 import { Loader2 } from "lucide-react";
@@ -9,6 +9,22 @@ export default function Nav() {
   const { user, signOut } = useUserContext();
   const [isSigningOutLoading, setIsSigningOutLoading] = useState(false);
   const nav = useRef(null);
+
+  useEffect(() => {
+    const handleKeys = ({ key }) => {
+      if (!nav) return;
+
+      if (key === "Escape") {
+        nav.current.classList.remove(styles.toggled);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeys);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeys);
+    };
+  }, []);
 
   const handleNavToggle = () => {
     if (!nav) return;
