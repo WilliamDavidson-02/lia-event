@@ -17,7 +17,6 @@ export default function OnboardingTextArea({
       value={propertyValue}
       onChange={(ev) => handleProperty(ev.target.value)}
       onKeyDown={handleKeyDown}
-      placeholder="Type ..."
     ></textarea>
   );
 }

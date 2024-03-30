@@ -28,7 +28,7 @@
 }
 
 .label input[type="checkbox"]::before {
-  content: url("/public/check.svg");
+  content: url("/check.svg");
   transform: scale(0) translateY(3px);
   transition: 0.15s transform ease-in-out;
   color: var(--yrgo-black);
