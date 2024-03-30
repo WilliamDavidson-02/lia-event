@@ -14,8 +14,8 @@ export default function UserContextProvider({ children }) {
     const { error } = await supabase.auth.signUp(credentials);
 
     if (error) {
-      console.log("Sign up failed", error);
-      return error;
+      console.error("Sign up failed", error);
+      return { error: "Credentials already in use" };
     }
 
     const { error: signInError } = signInWithPassword({
