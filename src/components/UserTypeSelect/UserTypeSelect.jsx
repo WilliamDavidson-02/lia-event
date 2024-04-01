@@ -9,9 +9,9 @@ export default function UserTypeSelect({ disabled, types, setType }) {
 
   return (
     <div className={styles.container}>
-      {types.map((type, i) => (
+      {types.map((type) => (
         <div
-          key={`${type}-${i}`}
+          key={type}
           onClick={() => selectType(type)}
           className={`${styles.select} ${disabled ? styles.disabled : ""}`}
         >
