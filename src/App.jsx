@@ -5,6 +5,7 @@ import Login from "./pages/Login/Login";
 
 const Home = lazy(() => import("./pages/Home/Home"));
 const Onboarding = lazy(() => import("./pages/Onboarding/Onboarding"));
+const Finder = lazy(() => import("./pages/Finder/Finder"));
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/finder" element={<Finder />} />
           </Routes>
         </UserContextProvider>
       </Suspense>

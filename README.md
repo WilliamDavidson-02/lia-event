@@ -1,5 +1,20 @@
 <p align="center" ><img src="https://kladdforforandring.vercel.app/images/yrgo-logga.webp" alt="yrgo" width="300px" /></p>
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [Prerequisite](#prerequisite)
+- [DD+WU Project 2024](#ddwu-project-2024)
+- [Digital Solution Requirements](#digital-solution-requirements)
+- [Mapbox](#mapbox)
+- [Supabase](#supabase)
+- [Installation](#installation)
+
+## Prerequisite
+
+- Mapbox account
+- Supabase account
+
 ## DD+WU Project 2024
 
 This project is aimed at fostering connections between industry professionals and students studying Web Development and Digital Design at Yrgo. The event scheduled for Wednesday, April 24th, from 15:00 to 17:00, serves as a networking opportunity for students seeking future internship opportunities. Attendees will have the chance to interact with Web Developers and Digital Designers from Yrgo.
@@ -15,21 +30,6 @@ The DD+WU project entails the creation of a digital solution for the Branscheven
 - Visual design aligned with Yrgo's branding
 - GDPR-compliant data handling and privacy measures
 - Additional features such as interactive elements or personalization options are encouraged
-
-## Table of Contents
-
-- [DD+WU Project 2024](#ddwu-project-2024)
-- [Digital Solution Requirements](#digital-solution-requirements)
-- [Table of Contents](#table-of-contents)
-- [Prerequisite](#prerequisite)
-- [Mapbox](#mapbox)
-- [Supabase](#supabase)
-- [Installation](#installation)
-
-## Prerequisite
-
-- Mapbox account
-- Supabase account
 
 ## Mapbox
 

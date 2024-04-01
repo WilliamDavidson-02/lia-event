@@ -52,6 +52,11 @@ export default function Nav() {
           <Link onClick={handleNavToggle} to={"/"}>
             Home
           </Link>
+          {user && (
+            <Link onClick={handleNavToggle} to={"/finder"}>
+              Finder
+            </Link>
+          )}
           <Link onClick={handleNavToggle} to={"https://www.yrgo.se/"}>
             Yrgo.se
           </Link>
