@@ -106,7 +106,7 @@ export default function Finder() {
     });
 
     return () => {
-      container.current.childNodes.forEach((child) => {
+      container.current?.childNodes.forEach((child) => {
         observer.unobserve(child);
       });
     };
