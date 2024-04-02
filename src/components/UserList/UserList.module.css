@@ -36,31 +36,3 @@
     border-radius: 100vmax;
   }
 }
-
-.card {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-md);
-  transition: opacity 0.3s ease-in;
-  opacity: 1;
-}
-
-.fade {
-  transition: opacity 0.3s ease-in;
-  opacity: 0;
-}
-
-.title {
-  color: var(--yrgo-black);
-  font-size: 1.25rem;
-  font-weight: 600;
-  line-height: 1.5rem;
-  text-transform: capitalize;
-}
-
-.paragraph {
-  color: var(--yrgo-black);
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5rem;
-}

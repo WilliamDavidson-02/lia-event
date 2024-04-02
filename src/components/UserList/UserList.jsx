@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import styles from "./UserList.module.css";
-import Image from "../Image/Image";
+import stylesCard from "../UserCard/UserCard.module.css";
+import UserCard from "../UserCard/UserCard";
+import MatchRating from "../MatchRating/MatchRating";
 
 export default function UserList({ users }) {
   const container = useRef(null);
@@ -8,20 +10,15 @@ export default function UserList({ users }) {
   useEffect(() => {
     if (!container.current) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.remove(styles.fade);
-          } else {
-            entry.target.classList.add(styles.fade);
-          }
-        });
-      },
-      {
-        threshold: 0.1,
-      }
-    );
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.remove(stylesCard.fade);
+        } else {
+          entry.target.classList.add(stylesCard.fade);
+        }
+      });
+    });
 
     container.current.childNodes.forEach((child) => {
       observer.observe(child);
@@ -32,22 +29,19 @@ export default function UserList({ users }) {
         observer.unobserve(child);
       });
     };
-  }, [container.current]);
+  }, [container]);
 
   return (
     <section ref={container} className={styles.content}>
-      {users.map((user, i) => (
-        <div className={styles.card} key={i}>
-          <Image
-            src={user.avatar || ""}
-            style={{ aspectRatio: 16 / 9, borderRadius: "0.5rem" }}
-          />
-          <div>
-            <div className={styles.title}>{user.profile.name}</div>
-            <div className={styles.paragraph}>{user.area.join(" ")}</div>
-          </div>
-        </div>
-      ))}
+      {users ? (
+        users.map((user) => (
+          <UserCard user={user} key={user.id}>
+            <MatchRating />
+          </UserCard>
+        ))
+      ) : (
+        <div>Loading</div>
+      )}
     </section>
   );
 }

@@ -1,9 +1,8 @@
-import React, { useState } from "react";
 import styles from "./BusinessCard.module.css";
 import { UserRoundCog } from "lucide-react";
 import { Heart } from "lucide-react";
 
-export default function BusinessCard({ name, url, profileImg }) {
+export default function BusinessCard({ name, url }) {
   return (
     <div className={styles.container}>
       <div className={styles.images}>

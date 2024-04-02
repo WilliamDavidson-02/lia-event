@@ -26,8 +26,6 @@ export default function Finder() {
       return;
     }
 
-    console.table(data);
-
     setUsers(data);
   };
 
