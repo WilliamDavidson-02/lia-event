@@ -1,0 +1,5 @@
+.container {
+  background-color: var(--yrgo-grey);
+  border-radius: 1rem;
+  padding: var(--p-md);
+}
