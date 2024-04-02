@@ -3,12 +3,13 @@ import styles from "./UserList.module.css";
 import stylesCard from "../UserCard/UserCard.module.css";
 import UserCard from "../UserCard/UserCard";
 import MatchRating from "../MatchRating/MatchRating";
+import Skeleton from "../Skeleton/Skeleton";
 
 export default function UserList({ users }) {
   const container = useRef(null);
 
   useEffect(() => {
-    if (!container.current) return;
+    if (!container.current || !users.length) return;
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -29,19 +30,23 @@ export default function UserList({ users }) {
         observer.unobserve(child);
       });
     };
-  }, [container]);
+  }, [container, users]);
+
+  if (!users.length) {
+    return (
+      <div className={styles.skeleton}>
+        <Skeleton style={{ width: "100%", height: "100%" }} />
+      </div>
+    );
+  }
 
   return (
     <section ref={container} className={styles.content}>
-      {users ? (
-        users.map((user) => (
-          <UserCard user={user} key={user.id}>
-            <MatchRating />
-          </UserCard>
-        ))
-      ) : (
-        <div>Loading</div>
-      )}
+      {users.map((user) => (
+        <UserCard user={user} key={user.id}>
+          <MatchRating />
+        </UserCard>
+      ))}
     </section>
   );
 }

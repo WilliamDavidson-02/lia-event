@@ -1,7 +1,6 @@
 .card {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   gap: var(--gap-md);
 
   padding: var(--p-md);

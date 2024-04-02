@@ -3,6 +3,7 @@
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: var(--gap-md);
   flex-grow: 1;
+  flex-basis: 0;
   padding-right: var(--p-sm);
 
   overflow-y: auto;
@@ -35,4 +36,17 @@
     background: var(--yrgo-grey-300);
     border-radius: 100vmax;
   }
+}
+
+.skeleton {
+  position: relative;
+  z-index: 2;
+  border-radius: var(--rounded-xl);
+  overflow: hidden;
+
+  flex-grow: 1;
+
+  max-height: 200px;
+  min-width: 350px;
+  max-width: 390px;
 }

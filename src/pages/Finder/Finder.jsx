@@ -26,7 +26,7 @@ export default function Finder() {
       return;
     }
 
-    setUsers(data);
+    setTimeout(() => setUsers(data), 2000);
   };
 
   return (
