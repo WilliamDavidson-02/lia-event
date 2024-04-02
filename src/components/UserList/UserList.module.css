@@ -3,6 +3,7 @@
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: var(--gap-md);
   flex-grow: 1;
+  flex-basis: 0;
   padding-right: var(--p-sm);
 
   overflow-y: auto;
@@ -37,30 +38,15 @@
   }
 }
 
-.card {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-md);
-  transition: opacity 0.3s ease-in;
-  opacity: 1;
-}
+.skeleton {
+  position: relative;
+  z-index: 2;
+  border-radius: var(--rounded-xl);
+  overflow: hidden;
 
-.fade {
-  transition: opacity 0.3s ease-in;
-  opacity: 0;
-}
+  flex-grow: 1;
 
-.title {
-  color: var(--yrgo-black);
-  font-size: 1.25rem;
-  font-weight: 600;
-  line-height: 1.5rem;
-  text-transform: capitalize;
-}
-
-.paragraph {
-  color: var(--yrgo-black);
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5rem;
+  max-height: 200px;
+  min-width: 350px;
+  max-width: 390px;
 }

@@ -26,9 +26,7 @@ export default function Finder() {
       return;
     }
 
-    console.table(data);
-
-    setUsers(data);
+    setTimeout(() => setUsers(data), 2000);
   };
 
   return (
