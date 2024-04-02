@@ -108,6 +108,7 @@
 }
 
 .login:hover svg path {
+  transition: 0.2s;
   fill: var(--yrgo-white);
 }
 

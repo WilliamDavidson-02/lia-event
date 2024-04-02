@@ -1,10 +1,11 @@
-import React from "react";
 import styles from "./Button.module.css";
+import { Loader2 } from "lucide-react";
 
 export default function Button({
   children,
   variant = "primary",
   square = false,
+  isLoading = false,
   ...props
 }) {
   return (
@@ -14,7 +15,7 @@ export default function Button({
         square ? styles.square : ""
       }`}
     >
-      {children}
+      {isLoading ? <Loader2 className="loader" /> : children}
     </button>
   );
 }

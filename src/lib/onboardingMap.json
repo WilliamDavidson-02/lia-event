@@ -1,106 +1,118 @@
 {
-  "copmpany": [
+  "company": [
+    {
+      "type": "text",
+      "property": "email",
+      "defaultValue": "",
+      "question": "Email",
+      "required": true
+    },
+    {
+      "type": "password",
+      "property": "password",
+      "defaultValue": "",
+      "question": "Password",
+      "required": true
+    },
     {
       "type": "text",
       "property": "name",
-      "question": "What's yout company name?",
+      "defaultValue": "",
+      "question": "Campany name",
       "required": true
     },
     {
       "type": "check",
       "property": "area",
-      "question": "Select the main focus of your company",
+      "defaultValue": [],
+      "question": "Area of work",
       "required": true,
-      "options": ["Development", "Design"]
+      "options": [
+        { "title": "Web Development", "value": "developer" },
+        { "title": "Digital design", "value": "design" }
+      ]
     },
     {
       "type": "link",
       "property": "href",
+      "defaultValue": "",
       "question": "Link your website",
       "required": false
     },
     {
-      "type": "check",
-      "property": "workStyle",
-      "question": "Select the primary working style of your company",
-      "required": false,
-      "options": ["Hybrid", "Remote", "On site"]
-    },
-    {
       "type": "map",
       "property": "location",
-      "question": "specify the primary location of your company",
+      "defaultValue": [],
+      "question": "Location",
       "required": false
     },
     {
       "type": "radio",
       "property": "employees",
-      "question": "Select the approximate number of employees in your company",
+      "defaultValue": "",
+      "question": "Employees",
       "required": false,
-      "options": ["1 - 10", "10 - 50", "50 - 100", "100 - 500", "500+"]
-    },
-    {
-      "type": "radio",
-      "property": "companyType",
-      "question": "Specify the type of your organization",
-      "required": false,
-      "options": ["Agency", "Product Owner"]
+      "options": [
+        { "title": "1 to 10", "value": "1 to 10" },
+        { "title": "11 to 50", "value": "11 to 50" },
+        { "title": "51 to 100", "value": "51 to 100" },
+        { "title": "101 to 500", "value": "101 to 500" },
+        { "title": "500+", "value": "500+" }
+      ]
     },
     {
       "type": "chip",
       "property": "keywords",
-      "question": "Select keywords that best describe your company",
-      "required": false
-    },
-    {
-      "type": "text",
-      "property": "description",
-      "question": "Provide a brief description of your company",
+      "defaultValue": [],
+      "question": "Keywords",
       "required": false
     }
   ],
   "student": [
     {
       "type": "text",
+      "property": "email",
+      "defaultValue": "",
+      "question": "Email",
+      "required": true
+    },
+    {
+      "type": "password",
+      "property": "password",
+      "defaultValue": "",
+      "question": "Password",
+      "required": true
+    },
+    {
+      "type": "text",
       "property": "name",
+      "defaultValue": "",
       "question": "What's your name?",
       "required": true
     },
     {
-      "type": "link",
-      "property": "href",
-      "question": "Provide portfolio, SoMe, Figma ...",
-      "required": false
+      "type": "radio",
+      "property": "area",
+      "defaultValue": "",
+      "question": "What are you studying",
+      "required": true,
+      "options": [
+        { "title": "Web Development", "value": "developer" },
+        { "title": "Digital design", "value": "design" }
+      ]
     },
     {
-      "type": "radio",
-      "property": "program",
-      "question": "What are you currently studying",
-      "required": true,
-      "options": ["Web Development", "Digital design"]
+      "type": "link",
+      "property": "href",
+      "defaultValue": "",
+      "question": "Link your work",
+      "required": false
     },
     {
       "type": "chip",
       "property": "keywords",
-      "question": "Select keywords that best describe your interest",
-      "required": false
-    },
-    {
-      "type": "map",
-      "property": "location",
-      "question": "Specify the primary location of your school",
-      "required": false
-    },
-    {
-      "type": "text",
-      "property": "educations",
-      "question": "Provide any additional educations",
-      "required": false
-    },
-    {
-      "type": "text",
-      "property": "description",
-      "question": "Provide a brief description of your self",
+      "defaultValue": [],
+      "question": "Keywords",
       "required": false
     }
   ]

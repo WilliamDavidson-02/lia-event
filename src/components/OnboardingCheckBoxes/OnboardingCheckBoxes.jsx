@@ -1,26 +1,35 @@
-import { useState } from "react";
 import styles from "./OnboardingCheckBoxes.module.css";
 
-export default function OnboardingCheckBoxes({ options }) {
-  const [selectedChecks, setSelectedChecks] = useState([]);
-
+export default function OnboardingCheckBoxes({
+  handleProperty,
+  options,
+  checkedValues,
+}) {
   const checkHandler = (event) => {
-    let selection = selectedChecks;
-    if (selectedChecks.includes(event.target.value)) {
-      selection = selection.filter((selectedCheck) => selectedCheck !== event.target.value);
+    let selections = checkedValues;
+
+    if (selections.includes(event.target.value)) {
+      selections = selections.filter(
+        (selectedCheck) => selectedCheck !== event.target.value
+      );
     } else {
-      selection.push(event.target.value);
+      selections.push(event.target.value);
     }
 
-    setSelectedChecks(selection);
-    //console.log(selection);
+    handleProperty(selections);
   };
   return (
     <div className={styles.checkboxContainer}>
       {options.map((option) => (
-        <label key={option}>
-          <input className="checkbox" type="checkbox" value={option} onClick={checkHandler} />
-          <p>{option}</p>
+        <label className={styles.label} key={option.value}>
+          <input
+            className="checkbox"
+            type="checkbox"
+            value={option.value}
+            checked={checkedValues.includes(option.value)}
+            onChange={checkHandler}
+          />
+          <p>{option.title}</p>
         </label>
       ))}
     </div>
