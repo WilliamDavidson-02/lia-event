@@ -9,9 +9,10 @@ export default function BusinessCard({ name, url, profileImg }) {
       <div className={styles.images}>
         {/* profileImg here */}
         <div className={styles.placeholderCircle}></div>
-        {/* roundCog on logged in as business, heart as student */}
-        <UserRoundCog style={{ display: "block" }} />
-        <Heart style={{ display: "none" }} />
+        {/* roundCog on logged in as business, heart as student 
+        Cog should redirect to "edit profile" while Heart adds current company to students favourites list*/}
+        <UserRoundCog style={{ display: "none" }} />
+        <Heart style={{ display: "block" }} />
       </div>
       <h3>{name}</h3>
       <a href={url} target="_blank" className={styles.readMore}>
