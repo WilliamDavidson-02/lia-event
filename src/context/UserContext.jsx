@@ -15,7 +15,7 @@ export default function UserContextProvider({ children }) {
 
     if (error) {
       console.error("Sign up failed", error);
-      return { error: "Credentials already in use" };
+      return { error: "Sign up failed" };
     }
 
     const { error: signInError } = signInWithPassword({
@@ -78,7 +78,7 @@ export default function UserContextProvider({ children }) {
     const { data, error } = await supabase.auth.getUser();
 
     if (error) {
-      console.log("Error fetching user data.");
+      console.error("Error fetching user data.", error);
       return;
     }
 

@@ -1,127 +1,41 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Finder.module.css";
-import stylesUserPreview from "../../components/UserPreview/UserPreview.module.css";
 import Nav from "../../components/Nav/Nav";
-import UserPreview from "../../components/UserPreview/UserPreview";
-
-const data = [
-  {
-    id: "2d9490b1-cf1f-47d6-ac5a-cade59d565be",
-    name: "Polestar",
-    avatar: "",
-    area: ["developer", "design"],
-  },
-  {
-    id: "b0515032-15ee-4099-8a56-53fe15b4ed06",
-    name: "Grebban",
-    avatar: "",
-    area: ["developer", "design"],
-  },
-  {
-    id: "77ad1b42-44fa-483e-abdb-3984583c6d4b",
-    name: "Webminde",
-    avatar: "",
-    area: ["developer"],
-  },
-  {
-    id: "47e98b03-f6c9-4ea6-8d4f-23cd091e445f",
-    name: "Fully",
-    avatar: "",
-    area: ["developer", "design"],
-  },
-  {
-    id: "2d9490b1-cf1f-47d6-ac5a-cade59d565be",
-    name: "Polestar",
-    avatar: "",
-    area: ["developer", "design"],
-  },
-  {
-    id: "b0515032-15ee-4099-8a56-53fe15b4ed06",
-    name: "Grebban",
-    avatar: "",
-    area: ["developer", "design"],
-  },
-  {
-    id: "77ad1b42-44fa-483e-abdb-3984583c6d4b",
-    name: "Webminde",
-    avatar: "",
-    area: ["developer"],
-  },
-  {
-    id: "47e98b03-f6c9-4ea6-8d4f-23cd091e445f",
-    name: "Fully",
-    avatar: "",
-    area: ["developer", "design"],
-  },
-  {
-    id: "2d9490b1-cf1f-47d6-ac5a-cade59d565be",
-    name: "Polestar",
-    avatar: "",
-    area: ["developer", "design"],
-  },
-  {
-    id: "b0515032-15ee-4099-8a56-53fe15b4ed06",
-    name: "Grebban",
-    avatar: "",
-    area: ["developer", "design"],
-  },
-  {
-    id: "77ad1b42-44fa-483e-abdb-3984583c6d4b",
-    name: "Webminde",
-    avatar: "",
-    area: ["developer"],
-  },
-  {
-    id: "47e98b03-f6c9-4ea6-8d4f-23cd091e445f",
-    name: "Fully",
-    avatar: "",
-    area: ["developer", "design"],
-  },
-];
+import UserList from "../../components/UserList/UserList";
+import supabase from "../../config/supabaseConfig";
+import useUserContext from "../../hooks/useUserContext";
 
 export default function Finder() {
-  const [users, setUsers] = useState(data);
-  const container = useRef(null);
+  const [users, setUsers] = useState([]);
+  const { user } = useUserContext();
 
   useEffect(() => {
-    if (!container.current) return;
+    getUsers();
+  }, [user]);
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.remove(stylesUserPreview.fade);
-          } else {
-            entry.target.classList.add(stylesUserPreview.fade);
-          }
-        });
-      },
-      {
-        threshold: 0.1,
-      }
-    );
+  const getUsers = async () => {
+    if (!user) return;
 
-    container.current.childNodes.forEach((child) => {
-      observer.observe(child);
-    });
+    const { data, error } = await supabase
+      .from("company_profile")
+      .select("*, profile(*)")
+      .range(0, 9);
 
-    return () => {
-      container.current?.childNodes.forEach((child) => {
-        observer.unobserve(child);
-      });
-    };
-  }, [container.current]);
+    if (error) {
+      console.error("Error getting users", error);
+      return;
+    }
+
+    console.table(data);
+
+    setUsers(data);
+  };
 
   return (
     <main className={styles.container}>
       <Nav />
       <div>Filter</div>
-      <section ref={container} className={styles.content}>
-        {users.map((user, i) => (
-          <UserPreview user={user} key={i} />
-        ))}
-        <div>Pagination</div>
-      </section>
+      <UserList users={users} />
     </main>
   );
 }
