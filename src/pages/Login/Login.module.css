@@ -21,12 +21,6 @@
   gap: var(--gap-md);
 }
 
-.providers {
-  display: flex;
-  justify-content: center;
-  gap: var(--gap-md);
-}
-
 .form-field {
   display: flex;
   flex-direction: column;
