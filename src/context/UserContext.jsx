@@ -14,7 +14,7 @@ export default function UserContextProvider({ children }) {
     const { error } = await supabase.auth.signUp(credentials);
 
     if (error) {
-      console.error("Sign up failed", error);
+      console.error(error);
       return { error: "Sign up failed" };
     }
 
