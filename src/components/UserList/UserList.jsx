@@ -1,11 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./UserList.module.css";
 import stylesCard from "../UserCard/UserCard.module.css";
 import UserCard from "../UserCard/UserCard";
 import MatchRating from "../MatchRating/MatchRating";
 import Skeleton from "../Skeleton/Skeleton";
 
-export default function UserList({ users }) {
+export default function UserList({ users, handleOffset }) {
   const container = useRef(null);
 
   useEffect(() => {
@@ -32,6 +32,13 @@ export default function UserList({ users }) {
     };
   }, [container, users]);
 
+  const handleScroll = (ev) => {
+    const { scrollTop, scrollHeight, clientHeight } = ev.target;
+    const isScrollInRange = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+
+    if (isScrollInRange) handleOffset();
+  };
+
   if (!users.length) {
     return (
       <div className={styles.skeleton}>
@@ -41,7 +48,7 @@ export default function UserList({ users }) {
   }
 
   return (
-    <section ref={container} className={styles.content}>
+    <section onScroll={handleScroll} ref={container} className={styles.content}>
       {users.map((user) => (
         <UserCard user={user} key={user.id}>
           <MatchRating />
