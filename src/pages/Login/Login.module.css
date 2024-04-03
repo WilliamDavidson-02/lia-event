@@ -1,27 +1,57 @@
 .container {
   display: flex;
-  flex-direction: column;
-  font-family: "Inter", sans-serif;
-  padding: var(--p-md);
-}
-
-.login {
-  display: flex;
-  flex-direction: column;
-  border-radius: var(--rounded-xl);
-  margin: var(--m-md);
-  padding: var(--p-md);
-  background: #d9d9d9;
-  gap: var(--gap-sm);
+  justify-content: center;
+  align-items: center;
+  padding: 2.25rem 1.25rem;
+  height: 100vh;
 }
 
 .form {
+  background: var(--yrgo-white);
+  padding: var(--p-3xl) var(--p-lg);
+  border-radius: var(--rounded-md);
+  width: 100%;
+  max-width: 500px;
+}
+
+.title {
+  font-size: 2.125rem;
+  font-weight: 700;
+  line-height: normal;
+  color: var(--yrgo-black-300);
+  margin-bottom: var(--m-xl);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+  width: 100%;
+}
+
+.content {
   display: flex;
   flex-direction: column;
   gap: var(--gap-md);
 }
 
-.form-field {
+.submit-content {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--gap-sm);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+}
+
+.paragraph {
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: normal;
+  text-align: center;
+}
+
+.paragraph a {
+  text-decoration: underline;
 }
