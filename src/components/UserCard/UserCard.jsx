@@ -1,14 +1,47 @@
 import styles from "./UserCard.module.css";
 import Image from "../Image/Image";
-import { Heart } from "lucide-react";
+import { Bookmark } from "lucide-react";
+import useUserContext from "../../hooks/useUserContext";
+import supabase from "../../config/supabaseConfig";
 
-export default function UserCard({ user, children, ...props }) {
+export default function UserCard({ setLike, company, children, ...props }) {
+  const { user } = useUserContext();
+
+  const handleLike = async () => {
+    // Toggle like for company
+    setLike(company.id);
+
+    if (!company.isLiked) {
+      const { error } = await supabase
+        .from("student_like_company")
+        .insert({ student_id: user.id, company_id: company.id });
+
+      if (error) {
+        console.log("Error handling like", error);
+      }
+    } else {
+      const { error } = await supabase
+        .from("student_like_company")
+        .delete()
+        .eq("company_id", company.id)
+        .eq("student_id", user.id);
+
+      if (error) {
+        console.log("Error handling like", error);
+      }
+    }
+  };
+
   return (
     <div {...props} className={styles.card}>
-      <Heart style={{ marginLeft: "auto" }} />
+      <Bookmark
+        onClick={handleLike}
+        className={company.isLiked ? styles.liked : ""}
+        style={{ marginLeft: "auto" }}
+      />
       <div className={styles.content}>
         <Image
-          src={user.avatar}
+          src={company.avatar}
           style={{
             aspectRatio: 1 / 1,
             width: "5.3rem",
@@ -17,8 +50,8 @@ export default function UserCard({ user, children, ...props }) {
           }}
         />
         <div>
-          <div className={styles.title}>{user.profile.name}</div>
-          <div className={styles.paragraph}>{user.href}</div>
+          <div className={styles.title}>{company.profile.name}</div>
+          <div className={styles.paragraph}>{company.href}</div>
         </div>
       </div>
       {children}

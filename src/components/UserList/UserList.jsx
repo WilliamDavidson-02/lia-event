@@ -5,7 +5,7 @@ import UserCard from "../UserCard/UserCard";
 import MatchRating from "../MatchRating/MatchRating";
 import Skeleton from "../Skeleton/Skeleton";
 
-export default function UserList({ users, handleOffset }) {
+export default function UserList({ companies, handleOffset, setCompanies }) {
   const container = useRef(null);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function UserList({ users, handleOffset }) {
         observer.unobserve(child);
       });
     };
-  }, [container, users]);
+  }, [container]);
 
   const handleScroll = (ev) => {
     const { scrollTop, scrollHeight, clientHeight } = ev.target;
@@ -39,7 +39,7 @@ export default function UserList({ users, handleOffset }) {
     if (isScrollInRange) handleOffset();
   };
 
-  if (!users.length) {
+  if (!companies.length) {
     return (
       <div className={styles.skeleton}>
         <Skeleton style={{ width: "100%", height: "100%" }} />
@@ -47,10 +47,25 @@ export default function UserList({ users, handleOffset }) {
     );
   }
 
+  const setLike = (id) => {
+    setCompanies((prev) => {
+      return prev.map((c) => {
+        if (c.id === id) {
+          return {
+            ...c,
+            isLiked: !c.isLiked,
+          };
+        }
+
+        return c;
+      });
+    });
+  };
+
   return (
     <section onScroll={handleScroll} ref={container} className={styles.content}>
-      {users.map((user) => (
-        <UserCard user={user} key={user.id}>
+      {companies.map((company) => (
+        <UserCard setLike={setLike} company={company} key={company.id}>
           <MatchRating />
         </UserCard>
       ))}
