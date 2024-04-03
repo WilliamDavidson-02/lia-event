@@ -8,7 +8,7 @@ export default function ChipsGrid({
   isEdit = false,
   chipValues,
   handleProperty,
-  selectedChips,
+  selectedChips = [],
 }) {
   const containerRef = useRef(null);
 

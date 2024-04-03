@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import styles from "./Login.module.css";
 import Input from "../../components/Input/Input.jsx";
 import Label from "../../components/Label/Label.jsx";
@@ -9,6 +9,7 @@ import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import useWindowSize from "../../hooks/useWindowSize.jsx";
 import useUserContext from "../../hooks/useUserContext.jsx";
+import { validateEmail, validateLength } from "../../lib/validations.js";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -19,6 +20,14 @@ export default function Login() {
   const navigate = useNavigate();
 
   const { signInWithProvider, signInWithPassword } = useUserContext();
+
+  const isEmailValid = useMemo(() => validateEmail(email), [email]);
+  const isPasswordValid = useMemo(
+    () => validateLength(password, 8),
+    [password]
+  );
+
+  const isValid = isEmailValid && isPasswordValid;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -160,6 +169,7 @@ export default function Login() {
           </div>
           <OnboardingFooter>
             <Button
+              disabled={isLoading || !isValid}
               isLoading={isLoading}
               square
               type="submit"

@@ -14,8 +14,8 @@ export default function UserContextProvider({ children }) {
     const { error } = await supabase.auth.signUp(credentials);
 
     if (error) {
-      console.log("Sign up failed", error);
-      return error;
+      console.error("Sign up failed", error);
+      return { error: "Sign up failed" };
     }
 
     const { error: signInError } = signInWithPassword({
@@ -78,7 +78,7 @@ export default function UserContextProvider({ children }) {
     const { data, error } = await supabase.auth.getUser();
 
     if (error) {
-      console.log("Error fetching user data.");
+      console.error("Error fetching user data.", error);
       return;
     }
 

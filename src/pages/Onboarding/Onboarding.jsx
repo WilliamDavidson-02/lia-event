@@ -16,6 +16,12 @@ import Input from "../../components/Input/Input";
 import keywords from "../../lib/keywords.json";
 import useUserContext from "../../hooks/useUserContext";
 import { useNavigate } from "react-router-dom";
+import {
+  validateEmail,
+  validateLength,
+  validateOption,
+  validateUrl,
+} from "../../lib/validations";
 
 export default function Onboarding() {
   const [onboarding, setOnboarding] = useState({});
@@ -24,10 +30,53 @@ export default function Onboarding() {
   const [isGdprConfirmed, setIsGdprConfirmed] = useState(false);
   const [userType, setUserType] = useState(null);
   const [isLoading, setIsloading] = useState(false);
+  const [isValid, setIsValid] = useState(false);
 
   const { signUp } = useUserContext();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!currentField) return;
+
+    const property = currentField.property;
+    const field = onboarding[property];
+
+    if (property === "email") {
+      setIsValid(validateEmail(field));
+    }
+
+    if (property === "password") {
+      setIsValid(validateLength(field, 8));
+    }
+
+    if (property === "name") {
+      setIsValid(validateLength(field, 2, 75));
+    }
+
+    if (["area", "employees"].includes(property)) {
+      let value = field;
+      if (typeof value === "string") value = [value];
+
+      setIsValid(validateOption(value, currentField.options));
+    }
+
+    if (property === "href") {
+      setIsValid(validateUrl(field));
+    }
+
+    if (property === "keywords") {
+      setIsValid(validateLength(field, 1));
+    }
+
+    if (property === "location") {
+      setIsValid(field.length === 2);
+    }
+  }, [onboarding, currentField]);
+
+  useEffect(() => {
+    if (isGdprConfirmed && userType) nextField(currentFieldIndex);
+  }, [userType]);
 
   const setOnboardingValues = (value) => {
     const property = currentField.property;
@@ -38,14 +87,19 @@ export default function Onboarding() {
     }));
   };
 
-  const handleSubmit = async (ev) => {
+  const handleSubmit = async (ev, isSkipped) => {
     ev.preventDefault();
 
-    if (currentFieldIndex !== onboardingMap[userType].length - 1) {
+    if (!isValid && !isSkipped) return;
+
+    if (currentFieldIndex < onboardingMap[userType].length - 1) {
       // There are still more questions
       const nextIndex = currentFieldIndex + 1;
+
       nextField(nextIndex);
+
       setCurrentFieldIndex(nextIndex);
+      setIsValid(false);
     } else {
       // All questions answered
       setIsloading(true);
@@ -54,11 +108,11 @@ export default function Onboarding() {
 
       // Default credentials
       let credentials = {
-        email,
+        email: email.toLowerCase().trim(),
         password,
         options: {
           data: {
-            name,
+            name: name.trim(),
             area,
             userType,
           },
@@ -78,22 +132,18 @@ export default function Onboarding() {
         credentials.options.data.contact = email;
       }
 
-      const { error } = signUp(credentials);
+      const { error } = await signUp(credentials);
+
+      setIsloading(false);
 
       if (error) {
         console.log(error);
-        setIsloading(false);
         return;
       }
 
-      setIsloading(false);
       navigate("/");
     }
   };
-
-  useEffect(() => {
-    if (isGdprConfirmed && userType) nextField(currentFieldIndex);
-  }, [userType]);
 
   const nextField = (index) => {
     const current = onboardingMap[userType][index];
@@ -115,7 +165,7 @@ export default function Onboarding() {
 
     setOnboarding(onboardinObj);
 
-    handleSubmit(new Event("submit"));
+    handleSubmit(new Event("submit"), true);
   };
 
   const getKeywords = (area) => {
@@ -184,6 +234,9 @@ export default function Onboarding() {
               handleSubmit={handleSubmit}
               handleProperty={setOnboardingValues}
               propertyValue={onboarding[currentField.property]}
+              placeholder={
+                currentField.type === "link" ? "https://name.com" : "Type ..."
+              }
             />
           )}
           {currentField.type === "password" && (
@@ -220,7 +273,7 @@ export default function Onboarding() {
               </Button>
             )}
             <Button
-              disabled={isLoading}
+              disabled={isLoading || !isValid}
               isLoading={isLoading}
               square
               type="submit"
