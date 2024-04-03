@@ -1,7 +1,23 @@
 .default {
-  padding: var(--p-sm);
-  border-radius: 100vmax;
-  border: 1px solid var(--yrgo-black);
+  padding: 0.91rem var(--p-sm);
+  border-radius: var(--rounded-sm);
+  border: 1px solid var(--yrgo-grey-300);
+  background: var(--yrgo-grey-100);
+
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: normal;
+  color: var(--yrgo-black);
+
+  outline-offset: 2px;
+}
+
+.default:focus {
+  outline: 2px solid var(--yrgo-dark-blue);
+}
+
+.default::placeholder {
+  color: var(--yrgo-grey-300);
 }
 
 .lg-transparent {

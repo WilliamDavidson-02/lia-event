@@ -2,11 +2,9 @@ import { useMemo, useState } from "react";
 import styles from "./Login.module.css";
 import Input from "../../components/Input/Input.jsx";
 import Label from "../../components/Label/Label.jsx";
-import Nav from "../../components/Nav/Nav.jsx";
 import Button from "../../components/Button/Button";
-import OnboardingFooter from "../../components/OnboardingFooter/OnboardingFooter";
-import { ArrowRight } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import useUserContext from "../../hooks/useUserContext.jsx";
 import { validateEmail, validateLength } from "../../lib/validations.js";
 
@@ -36,52 +34,59 @@ export default function Login() {
 
     const { error } = await signInWithPassword({ email, password });
 
-    if (error) return;
+    setIsLoading(false);
+
+    if (error) {
+      console.error("error login", error);
+      return;
+    }
 
     navigate("/");
   };
 
   return (
     <main className={styles.container}>
-      <Nav />
-      <h1>Login</h1>
-      <section className={styles.login}>
-        <form className={styles.form} onSubmit={handleSubmit}>
-          <div className={styles["form-field"]}>
-            <Label htmlFor="email">Email</Label>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <h1 className={styles.title}>Log in</h1>
+        <div className={styles.content}>
+          <div className={styles.field}>
+            <Label htmlFor={"email"}>Email</Label>
             <Input
-              type={"email"}
-              id="email"
-              placeholder={"your@email.se"}
-              autoComplete={"email"}
+              type={"text"}
+              placeholder={"name@email.com"}
+              id={"email"}
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(ev) => setEmail(ev.target.value)}
+              autoComplete={"email"}
             />
           </div>
-          <div className={styles["form-field"]}>
-            <Label htmlFor="password">Password</Label>
+          <div className={styles.field}>
+            <Label htmlFor={"password"}>Password</Label>
             <Input
               type={"password"}
-              id="password"
-              placeholder={"Password ..."}
-              autoComplete={"current-password"}
+              placeholder={"iloveyrgo"}
+              id={"password"}
               value={password}
-              onChange={(event) => setPassword(event.target.value)}
+              onChange={(ev) => setPassword(ev.target.value)}
+              autoComplete={"current-password"}
             />
           </div>
-          <OnboardingFooter>
-            <Button
-              disabled={isLoading || !isValid}
-              isLoading={isLoading}
-              square
-              type="submit"
-              style={{ marginBottom: "16px", marginRight: "16px" }}
-            >
-              <ArrowRight size={24} />
-            </Button>
-          </OnboardingFooter>
-        </form>
-      </section>
+          <Button
+            disabled={isLoading || !isValid}
+            isLoading={isLoading}
+            style={{ width: "100%" }}
+            variant="blue"
+          >
+            <div className={styles["submit-content"]}>
+              <span>Login in</span>
+              <ArrowUpRight size={24} />
+            </div>
+          </Button>
+          <p className={styles.paragraph}>
+            Don't have an account? <Link to="/onboarding">Sign up</Link>
+          </p>
+        </div>
+      </form>
     </main>
   );
 }
