@@ -13,7 +13,7 @@
 }
 
 .default:focus {
-  outline: 2px solid var(--yrgo-dark-blue);
+  outline: 2px solid var(--yrgo-black);
 }
 
 .default::placeholder {
@@ -41,4 +41,37 @@
 .lg-transparent:focus::placeholder {
   transition: color 0.2s ease-out;
   color: var(--yrgo-black);
+}
+
+.checkbox[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: none;
+  margin: 0;
+
+  outline-offset: 2px;
+  border-radius: var(--rounded-xs);
+  border: 2px solid var(--yrgo-black);
+
+  display: grid;
+  place-content: center;
+
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+}
+
+.checkbox[type="checkbox"]::before {
+  content: url("/check.svg");
+  width: 14px;
+  height: 14px;
+  opacity: 0;
+}
+
+.checkbox[type="checkbox"]:checked::before {
+  opacity: 1;
+}
+
+.checkbox[type="checkbox"]:focus {
+  outline: 2px solid var(--yrgo-black);
 }

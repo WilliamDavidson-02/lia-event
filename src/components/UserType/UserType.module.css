@@ -1,0 +1,10 @@
+.container {
+  display: grid;
+  place-content: center;
+  padding: var(--p-md);
+  border-radius: var(--rounded-md);
+  background: var(--yrgo-grey-100);
+  color: var(--yrgo-black);
+  flex-grow: 1;
+  cursor: pointer;
+}
