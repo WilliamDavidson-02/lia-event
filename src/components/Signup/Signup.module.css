@@ -52,6 +52,22 @@
   text-align: center;
 }
 
-.paragraph a {
+.paragraph a,
+.gdpr a {
   text-decoration: underline;
+}
+
+.gdpr {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 24px 1fr;
+  gap: var(--gap-lg);
+  padding: var(--p-md) var(--p-lg);
+}
+
+.gdpr label {
+  color: var(--yrgo-black);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: normal;
 }

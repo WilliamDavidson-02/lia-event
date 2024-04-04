@@ -59,6 +59,7 @@ button {
 a {
   text-decoration: none;
   color: var(--yrgo-black);
+  outline: none;
 }
 
 .loader {
