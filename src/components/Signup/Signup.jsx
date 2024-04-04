@@ -4,7 +4,7 @@ import styles from "./Signup.module.css";
 import Label from "../Label/Label";
 import Input from "../Input/Input";
 import { Link } from "react-router-dom";
-import { ArrowUpRight, Square, SquareCheck } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import Button from "../Button/Button";
 
 export default function Signup({ credentials, setCredentials, next }) {

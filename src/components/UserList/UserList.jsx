@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import styles from "./UserList.module.css";
 import stylesCard from "../UserCard/UserCard.module.css";
 import UserCard from "../UserCard/UserCard";
@@ -9,7 +9,7 @@ export default function UserList({ companies, handleOffset, setCompanies }) {
   const container = useRef(null);
 
   useEffect(() => {
-    if (!container.current || !users.length) return;
+    if (!container.current) return;
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {

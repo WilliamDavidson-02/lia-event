@@ -5,11 +5,9 @@ import styles from "./Onboarding.module.css";
 import OnboardingTextArea from "../../components/OnboardingTextArea/OnboardingTextArea";
 import OnboardingRadio from "../../components/OnboardingRadio/OnboardingRadio";
 import onboardingMap from "../../lib/onboardingMap.json";
-import ChipsGrid from "../../components/ChipsGrid/ChipsGrid";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import GeoLocation from "../../components/GeoLocation/GeoLocation";
 import OnboardingCheckBoxes from "../../components/OnboardingCheckBoxes/OnboardingCheckBoxes";
-import keywords from "../../lib/keywords.json";
 import useUserContext from "../../hooks/useUserContext";
 import { useNavigate } from "react-router-dom";
 import {
@@ -19,6 +17,7 @@ import {
 } from "../../lib/validations";
 import Signup from "../../components/Signup/Signup";
 import UserType from "../../components/UserType/UserType";
+import EditKeywords from "../../components/EditKeywords/EditKeywords";
 
 export default function Onboarding() {
   const [onboarding, setOnboarding] = useState({});
@@ -165,22 +164,6 @@ export default function Onboarding() {
     setCurrentField(prevField);
   };
 
-  const getKeywords = (area) => {
-    // Student can only select one area/program, Check if area is a string and wrapp it in an array
-    if (typeof area === "string") area = [area];
-
-    let keywordsArray = [];
-
-    // Add selected areas of work keywords
-    area.forEach((item) => {
-      if (keywords[item]) {
-        keywordsArray = [...keywordsArray, ...keywords[item]];
-      }
-    });
-
-    return keywordsArray;
-  };
-
   const handleUserType = (type) => {
     setUserType(type);
     nextField(0, type);
@@ -249,11 +232,10 @@ export default function Onboarding() {
             />
           )}
           {currentField.type === "chip" && (
-            <ChipsGrid
-              isEdit
-              chipValues={getKeywords(onboarding.area)}
+            <EditKeywords
               handleProperty={setOnboardingValues}
-              selectedChips={onboarding[currentField.property]}
+              selected={onboarding[currentField.property]}
+              area={onboarding.area}
             />
           )}
           <div className={styles.footer}>
@@ -272,10 +254,11 @@ export default function Onboarding() {
             <div className={styles.right}>
               {!currentField.required && (
                 <Button
+                  style={{ color: "var(--yrgo-black)" }}
                   disabled={isLoading}
                   onClick={handleSkip}
                   type="button"
-                  variant="secondary"
+                  variant="tertiery"
                 >
                   Skip
                 </Button>
