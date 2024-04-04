@@ -14,7 +14,7 @@ export default function UserContextProvider({ children }) {
     const { error } = await supabase.auth.signUp(credentials);
 
     if (error) {
-      console.error("Sign up failed", error);
+      console.error(error);
       return { error: "Sign up failed" };
     }
 
@@ -37,21 +37,6 @@ export default function UserContextProvider({ children }) {
 
     if (error) {
       console.log("Sign in failed, check credentials", error);
-      return error;
-    }
-
-    setUser(data.user);
-
-    return { error: null };
-  };
-
-  const signInWithProvider = async (provider) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      provider,
-    });
-
-    if (error) {
-      console.log("Sign in with provider failed", error);
       return error;
     }
 
@@ -90,10 +75,8 @@ export default function UserContextProvider({ children }) {
       value={{
         user,
         signInWithPassword,
-        signInWithProvider,
         signOut,
         signUp,
-        getUser,
       }}
     >
       {children}

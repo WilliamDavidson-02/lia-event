@@ -2,20 +2,6 @@
   "company": [
     {
       "type": "text",
-      "property": "email",
-      "defaultValue": "",
-      "question": "Email",
-      "required": true
-    },
-    {
-      "type": "password",
-      "property": "password",
-      "defaultValue": "",
-      "question": "Password",
-      "required": true
-    },
-    {
-      "type": "text",
       "property": "name",
       "defaultValue": "",
       "question": "Campany name",
@@ -69,20 +55,6 @@
     }
   ],
   "student": [
-    {
-      "type": "text",
-      "property": "email",
-      "defaultValue": "",
-      "question": "Email",
-      "required": true
-    },
-    {
-      "type": "password",
-      "property": "password",
-      "defaultValue": "",
-      "question": "Password",
-      "required": true
-    },
     {
       "type": "text",
       "property": "name",
