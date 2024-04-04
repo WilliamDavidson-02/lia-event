@@ -3,7 +3,7 @@ import styles from "./Login.module.css";
 import Input from "../../components/Input/Input.jsx";
 import Label from "../../components/Label/Label.jsx";
 import Button from "../../components/Button/Button";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import useUserContext from "../../hooks/useUserContext.jsx";
 import { validateEmail, validateLength } from "../../lib/validations.js";
@@ -83,7 +83,7 @@ export default function Login() {
             </div>
           </Button>
           <p className={styles.paragraph}>
-            Don't have an account? <Link to="/onboarding">Sign up</Link>
+            Don&apos;t have an account? <Link to="/onboarding">Sign up</Link>
           </p>
         </div>
       </form>
