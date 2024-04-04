@@ -33,3 +33,15 @@
   background: #d9d9d9;
   max-height: calc(100vh - 5rem - 104px);
 }
+
+.footer {
+  display: flex;
+  gap: var(--gap-md);
+  padding: var(--p-md);
+}
+
+.footer .right {
+  display: flex;
+  gap: var(--gap-md);
+  margin-left: auto;
+}
