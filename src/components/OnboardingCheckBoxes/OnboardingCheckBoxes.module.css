@@ -1,39 +1,23 @@
-.checkboxContainer {
+.container {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 
-.label {
+.item {
   display: flex;
-  flex-direction: row;
-  padding: var(--p-md);
-  gap: 15px;
+  align-items: center;
+  gap: var(--gap-lg);
+  padding: var(--p-md) var(--p-lg);
+
+  border: none;
   border-bottom: 1px solid var(--yrgo-white);
 }
 
-.label input[type="checkbox"] {
-  -webkit-appearance: none;
-  appearance: none;
-  background-color: var(--yrgo-grey);
-  margin: 0;
-  font: inherit;
-  color: currentColor;
-  width: 1.15em;
-  height: 1.15em;
-  border: 1px solid currentColor;
-  border-radius: 15%;
-  display: grid;
-  place-content: center;
-}
-
-.label input[type="checkbox"]::before {
-  content: url("/check.svg");
-  transform: scale(0) translateY(3px);
-  transition: 0.15s transform ease-in-out;
+.item label {
+  text-transform: capitalize;
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 2.25rem;
   color: var(--yrgo-black);
-}
-
-.label input[type="checkbox"]:checked::before {
-  transform: scale(0.6) translateY(3px);
 }
