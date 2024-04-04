@@ -6,11 +6,9 @@ import OnboardingTextArea from "../../components/OnboardingTextArea/OnboardingTe
 import OnboardingRadio from "../../components/OnboardingRadio/OnboardingRadio";
 import onboardingMap from "../../lib/onboardingMap.json";
 import ChipsGrid from "../../components/ChipsGrid/ChipsGrid";
-import { ArrowRight } from "lucide-react";
-import OnboardingFooter from "../../components/OnboardingFooter/OnboardingFooter";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import GeoLocation from "../../components/GeoLocation/GeoLocation";
 import OnboardingCheckBoxes from "../../components/OnboardingCheckBoxes/OnboardingCheckBoxes";
-import Input from "../../components/Input/Input";
 import keywords from "../../lib/keywords.json";
 import useUserContext from "../../hooks/useUserContext";
 import { useNavigate } from "react-router-dom";
@@ -41,6 +39,8 @@ export default function Onboarding() {
 
     const property = currentField.property;
     const field = onboarding[property];
+
+    if (!property || !field) return;
 
     if (property === "name") {
       setIsValid(validateLength(field, 2, 75));
@@ -157,6 +157,14 @@ export default function Onboarding() {
     handleSubmit(new Event("submit"), true);
   };
 
+  const handlePrev = (type, index) => {
+    const prevIndex = index - 1;
+    const prevField = onboardingMap[type][prevIndex];
+
+    setCurrentFieldIndex(prevIndex);
+    setCurrentField(prevField);
+  };
+
   const getKeywords = (area) => {
     // Student can only select one area/program, Check if area is a string and wrapp it in an array
     if (typeof area === "string") area = [area];
@@ -240,18 +248,6 @@ export default function Onboarding() {
               }
             />
           )}
-          {currentField.type === "password" && (
-            <Input
-              autoFocus
-              id={currentField.property}
-              variant="lg-transparent"
-              style={{ marginBottom: "auto" }}
-              type="password"
-              placeholder="Type ..."
-              value={onboarding[currentField.property]}
-              onChange={(event) => setOnboardingValues(event.target.value)}
-            />
-          )}
           {currentField.type === "chip" && (
             <ChipsGrid
               isEdit
@@ -260,28 +256,40 @@ export default function Onboarding() {
               selectedChips={onboarding[currentField.property]}
             />
           )}
-          <OnboardingFooter
-            style={{ marginBottom: "16px", marginRight: "16px" }}
-          >
-            {!currentField.required && (
+          <div className={styles.footer}>
+            {currentFieldIndex > 0 && (
               <Button
+                style={{ color: "var(--yrgo-black)" }}
                 disabled={isLoading}
-                onClick={handleSkip}
+                variant="tertiery"
                 type="button"
-                variant="secondary"
+                onClick={() => handlePrev(userType, currentFieldIndex)}
               >
-                Skip
+                <ArrowLeft size={24} />
+                Prev
               </Button>
             )}
-            <Button
-              disabled={isLoading || !isValid}
-              isLoading={isLoading}
-              square
-              type="submit"
-            >
-              <ArrowRight size={24} />
-            </Button>
-          </OnboardingFooter>
+            <div className={styles.right}>
+              {!currentField.required && (
+                <Button
+                  disabled={isLoading}
+                  onClick={handleSkip}
+                  type="button"
+                  variant="secondary"
+                >
+                  Skip
+                </Button>
+              )}
+              <Button
+                disabled={isLoading || !isValid}
+                isLoading={isLoading}
+                square
+                type="submit"
+              >
+                <ArrowRight size={24} />
+              </Button>
+            </div>
+          </div>
         </div>
       </form>
     </div>
