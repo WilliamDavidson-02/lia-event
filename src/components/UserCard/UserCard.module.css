@@ -37,7 +37,7 @@
   line-height: 1.5rem;
 }
 
-.liked {
+.saved {
   fill: var(--yrgo-black);
   stroke: var(--yrgo-black);
 }

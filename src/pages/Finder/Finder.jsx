@@ -7,7 +7,7 @@ import useUserContext from "../../hooks/useUserContext";
 
 export default function Finder() {
   const { user } = useUserContext();
-  const [companies, setCompanies] = useState([]);
+  const [users, setUsers] = useState([]);
   const [offset, setOffset] = useState(0);
   const [isGettingUsers, setIsGettingUsers] = useState(false);
 
@@ -16,34 +16,33 @@ export default function Finder() {
   useEffect(() => {
     if (!user) return;
 
-    getCompanies(offset);
+    getUsers(offset);
   }, [user]);
 
-  const getLikedCompanies = async (companies) => {
-    if (!user) return;
-
+  const getSavedUsers = async (ids) => {
     const { data, error } = await supabase
-      .from("student_like_company")
-      .select("company_id")
-      .in("company_id", companies)
-      .eq("student_id", user.id);
+      .from("saved_users")
+      .select("saved_id")
+      .in("saved_id", ids)
+      .eq("user_id", user.id);
 
     if (error) {
-      console.log("error getting liked companies", error);
+      console.log("error getting saved users", error);
       return [];
     }
 
-    return data.map((c) => c.company_id);
+    return data.map((u) => u.saved_id);
   };
 
-  const getCompanies = async (range) => {
+  const getUsers = async (range) => {
     if (isGettingUsers) return;
 
     setIsGettingUsers(true);
 
     const { data, error } = await supabase
-      .from("company_profile")
-      .select("*, profile(*)")
+      .from("profile")
+      .select("name, avatar, href, id")
+      .neq("user_type", user.user_metadata.user_type)
       .range(range, range + loadLimit);
 
     setIsGettingUsers(false);
@@ -54,30 +53,30 @@ export default function Finder() {
     }
 
     // Filter duplicates
-    const newData = data.filter((d) => !companies.some((p) => p.id === d.id));
+    const newData = data.filter((d) => !users.some((p) => p.id === d.id));
 
-    let newCompanies = [...companies, ...newData];
+    let newUsers = [...users, ...newData];
 
-    const ids = newCompanies.map((c) => c.id);
-    const likedCompanies = await getLikedCompanies(ids);
+    const ids = newUsers.map((u) => u.id);
+    const savedUsers = await getSavedUsers(ids);
 
-    if (likedCompanies.length) {
-      newCompanies = newCompanies.map((c) => {
+    if (savedUsers.length) {
+      newUsers = newUsers.map((u) => {
         return {
-          ...c,
-          isLiked: likedCompanies.includes(c.id),
+          ...u,
+          isSaved: savedUsers.includes(u.id),
         };
       });
     }
 
-    setCompanies(newCompanies);
+    setUsers(newUsers);
   };
 
   const handleOffset = () => {
     setOffset((prev) => {
       const newOffset = prev + loadLimit + 1;
 
-      getCompanies(newOffset);
+      getUsers(newOffset);
 
       return newOffset;
     });
@@ -87,11 +86,7 @@ export default function Finder() {
     <main className={styles.container}>
       <Nav />
       <div>Filter</div>
-      <UserList
-        setCompanies={setCompanies}
-        handleOffset={handleOffset}
-        companies={companies}
-      />
+      <UserList setUsers={setUsers} handleOffset={handleOffset} users={users} />
     </main>
   );
 }
