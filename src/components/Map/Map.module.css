@@ -1,4 +1,4 @@
 .container {
-  border-radius: var(--rounded-xl);
+  border-radius: var(--rounded-sm);
   flex-grow: 1;
 }

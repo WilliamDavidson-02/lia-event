@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
-import X from "../../components/X/X";
-import Button from "../../components/Button/Button";
-import styles from "./Onboarding.module.css";
-import OnboardingTextArea from "../../components/OnboardingTextArea/OnboardingTextArea";
-import OnboardingRadio from "../../components/OnboardingRadio/OnboardingRadio";
-import onboardingMap from "../../lib/onboardingMap.json";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import GeoLocation from "../../components/GeoLocation/GeoLocation";
-import OnboardingCheckBoxes from "../../components/OnboardingCheckBoxes/OnboardingCheckBoxes";
-import useUserContext from "../../hooks/useUserContext";
 import { useNavigate } from "react-router-dom";
 import {
   validateLength,
   validateOption,
   validateUrl,
 } from "../../lib/validations";
+import styles from "./Onboarding.module.css";
+import X from "../../components/X/X";
+import Button from "../../components/Button/Button";
+import OnboardingTextArea from "../../components/OnboardingTextArea/OnboardingTextArea";
+import OnboardingRadio from "../../components/OnboardingRadio/OnboardingRadio";
+import OnboardingCheckBoxes from "../../components/OnboardingCheckBoxes/OnboardingCheckBoxes";
+import onboardingMap from "../../lib/onboardingMap.json";
+import GeoLocation from "../../components/GeoLocation/GeoLocation";
+import useUserContext from "../../hooks/useUserContext";
 import Signup from "../../components/Signup/Signup";
 import UserType from "../../components/UserType/UserType";
 import EditKeywords from "../../components/EditKeywords/EditKeywords";
