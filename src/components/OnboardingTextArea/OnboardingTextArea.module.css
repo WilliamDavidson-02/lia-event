@@ -19,11 +19,5 @@
 }
 
 .textarea::placeholder {
-  transition: color 0.2s ease-out;
-  color: #a6a6a6;
-}
-
-.textarea:focus::placeholder {
-  transition: color 0.2s ease-out;
-  color: var(--yrgo-black);
+  color: var(--yrgo-grey-500);
 }

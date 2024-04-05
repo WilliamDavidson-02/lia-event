@@ -44,11 +44,8 @@ export default function Onboarding() {
       setIsValid(validateLength(field, 2, 75));
     }
 
-    if (["area", "employees"].includes(property)) {
-      let value = field;
-      if (typeof value === "string") value = [value];
-
-      setIsValid(validateOption(value, currentField.options));
+    if (property === "area") {
+      setIsValid(validateOption(field, currentField.options));
     }
 
     if (property === "href") {
@@ -90,10 +87,8 @@ export default function Onboarding() {
       // All questions answered
       setIsloading(true);
 
-      let { name, area } = onboarding;
+      const { name, area } = onboarding;
       const { email, password } = credentials;
-
-      if (typeof area === "string") area = [area]; // For students
 
       // Default data
       let data = {
@@ -221,7 +216,9 @@ export default function Onboarding() {
               handleProperty={setOnboardingValues}
               propertyValue={onboarding[currentField.property]}
               placeholder={
-                currentField.type === "link" ? "https://name.com" : "Type ..."
+                currentField.type === "link"
+                  ? "https://www.yrgo.se/"
+                  : "Type ..."
               }
             />
           )}

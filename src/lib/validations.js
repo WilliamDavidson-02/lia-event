@@ -13,16 +13,8 @@ export const validateLength = (value, min, max) => {
   return true;
 };
 
-export const validateOption = (array, options) => {
-  if (!array.length) return false;
-
-  for (const value of array) {
-    if (!options.some((option) => option.value === value)) {
-      return false;
-    }
-  }
-
-  return true;
+export const validateOption = (value, options) => {
+  return options.some((option) => option.value === value);
 };
 
 export const validateUrl = (value) => {
