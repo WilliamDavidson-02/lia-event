@@ -91,8 +91,10 @@ export default function Onboarding() {
       // All questions answered
       setIsloading(true);
 
-      const { name, area } = onboarding;
+      let { name, area } = onboarding;
       const { email, password } = credentials;
+
+      if (typeof area === "string") area = [area]; // For students
 
       // Default data
       let data = {
@@ -102,7 +104,7 @@ export default function Onboarding() {
           data: {
             name: name.trim(),
             area,
-            userType,
+            user_type: userType,
           },
         },
       };
