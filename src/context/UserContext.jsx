@@ -67,7 +67,17 @@ export default function UserContextProvider({ children }) {
       return;
     }
 
-    setUser(data.user);
+    const user = data.user;
+
+    if (user.user_metadata.user_type === "student") {
+      // Student area is selected in a radio component, selected value requires a string
+      const area = user.user_metadata.area;
+      if (typeof area === "object") {
+        user.user_metadata.area = area[0];
+      }
+    }
+
+    setUser(user);
   };
 
   return (

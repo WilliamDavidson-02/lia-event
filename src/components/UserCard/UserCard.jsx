@@ -4,30 +4,30 @@ import { Bookmark } from "lucide-react";
 import useUserContext from "../../hooks/useUserContext";
 import supabase from "../../config/supabaseConfig";
 
-export default function UserCard({ setLike, company, children, ...props }) {
+export default function UserCard({ setSave, profile, children, ...props }) {
   const { user } = useUserContext();
 
-  const handleLike = async () => {
-    // Toggle like for company
-    setLike(company.id);
+  const handleSave = async () => {
+    // Toggle like for profile
+    setSave(profile.id);
 
-    if (!company.isLiked) {
+    if (!profile.isSaved) {
       const { error } = await supabase
-        .from("student_like_company")
-        .insert({ student_id: user.id, company_id: company.id });
+        .from("saved_users")
+        .insert({ user_id: user.id, saved_id: profile.id });
 
       if (error) {
-        console.log("Error handling like", error);
+        console.log("Error handling saved users", error);
       }
     } else {
       const { error } = await supabase
-        .from("student_like_company")
+        .from("saved_users")
         .delete()
-        .eq("company_id", company.id)
-        .eq("student_id", user.id);
+        .eq("saved_id", profile.id)
+        .eq("user_id", user.id);
 
       if (error) {
-        console.log("Error handling like", error);
+        console.log("Error handling unsave users", error);
       }
     }
   };
@@ -35,13 +35,13 @@ export default function UserCard({ setLike, company, children, ...props }) {
   return (
     <div {...props} className={styles.card}>
       <Bookmark
-        onClick={handleLike}
-        className={company.isLiked ? styles.liked : ""}
+        onClick={handleSave}
+        className={profile.isSaved ? styles.saved : ""}
         style={{ marginLeft: "auto" }}
       />
       <div className={styles.content}>
         <Image
-          src={company.avatar}
+          src={profile.avatar}
           style={{
             aspectRatio: 1 / 1,
             width: "5.3rem",
@@ -50,8 +50,8 @@ export default function UserCard({ setLike, company, children, ...props }) {
           }}
         />
         <div>
-          <div className={styles.title}>{company.profile.name}</div>
-          <div className={styles.paragraph}>{company.href}</div>
+          <div className={styles.title}>{profile.name}</div>
+          <div className={styles.paragraph}>{profile.href}</div>
         </div>
       </div>
       {children}
