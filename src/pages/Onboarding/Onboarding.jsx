@@ -1,26 +1,23 @@
 import { useEffect, useState } from "react";
-import X from "../../components/X/X";
-import Button from "../../components/Button/Button";
-import styles from "./Onboarding.module.css";
-import OnboardingTextArea from "../../components/OnboardingTextArea/OnboardingTextArea";
-import OnboardingRadio from "../../components/OnboardingRadio/OnboardingRadio";
-import onboardingMap from "../../lib/onboardingMap.json";
-import ChipsGrid from "../../components/ChipsGrid/ChipsGrid";
-import { ArrowRight } from "lucide-react";
-import OnboardingFooter from "../../components/OnboardingFooter/OnboardingFooter";
-import GeoLocation from "../../components/GeoLocation/GeoLocation";
-import OnboardingCheckBoxes from "../../components/OnboardingCheckBoxes/OnboardingCheckBoxes";
-import Input from "../../components/Input/Input";
-import keywords from "../../lib/keywords.json";
-import useUserContext from "../../hooks/useUserContext";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
   validateLength,
   validateOption,
   validateUrl,
 } from "../../lib/validations";
+import styles from "./Onboarding.module.css";
+import X from "../../components/X/X";
+import Button from "../../components/Button/Button";
+import OnboardingTextArea from "../../components/OnboardingTextArea/OnboardingTextArea";
+import OnboardingRadio from "../../components/OnboardingRadio/OnboardingRadio";
+import OnboardingCheckBoxes from "../../components/OnboardingCheckBoxes/OnboardingCheckBoxes";
+import onboardingMap from "../../lib/onboardingMap.json";
+import GeoLocation from "../../components/GeoLocation/GeoLocation";
+import useUserContext from "../../hooks/useUserContext";
 import Signup from "../../components/Signup/Signup";
 import UserType from "../../components/UserType/UserType";
+import EditKeywords from "../../components/EditKeywords/EditKeywords";
 
 export default function Onboarding() {
   const [onboarding, setOnboarding] = useState({});
@@ -41,6 +38,8 @@ export default function Onboarding() {
 
     const property = currentField.property;
     const field = onboarding[property];
+
+    if (!property || !field) return;
 
     if (property === "name") {
       setIsValid(validateLength(field, 2, 75));
@@ -92,8 +91,10 @@ export default function Onboarding() {
       // All questions answered
       setIsloading(true);
 
-      const { name, area } = onboarding;
+      let { name, area } = onboarding;
       const { email, password } = credentials;
+
+      if (typeof area === "string") area = [area]; // For students
 
       // Default data
       let data = {
@@ -103,7 +104,7 @@ export default function Onboarding() {
           data: {
             name: name.trim(),
             area,
-            userType,
+            user_type: userType,
           },
         },
       };
@@ -157,20 +158,12 @@ export default function Onboarding() {
     handleSubmit(new Event("submit"), true);
   };
 
-  const getKeywords = (area) => {
-    // Student can only select one area/program, Check if area is a string and wrapp it in an array
-    if (typeof area === "string") area = [area];
+  const handlePrev = (type, index) => {
+    const prevIndex = index - 1;
+    const prevField = onboardingMap[type][prevIndex];
 
-    let keywordsArray = [];
-
-    // Add selected areas of work keywords
-    area.forEach((item) => {
-      if (keywords[item]) {
-        keywordsArray = [...keywordsArray, ...keywords[item]];
-      }
-    });
-
-    return keywordsArray;
+    setCurrentFieldIndex(prevIndex);
+    setCurrentField(prevField);
   };
 
   const handleUserType = (type) => {
@@ -240,48 +233,48 @@ export default function Onboarding() {
               }
             />
           )}
-          {currentField.type === "password" && (
-            <Input
-              autoFocus
-              id={currentField.property}
-              variant="lg-transparent"
-              style={{ marginBottom: "auto" }}
-              type="password"
-              placeholder="Type ..."
-              value={onboarding[currentField.property]}
-              onChange={(event) => setOnboardingValues(event.target.value)}
-            />
-          )}
           {currentField.type === "chip" && (
-            <ChipsGrid
-              isEdit
-              chipValues={getKeywords(onboarding.area)}
+            <EditKeywords
               handleProperty={setOnboardingValues}
-              selectedChips={onboarding[currentField.property]}
+              selected={onboarding[currentField.property]}
+              area={onboarding.area}
             />
           )}
-          <OnboardingFooter
-            style={{ marginBottom: "16px", marginRight: "16px" }}
-          >
-            {!currentField.required && (
+          <div className={styles.footer}>
+            {currentFieldIndex > 0 && (
               <Button
+                style={{ color: "var(--yrgo-black)" }}
                 disabled={isLoading}
-                onClick={handleSkip}
+                variant="tertiery"
                 type="button"
-                variant="secondary"
+                onClick={() => handlePrev(userType, currentFieldIndex)}
               >
-                Skip
+                <ArrowLeft size={24} />
+                Prev
               </Button>
             )}
-            <Button
-              disabled={isLoading || !isValid}
-              isLoading={isLoading}
-              square
-              type="submit"
-            >
-              <ArrowRight size={24} />
-            </Button>
-          </OnboardingFooter>
+            <div className={styles.right}>
+              {!currentField.required && (
+                <Button
+                  style={{ color: "var(--yrgo-black)" }}
+                  disabled={isLoading}
+                  onClick={handleSkip}
+                  type="button"
+                  variant="tertiery"
+                >
+                  Skip
+                </Button>
+              )}
+              <Button
+                disabled={isLoading || !isValid}
+                isLoading={isLoading}
+                square
+                type="submit"
+              >
+                <ArrowRight size={24} />
+              </Button>
+            </div>
+          </div>
         </div>
       </form>
     </div>

@@ -1,4 +1,6 @@
 import styles from "./OnboardingCheckBoxes.module.css";
+import Input from "../Input/Input";
+import Label from "../Label/Label";
 
 export default function OnboardingCheckBoxes({
   handleProperty,
@@ -19,18 +21,19 @@ export default function OnboardingCheckBoxes({
     handleProperty(selections);
   };
   return (
-    <div className={styles.checkboxContainer}>
-      {options.map((option) => (
-        <label className={styles.label} key={option.value}>
-          <input
-            className="checkbox"
-            type="checkbox"
+    <div className={styles.container}>
+      {options.map((option, i) => (
+        <div className={styles.item} key={option.value}>
+          <Input
+            tabIndex={i + 1}
+            id={option.value}
+            variant={"checkbox"}
+            type={"checkbox"}
             value={option.value}
-            checked={checkedValues.includes(option.value)}
             onChange={checkHandler}
           />
-          <p>{option.title}</p>
-        </label>
+          <Label htmlFor={option.value}>{option.title}</Label>
+        </div>
       ))}
     </div>
   );

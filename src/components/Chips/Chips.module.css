@@ -1,11 +1,28 @@
 .container {
   display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-md);
+  margin-bottom: auto;
+
+  overflow-y: auto;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+  scroll-snap-type: y mandatory;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+.chip {
+  display: flex;
   align-items: center;
   gap: var(--gap-sm);
 
   width: fit-content;
   height: fit-content;
-  padding: var(--p-sm) var(--p-md);
+  padding: 0 0.75rem;
   border: 1px solid var(--yrgo-grey);
   border-radius: 100vmax;
   user-select: none;
@@ -17,17 +34,9 @@
   transition: background-color 0.3s ease-in-out;
 
   scroll-snap-align: start;
-
-  transition: opacity 0.4s;
-  opacity: 0;
 }
 
 .selected {
   transition: background-color 0.3s ease-in-out, opacity 0.4s;
   background-color: var(--yrgo-grey);
-}
-
-.visible {
-  transition: opacity 0.4s;
-  opacity: 1;
 }

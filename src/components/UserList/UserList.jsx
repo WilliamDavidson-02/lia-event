@@ -1,15 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import styles from "./UserList.module.css";
 import stylesCard from "../UserCard/UserCard.module.css";
 import UserCard from "../UserCard/UserCard";
 import MatchRating from "../MatchRating/MatchRating";
 import Skeleton from "../Skeleton/Skeleton";
 
-export default function UserList({ companies, handleOffset, setCompanies }) {
+export default function UserList({ users, handleOffset, setUsers }) {
   const container = useRef(null);
 
   useEffect(() => {
-    if (!container.current || !users.length) return;
+    if (!container.current) return;
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -39,7 +39,7 @@ export default function UserList({ companies, handleOffset, setCompanies }) {
     if (isScrollInRange) handleOffset();
   };
 
-  if (!companies.length) {
+  if (!users.length) {
     return (
       <div className={styles.skeleton}>
         <Skeleton style={{ width: "100%", height: "100%" }} />
@@ -47,25 +47,25 @@ export default function UserList({ companies, handleOffset, setCompanies }) {
     );
   }
 
-  const setLike = (id) => {
-    setCompanies((prev) => {
-      return prev.map((c) => {
-        if (c.id === id) {
+  const setSave = (id) => {
+    setUsers((prev) => {
+      return prev.map((u) => {
+        if (u.id === id) {
           return {
-            ...c,
-            isLiked: !c.isLiked,
+            ...u,
+            isSaved: !u.isSaved,
           };
         }
 
-        return c;
+        return u;
       });
     });
   };
 
   return (
     <section onScroll={handleScroll} ref={container} className={styles.content}>
-      {companies.map((company) => (
-        <UserCard setLike={setLike} company={company} key={company.id}>
+      {users.map((profile) => (
+        <UserCard setSave={setSave} profile={profile} key={profile.id}>
           <MatchRating />
         </UserCard>
       ))}

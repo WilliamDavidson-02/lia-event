@@ -3,12 +3,13 @@ import ReactDOMServer from "react-dom/server";
 import mapboxgl from "mapbox-gl";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
-import styles from "./GeoLocation.module.css";
-import Map from "../Map/Map";
 import { defaultCords } from "../../lib/mapData";
-import "./geocoderOverride.css";
+import Map from "../Map/Map";
 import MapMarker from "../MapMarker/MapMarker";
+import styles from "./GeoLocation.module.css";
 import markerStyles from "../MapMarker/MapMarker.module.css";
+import "./geocoderOverride.css";
+import { Search, X } from "lucide-react";
 
 export default function GeoLocation({ handleProperty }) {
   const geocoder = useRef(null);
@@ -17,7 +18,41 @@ export default function GeoLocation({ handleProperty }) {
   const [map, setMap] = useState(null);
 
   useEffect(() => {
-    if (geocoder.current) return;
+    if (geocoder.current) {
+      /**
+       * Replace mapbox geocoder default icons to lucide icons
+       */
+      const searchIcon = document.querySelector(
+        ".mapboxgl-ctrl-geocoder--icon-search"
+      );
+      const closeIcon = document.querySelector(
+        ".mapboxgl-ctrl-geocoder--icon-close"
+      );
+
+      // Search Icon
+      const searchClass = [...searchIcon.classList, "mapbox-lucide-icon"].join(
+        " "
+      );
+      const newSearchIcon = <Search className={searchClass} />;
+
+      // Close Icon
+      const closeClass = [...closeIcon.classList, "mapbox-lucide-icon"].join(
+        " "
+      );
+      const newCloseIcon = <X className={closeClass} />;
+
+      // Add lucid react icon to dom node
+      const searchElement = document.createElement("div");
+      searchElement.innerHTML = ReactDOMServer.renderToString(newSearchIcon);
+
+      const closeElement = document.createElement("div");
+      closeElement.innerHTML = ReactDOMServer.renderToString(newCloseIcon);
+
+      // Replace the old icon with the new icon
+      searchIcon.parentNode.replaceChild(searchElement.firstChild, searchIcon);
+      closeIcon.parentNode.replaceChild(closeElement.firstChild, closeIcon);
+      return;
+    }
 
     // Search geocoder
     geocoder.current = new MapboxGeocoder({
