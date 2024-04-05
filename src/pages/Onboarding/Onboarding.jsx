@@ -218,7 +218,7 @@ export default function Onboarding() {
             <OnboardingRadio
               options={currentField.options}
               handleProperty={setOnboardingValues}
-              selectedValue={onboarding[currentField.property]}
+              selected={onboarding[currentField.property]}
             />
           )}
           {["text", "link"].includes(currentField.type) && (
