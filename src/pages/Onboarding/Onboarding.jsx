@@ -11,7 +11,6 @@ import X from "../../components/X/X";
 import Button from "../../components/Button/Button";
 import OnboardingTextArea from "../../components/OnboardingTextArea/OnboardingTextArea";
 import OnboardingRadio from "../../components/OnboardingRadio/OnboardingRadio";
-import OnboardingCheckBoxes from "../../components/OnboardingCheckBoxes/OnboardingCheckBoxes";
 import onboardingMap from "../../lib/onboardingMap.json";
 import GeoLocation from "../../components/GeoLocation/GeoLocation";
 import useUserContext from "../../hooks/useUserContext";
@@ -206,13 +205,6 @@ export default function Onboarding() {
         <div className={styles.card}>
           {currentField.type === "map" && (
             <GeoLocation handleProperty={setOnboardingValues} />
-          )}
-          {currentField.type === "check" && (
-            <OnboardingCheckBoxes
-              handleProperty={setOnboardingValues}
-              options={currentField.options}
-              checkedValues={onboarding[currentField.property]}
-            />
           )}
           {currentField.type === "radio" && (
             <OnboardingRadio
