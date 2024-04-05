@@ -5,7 +5,7 @@
   flex-grow: 1;
   flex-basis: 0;
   padding: 0 var(--p-md) var(--p-md) var(--p-md);
-  max-height: 630px;
+  max-height: 594px;
 }
 
 .content {

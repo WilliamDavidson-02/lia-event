@@ -3,6 +3,7 @@ import styles from "./EditKeywords.module.css";
 import Chips from "../Chips/Chips";
 import keywords from "../../lib/keywords.json";
 import Search from "../Search/Search";
+import { areaValue } from "../../lib/areaData";
 
 export default function EditKeywords({ handleProperty, selected = [], area }) {
   const [suggestins, setSuggestions] = useState([]);
@@ -16,13 +17,12 @@ export default function EditKeywords({ handleProperty, selected = [], area }) {
   }, []);
 
   const getKeywords = (area) => {
-    // Student can only select one area/program, Check if area is a string and wrapp it in an array
-    if (typeof area === "string") area = [area];
+    const keywordProps = areaValue[area];
 
     let keywordsArray = [];
 
     // Add selected areas of work keywords
-    area.forEach((item) => {
+    keywordProps.forEach((item) => {
       if (keywords[item]) {
         keywordsArray = [...keywordsArray, ...keywords[item]];
       }
