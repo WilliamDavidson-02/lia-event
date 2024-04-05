@@ -14,8 +14,8 @@ export default function UserContextProvider({ children }) {
     const { error } = await supabase.auth.signUp(credentials);
 
     if (error) {
-      console.error("Sign up failed", error);
-      return { error: "Credentials already in use" };
+      console.error(error);
+      return { error: "Sign up failed" };
     }
 
     const { error: signInError } = signInWithPassword({
@@ -45,21 +45,6 @@ export default function UserContextProvider({ children }) {
     return { error: null };
   };
 
-  const signInWithProvider = async (provider) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      provider,
-    });
-
-    if (error) {
-      console.log("Sign in with provider failed", error);
-      return error;
-    }
-
-    setUser(data.user);
-
-    return { error: null };
-  };
-
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (!error) {
@@ -78,7 +63,7 @@ export default function UserContextProvider({ children }) {
     const { data, error } = await supabase.auth.getUser();
 
     if (error) {
-      console.log("Error fetching user data.");
+      console.error("Error fetching user data.", error);
       return;
     }
 
@@ -90,10 +75,8 @@ export default function UserContextProvider({ children }) {
       value={{
         user,
         signInWithPassword,
-        signInWithProvider,
         signOut,
         signUp,
-        getUser,
       }}
     >
       {children}

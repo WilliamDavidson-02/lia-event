@@ -1,36 +1,33 @@
 import { useEffect, useState } from "react";
-import X from "../../components/X/X";
-import Button from "../../components/Button/Button";
-import styles from "./Onboarding.module.css";
-import OnboardingTextArea from "../../components/OnboardingTextArea/OnboardingTextArea";
-import OnboardingRadio from "../../components/OnboardingRadio/OnboardingRadio";
-import onboardingMap from "../../lib/onboardingMap.json";
-import ChipsGrid from "../../components/ChipsGrid/ChipsGrid";
-import { ArrowRight } from "lucide-react";
-import OnboardingFooter from "../../components/OnboardingFooter/OnboardingFooter";
-import GeoLocation from "../../components/GeoLocation/GeoLocation";
-import OnboardingCheckBoxes from "../../components/OnboardingCheckBoxes/OnboardingCheckBoxes";
-import UserTypeSelect from "../../components/UserTypeSelect/UserTypeSelect";
-import GDPR from "../../components/GDPR/GDPR";
-import Input from "../../components/Input/Input";
-import keywords from "../../lib/keywords.json";
-import useUserContext from "../../hooks/useUserContext";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
-  validateEmail,
   validateLength,
   validateOption,
   validateUrl,
 } from "../../lib/validations";
+import styles from "./Onboarding.module.css";
+import X from "../../components/X/X";
+import Button from "../../components/Button/Button";
+import OnboardingTextArea from "../../components/OnboardingTextArea/OnboardingTextArea";
+import OnboardingRadio from "../../components/OnboardingRadio/OnboardingRadio";
+import OnboardingCheckBoxes from "../../components/OnboardingCheckBoxes/OnboardingCheckBoxes";
+import onboardingMap from "../../lib/onboardingMap.json";
+import GeoLocation from "../../components/GeoLocation/GeoLocation";
+import useUserContext from "../../hooks/useUserContext";
+import Signup from "../../components/Signup/Signup";
+import UserType from "../../components/UserType/UserType";
+import EditKeywords from "../../components/EditKeywords/EditKeywords";
 
 export default function Onboarding() {
   const [onboarding, setOnboarding] = useState({});
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [currentFieldIndex, setCurrentFieldIndex] = useState(0);
   const [currentField, setCurrentField] = useState(null);
-  const [isGdprConfirmed, setIsGdprConfirmed] = useState(false);
   const [userType, setUserType] = useState(null);
   const [isLoading, setIsloading] = useState(false);
   const [isValid, setIsValid] = useState(false);
+  const [station, setStation] = useState(0); // 0, 1, 2 = {email, password}, {userType}, {onboarding steps}
 
   const { signUp } = useUserContext();
 
@@ -42,13 +39,7 @@ export default function Onboarding() {
     const property = currentField.property;
     const field = onboarding[property];
 
-    if (property === "email") {
-      setIsValid(validateEmail(field));
-    }
-
-    if (property === "password") {
-      setIsValid(validateLength(field, 8));
-    }
+    if (!property || !field) return;
 
     if (property === "name") {
       setIsValid(validateLength(field, 2, 75));
@@ -73,10 +64,6 @@ export default function Onboarding() {
       setIsValid(field.length === 2);
     }
   }, [onboarding, currentField]);
-
-  useEffect(() => {
-    if (isGdprConfirmed && userType) nextField(currentFieldIndex);
-  }, [userType]);
 
   const setOnboardingValues = (value) => {
     const property = currentField.property;
@@ -104,10 +91,11 @@ export default function Onboarding() {
       // All questions answered
       setIsloading(true);
 
-      const { email, password, name, area } = onboarding;
+      const { name, area } = onboarding;
+      const { email, password } = credentials;
 
-      // Default credentials
-      let credentials = {
+      // Default data
+      let data = {
         email: email.toLowerCase().trim(),
         password,
         options: {
@@ -120,19 +108,19 @@ export default function Onboarding() {
       };
 
       if (onboarding.href) {
-        credentials.options.data.href = onboarding.href;
+        data.options.data.href = onboarding.href;
       }
       if (onboarding.employees) {
-        credentials.options.data.employees = onboarding.employees;
+        data.options.data.employees = onboarding.employees;
       }
       if (onboarding.keywords) {
-        credentials.options.data.keywords = onboarding.keywords;
+        data.options.data.keywords = onboarding.keywords;
       }
       if (userType === "company") {
-        credentials.options.data.contact = email;
+        data.options.data.contact = email;
       }
 
-      const { error } = await signUp(credentials);
+      const { error } = await signUp(data);
 
       setIsloading(false);
 
@@ -145,8 +133,8 @@ export default function Onboarding() {
     }
   };
 
-  const nextField = (index) => {
-    const current = onboardingMap[userType][index];
+  const nextField = (index, initType) => {
+    const current = onboardingMap[userType || initType][index];
 
     // Set default value for property
     setOnboarding((prev) => ({
@@ -168,31 +156,35 @@ export default function Onboarding() {
     handleSubmit(new Event("submit"), true);
   };
 
-  const getKeywords = (area) => {
-    // Student can only select one area/program, Check if area is a string and wrapp it in an array
-    if (typeof area === "string") area = [area];
+  const handlePrev = (type, index) => {
+    const prevIndex = index - 1;
+    const prevField = onboardingMap[type][prevIndex];
 
-    let keywordsArray = [];
-
-    // Add selected areas of work keywords
-    area.forEach((item) => {
-      if (keywords[item]) {
-        keywordsArray = [...keywordsArray, ...keywords[item]];
-      }
-    });
-
-    return keywordsArray;
+    setCurrentFieldIndex(prevIndex);
+    setCurrentField(prevField);
   };
 
-  if (!currentField) {
+  const handleUserType = (type) => {
+    setUserType(type);
+    nextField(0, type);
+    setStation(2);
+  };
+
+  if (station === 0) {
+    return (
+      <Signup
+        credentials={credentials}
+        setCredentials={setCredentials}
+        next={() => setStation(1)}
+      />
+    );
+  }
+
+  if (station === 1) {
     return (
       <div className={styles.wrapper}>
-        <GDPR setIsConfirmed={setIsGdprConfirmed} />
-        <UserTypeSelect
-          disabled={!isGdprConfirmed}
-          types={["company", "student"]}
-          setType={setUserType}
-        />
+        <UserType onClick={() => handleUserType("student")} title={"Student"} />
+        <UserType onClick={() => handleUserType("company")} title={"Company"} />
       </div>
     );
   }
@@ -239,48 +231,48 @@ export default function Onboarding() {
               }
             />
           )}
-          {currentField.type === "password" && (
-            <Input
-              autoFocus
-              id={currentField.property}
-              variant="lg-transparent"
-              style={{ marginBottom: "auto" }}
-              type="password"
-              placeholder="Type ..."
-              value={onboarding[currentField.property]}
-              onChange={(event) => setOnboardingValues(event.target.value)}
-            />
-          )}
           {currentField.type === "chip" && (
-            <ChipsGrid
-              isEdit
-              chipValues={getKeywords(onboarding.area)}
+            <EditKeywords
               handleProperty={setOnboardingValues}
-              selectedChips={onboarding[currentField.property]}
+              selected={onboarding[currentField.property]}
+              area={onboarding.area}
             />
           )}
-          <OnboardingFooter
-            style={{ marginBottom: "16px", marginRight: "16px" }}
-          >
-            {!currentField.required && (
+          <div className={styles.footer}>
+            {currentFieldIndex > 0 && (
               <Button
+                style={{ color: "var(--yrgo-black)" }}
                 disabled={isLoading}
-                onClick={handleSkip}
+                variant="tertiery"
                 type="button"
-                variant="secondary"
+                onClick={() => handlePrev(userType, currentFieldIndex)}
               >
-                Skip
+                <ArrowLeft size={24} />
+                Prev
               </Button>
             )}
-            <Button
-              disabled={isLoading || !isValid}
-              isLoading={isLoading}
-              square
-              type="submit"
-            >
-              <ArrowRight size={24} />
-            </Button>
-          </OnboardingFooter>
+            <div className={styles.right}>
+              {!currentField.required && (
+                <Button
+                  style={{ color: "var(--yrgo-black)" }}
+                  disabled={isLoading}
+                  onClick={handleSkip}
+                  type="button"
+                  variant="tertiery"
+                >
+                  Skip
+                </Button>
+              )}
+              <Button
+                disabled={isLoading || !isValid}
+                isLoading={isLoading}
+                square
+                type="submit"
+              >
+                <ArrowRight size={24} />
+              </Button>
+            </div>
+          </div>
         </div>
       </form>
     </div>

@@ -1,127 +1,97 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Finder.module.css";
-import stylesUserPreview from "../../components/UserPreview/UserPreview.module.css";
 import Nav from "../../components/Nav/Nav";
-import UserPreview from "../../components/UserPreview/UserPreview";
-
-const data = [
-  {
-    id: "2d9490b1-cf1f-47d6-ac5a-cade59d565be",
-    name: "Polestar",
-    avatar: "",
-    area: ["developer", "design"],
-  },
-  {
-    id: "b0515032-15ee-4099-8a56-53fe15b4ed06",
-    name: "Grebban",
-    avatar: "",
-    area: ["developer", "design"],
-  },
-  {
-    id: "77ad1b42-44fa-483e-abdb-3984583c6d4b",
-    name: "Webminde",
-    avatar: "",
-    area: ["developer"],
-  },
-  {
-    id: "47e98b03-f6c9-4ea6-8d4f-23cd091e445f",
-    name: "Fully",
-    avatar: "",
-    area: ["developer", "design"],
-  },
-  {
-    id: "2d9490b1-cf1f-47d6-ac5a-cade59d565be",
-    name: "Polestar",
-    avatar: "",
-    area: ["developer", "design"],
-  },
-  {
-    id: "b0515032-15ee-4099-8a56-53fe15b4ed06",
-    name: "Grebban",
-    avatar: "",
-    area: ["developer", "design"],
-  },
-  {
-    id: "77ad1b42-44fa-483e-abdb-3984583c6d4b",
-    name: "Webminde",
-    avatar: "",
-    area: ["developer"],
-  },
-  {
-    id: "47e98b03-f6c9-4ea6-8d4f-23cd091e445f",
-    name: "Fully",
-    avatar: "",
-    area: ["developer", "design"],
-  },
-  {
-    id: "2d9490b1-cf1f-47d6-ac5a-cade59d565be",
-    name: "Polestar",
-    avatar: "",
-    area: ["developer", "design"],
-  },
-  {
-    id: "b0515032-15ee-4099-8a56-53fe15b4ed06",
-    name: "Grebban",
-    avatar: "",
-    area: ["developer", "design"],
-  },
-  {
-    id: "77ad1b42-44fa-483e-abdb-3984583c6d4b",
-    name: "Webminde",
-    avatar: "",
-    area: ["developer"],
-  },
-  {
-    id: "47e98b03-f6c9-4ea6-8d4f-23cd091e445f",
-    name: "Fully",
-    avatar: "",
-    area: ["developer", "design"],
-  },
-];
+import UserList from "../../components/UserList/UserList";
+import supabase from "../../config/supabaseConfig";
+import useUserContext from "../../hooks/useUserContext";
 
 export default function Finder() {
-  const [users, setUsers] = useState(data);
-  const container = useRef(null);
+  const { user } = useUserContext();
+  const [companies, setCompanies] = useState([]);
+  const [offset, setOffset] = useState(0);
+  const [isGettingUsers, setIsGettingUsers] = useState(false);
+
+  const loadLimit = 19;
 
   useEffect(() => {
-    if (!container.current) return;
+    if (!user) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.remove(stylesUserPreview.fade);
-          } else {
-            entry.target.classList.add(stylesUserPreview.fade);
-          }
-        });
-      },
-      {
-        threshold: 0.1,
-      }
-    );
+    getCompanies(offset);
+  }, [user]);
 
-    container.current.childNodes.forEach((child) => {
-      observer.observe(child);
-    });
+  const getLikedCompanies = async (companies) => {
+    if (!user) return;
 
-    return () => {
-      container.current?.childNodes.forEach((child) => {
-        observer.unobserve(child);
+    const { data, error } = await supabase
+      .from("student_like_company")
+      .select("company_id")
+      .in("company_id", companies)
+      .eq("student_id", user.id);
+
+    if (error) {
+      console.log("error getting liked companies", error);
+      return [];
+    }
+
+    return data.map((c) => c.company_id);
+  };
+
+  const getCompanies = async (range) => {
+    if (isGettingUsers) return;
+
+    setIsGettingUsers(true);
+
+    const { data, error } = await supabase
+      .from("company_profile")
+      .select("*, profile(*)")
+      .range(range, range + loadLimit);
+
+    setIsGettingUsers(false);
+
+    if (error) {
+      console.error("Error getting users", error);
+      return;
+    }
+
+    // Filter duplicates
+    const newData = data.filter((d) => !companies.some((p) => p.id === d.id));
+
+    let newCompanies = [...companies, ...newData];
+
+    const ids = newCompanies.map((c) => c.id);
+    const likedCompanies = await getLikedCompanies(ids);
+
+    if (likedCompanies.length) {
+      newCompanies = newCompanies.map((c) => {
+        return {
+          ...c,
+          isLiked: likedCompanies.includes(c.id),
+        };
       });
-    };
-  }, [container.current]);
+    }
+
+    setCompanies(newCompanies);
+  };
+
+  const handleOffset = () => {
+    setOffset((prev) => {
+      const newOffset = prev + loadLimit + 1;
+
+      getCompanies(newOffset);
+
+      return newOffset;
+    });
+  };
 
   return (
     <main className={styles.container}>
       <Nav />
       <div>Filter</div>
-      <section ref={container} className={styles.content}>
-        {users.map((user, i) => (
-          <UserPreview user={user} key={i} />
-        ))}
-        <div>Pagination</div>
-      </section>
+      <UserList
+        setCompanies={setCompanies}
+        handleOffset={handleOffset}
+        companies={companies}
+      />
     </main>
   );
 }
