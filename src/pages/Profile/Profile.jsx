@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import supabase from "../../config/supabaseConfig";
 
 import styles from "./Profile.module.css";
-import BusinessCard from "../../components/BusinessCard/BusinessCard";
 import ProfileAbout from "../../components/ProfileAbout/ProfileAbout";
 import UserCard from "../../components/UserCard/UserCard";
 
@@ -32,12 +31,25 @@ export default function Profile() {
 
     fetchUserData();
   }, [userID]);
+
+  const setSave = async (userID) => {
+    await supabase.from("saved_users").insert({ user_id: userID, saved_id: userData.profile.id });
+    //await supabase.from("saved_users").delete().eq("saved_id", id).eq("user_id", user.id);
+  };
   return (
     <div className={styles.container}>
       {userData && (
         <>
-          <BusinessCard name={userData.profile.name} url={userData.href || "url not set"} profileImg="#" />
-          {/* <UserCard /> */}
+          <UserCard
+            profile={{
+              id: userData.profile.id,
+              name: userData.profile.name,
+              avatar: userData.profile.avatar,
+              href: userData.profile.href,
+            }}
+            key={userData.profile.id}
+            setSave={setSave}
+          />
           <ProfileAbout userType={userType} userData={userData} />
         </>
       )}

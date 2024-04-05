@@ -13,11 +13,11 @@ export default function ProfileAbout({ userType, userData }) {
             <h3>About Us</h3>
             <p>
               Field:{" "}
-              {userData.area.map((areaTitle, index) => (
+              {userData.profile.area.map((areaTitle, index) => (
                 <React.Fragment key={index}>
                   {areaTitle}
                   {/* If a company has both web devs and design, adds both separated by a forward slash */}
-                  {index !== userData.area.length - 1 && "/"}
+                  {index !== userData.profile.area.length - 1 && "/"}
                 </React.Fragment>
               ))}
             </p>

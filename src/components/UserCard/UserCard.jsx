@@ -12,9 +12,7 @@ export default function UserCard({ setSave, profile, children, ...props }) {
     setSave(profile.id);
 
     if (!profile.isSaved) {
-      const { error } = await supabase
-        .from("saved_users")
-        .insert({ user_id: user.id, saved_id: profile.id });
+      const { error } = await supabase.from("saved_users").insert({ user_id: user.id, saved_id: profile.id });
 
       if (error) {
         console.log("Error handling saved users", error);
