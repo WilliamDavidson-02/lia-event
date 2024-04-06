@@ -36,7 +36,7 @@ export default function Finder() {
     return data.map((u) => u.saved_id);
   };
 
-  const getUsers = async (range) => {
+  const getUsers = async (range, reset) => {
     if (isGettingUsers) return;
 
     setIsGettingUsers(true);
@@ -51,7 +51,8 @@ export default function Finder() {
 
     // Conditionaly add to query
 
-    if (keywords.length) query.contains("keywords", keywords);
+    if (keywords.length > 1) query.overlaps("keywords", keywords);
+    if (keywords.length === 1) query.contains("keywords", keywords);
 
     // Execute query
     const { data, error } = await query;
@@ -63,10 +64,17 @@ export default function Finder() {
       return;
     }
 
+    let newData = data;
+
     // Filter duplicates
-    const newData = data.filter((d) => !users.some((p) => p.id === d.id));
+    if (!reset) {
+      newData = data.filter((d) => !users.some((p) => p.id === d.id));
+    }
 
     let newUsers = [...users, ...newData];
+
+    // if reset remove old users from list
+    if (reset) newUsers = newData;
 
     const ids = newUsers.map((u) => u.id);
     const savedUsers = await getSavedUsers(ids);
@@ -95,7 +103,7 @@ export default function Finder() {
 
   const handleNewKeywords = () => {
     setOffset(0);
-    getUsers(0);
+    getUsers(0, true);
   };
 
   return (

@@ -4,6 +4,7 @@ import Search from "../Search/Search";
 import EditKeywords from "../EditKeywords/EditKeywords";
 import {
   Bookmark,
+  ChevronLeft,
   ChevronRight,
   HeartHandshake,
   SlidersHorizontal,
@@ -112,7 +113,12 @@ export default function Filter({ keywords, setKeywords, handleNewKeys }) {
               selected={keywords}
               area={"all"}
             />
-            <Button onClick={handleSave}>Save</Button>
+            <div className={styles.footer}>
+              <Button variant="blue" onClick={() => setActiveSideMenu(false)}>
+                <ChevronLeft />
+              </Button>
+              <Button onClick={handleSave}>Save</Button>
+            </div>
           </div>
         </div>
       </div>
