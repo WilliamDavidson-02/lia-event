@@ -18,6 +18,9 @@
 }
 
 .content > p {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   grid-row: span 1;
 }
 

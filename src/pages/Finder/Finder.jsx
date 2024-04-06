@@ -4,12 +4,14 @@ import Nav from "../../components/Nav/Nav";
 import UserList from "../../components/UserList/UserList";
 import supabase from "../../config/supabaseConfig";
 import useUserContext from "../../hooks/useUserContext";
+import Filter from "../../components/Filter/Filter";
 
 export default function Finder() {
   const { user } = useUserContext();
   const [users, setUsers] = useState([]);
   const [offset, setOffset] = useState(0);
   const [isGettingUsers, setIsGettingUsers] = useState(false);
+  const [keywords, setKeywords] = useState([]);
 
   const loadLimit = 19;
 
@@ -39,11 +41,20 @@ export default function Finder() {
 
     setIsGettingUsers(true);
 
-    const { data, error } = await supabase
+    // Default query
+    let query = supabase
       .from("profile")
       .select("name, avatar, href, id")
       .neq("user_type", user.user_metadata.user_type)
+      .order("name", { ascending: true })
       .range(range, range + loadLimit);
+
+    // Conditionaly add to query
+
+    if (keywords.length) query.contains("keywords", keywords);
+
+    // Execute query
+    const { data, error } = await query;
 
     setIsGettingUsers(false);
 
@@ -82,10 +93,19 @@ export default function Finder() {
     });
   };
 
+  const handleNewKeywords = () => {
+    setOffset(0);
+    getUsers(0);
+  };
+
   return (
     <main className={styles.container}>
       <Nav />
-      <div>Filter</div>
+      <Filter
+        keywords={keywords}
+        setKeywords={setKeywords}
+        handleNewKeys={handleNewKeywords}
+      />
       <UserList setUsers={setUsers} handleOffset={handleOffset} users={users} />
     </main>
   );

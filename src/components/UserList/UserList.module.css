@@ -4,10 +4,7 @@
   gap: var(--gap-md);
   flex-grow: 1;
   flex-basis: 0;
-  padding-right: var(--p-sm);
-  width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
+  /* padding-right: var(--p-sm); */
 
   overflow-y: auto;
   scroll-behavior: smooth;

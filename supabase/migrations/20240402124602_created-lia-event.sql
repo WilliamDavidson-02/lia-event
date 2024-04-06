@@ -19,7 +19,6 @@ create table "public"."profile" (
     "keywords" text[]
 );
 
-
 alter table "public"."profile" enable row level security;
 
 create table "public"."student_profile" (

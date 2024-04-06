@@ -6,10 +6,10 @@ import MatchRating from "../MatchRating/MatchRating";
 import Skeleton from "../Skeleton/Skeleton";
 
 export default function UserList({ users, handleOffset, setUsers }) {
-  const container = useRef(null);
-
   useEffect(() => {
-    if (!container.current) return;
+    const container = document.querySelector("#finder-user-list-container");
+
+    if (!container) return;
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -21,16 +21,16 @@ export default function UserList({ users, handleOffset, setUsers }) {
       });
     });
 
-    container.current.childNodes.forEach((child) => {
+    container.childNodes.forEach((child) => {
       observer.observe(child);
     });
 
     return () => {
-      container.current?.childNodes.forEach((child) => {
+      container.childNodes.forEach((child) => {
         observer.unobserve(child);
       });
     };
-  }, [container]);
+  }, [users]);
 
   const handleScroll = (ev) => {
     const { scrollTop, scrollHeight, clientHeight } = ev.target;
@@ -63,7 +63,11 @@ export default function UserList({ users, handleOffset, setUsers }) {
   };
 
   return (
-    <section onScroll={handleScroll} ref={container} className={styles.content}>
+    <section
+      id={"finder-user-list-container"}
+      onScroll={handleScroll}
+      className={styles.content}
+    >
       {users.map((profile) => (
         <UserCard setSave={setSave} profile={profile} key={profile.id}>
           <MatchRating />

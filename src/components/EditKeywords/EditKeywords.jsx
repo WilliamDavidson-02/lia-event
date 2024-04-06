@@ -4,8 +4,14 @@ import Chips from "../Chips/Chips";
 import keywords from "../../lib/keywords.json";
 import Search from "../Search/Search";
 import { areaValue } from "../../lib/areaData";
+import { CircleX } from "lucide-react";
 
-export default function EditKeywords({ handleProperty, selected = [], area }) {
+export default function EditKeywords({
+  handleProperty,
+  selected = [],
+  area,
+  style,
+}) {
   const [suggestins, setSuggestions] = useState([]);
   const [words, setWords] = useState([]);
 
@@ -45,6 +51,11 @@ export default function EditKeywords({ handleProperty, selected = [], area }) {
     handleProperty(chips);
   };
 
+  const clearSelected = () => {
+    handleProperty([]);
+    setSuggestions(words);
+  };
+
   const handleSearch = (search) => {
     const unSelectedWords = words.filter((w) => !selected.includes(w));
     const result = unSelectedWords.filter((w) =>
@@ -55,10 +66,20 @@ export default function EditKeywords({ handleProperty, selected = [], area }) {
   };
 
   return (
-    <section className={styles.container}>
+    <section style={style} className={styles.container}>
       <Search handleSearch={handleSearch} />
       <div className={styles.content}>
-        <p className={styles.title}>Selected:</p>
+        <p className={styles.title}>
+          Selected:
+          {selected.length > 0 && (
+            <CircleX
+              title={"Clear all"}
+              onClick={clearSelected}
+              style={{ cursor: "pointer" }}
+              size={20}
+            />
+          )}
+        </p>
         <Chips
           defaultValue={selected}
           selected={selected}
