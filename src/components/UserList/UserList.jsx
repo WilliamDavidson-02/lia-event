@@ -5,7 +5,12 @@ import UserCard from "../UserCard/UserCard";
 import MatchRating from "../MatchRating/MatchRating";
 import Skeleton from "../Skeleton/Skeleton";
 
-export default function UserList({ users, handleOffset, setUsers }) {
+export default function UserList({
+  users,
+  handleOffset,
+  setUsers,
+  filterOptions,
+}) {
   useEffect(() => {
     const container = document.querySelector("#finder-user-list-container");
 
@@ -47,9 +52,15 @@ export default function UserList({ users, handleOffset, setUsers }) {
     );
   }
 
+  const filterUsersfromWishlist = (users) => {
+    if (!filterOptions.wishlist) return users;
+
+    return users.filter((u) => u.isSaved);
+  };
+
   const setSave = (id) => {
     setUsers((prev) => {
-      return prev.map((u) => {
+      let users = prev.map((u) => {
         if (u.id === id) {
           return {
             ...u,
@@ -59,6 +70,10 @@ export default function UserList({ users, handleOffset, setUsers }) {
 
         return u;
       });
+
+      users = filterUsersfromWishlist(users);
+
+      return users;
     });
   };
 

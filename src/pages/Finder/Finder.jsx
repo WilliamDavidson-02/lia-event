@@ -62,6 +62,17 @@ export default function Finder() {
     return query;
   };
 
+  const sortUsersList = (users) => {
+    const sorted = users.sort((a, b) => {
+      const nameA = a.name.toLowerCase();
+      const nameB = b.name.toLowerCase();
+
+      return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+    });
+
+    return sorted;
+  };
+
   const getUsers = async (range, reset) => {
     if (isGettingUsers) return;
 
@@ -99,6 +110,9 @@ export default function Finder() {
     const savedUsers = await getSavedUsersIds(newUsers.map((u) => u.id));
 
     if (savedUsers.length) newUsers = setUsersIsSaved(newUsers, savedUsers);
+
+    // Sort by the already existing users on the list and the new users
+    newUsers = sortUsersList(newUsers);
 
     setUsers(newUsers);
   };
@@ -142,6 +156,9 @@ export default function Finder() {
       newUsers.map((u) => u.id)
     );
 
+    // Sort by the already existing users on the list and the new users
+    newUsers = sortUsersList(newUsers);
+
     setUsers(newUsers);
   };
 
@@ -169,7 +186,12 @@ export default function Finder() {
         setFilterOptions={setFilterOptions}
         resetOffset={resetOffset}
       />
-      <UserList setUsers={setUsers} handleOffset={handleOffset} users={users} />
+      <UserList
+        setUsers={setUsers}
+        handleOffset={handleOffset}
+        users={users}
+        filterOptions={filterOptions}
+      />
     </main>
   );
 }
