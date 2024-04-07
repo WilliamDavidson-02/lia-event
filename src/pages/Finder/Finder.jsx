@@ -39,6 +39,29 @@ export default function Finder() {
     return data.map((u) => u.saved_id);
   };
 
+  const filterUsersDuplicates = (data, users) => {
+    return data.filter((d) => !users.some((p) => p.id === d.id));
+  };
+
+  const setUsersIsSaved = (users, savedUsers) => {
+    return users.map((u) => ({ ...u, isSaved: savedUsers.includes(u.id) }));
+  };
+
+  const getNewUsersArray = (reset, users, data) => {
+    if (reset) return data;
+
+    return [...users, ...data];
+  };
+
+  const setKeywordsParam = (query) => {
+    const { keywords } = filterOptions;
+
+    if (keywords.length > 1) query.overlaps("keywords", keywords);
+    if (keywords.length === 1) query.contains("keywords", keywords);
+
+    return query;
+  };
+
   const getUsers = async (range, reset) => {
     if (isGettingUsers) return;
 
@@ -53,10 +76,7 @@ export default function Finder() {
       .range(range, range + loadLimit);
 
     // Conditionaly add to query
-    const { keywords } = filterOptions;
-
-    if (keywords.length > 1) query.overlaps("keywords", keywords);
-    if (keywords.length === 1) query.contains("keywords", keywords);
+    query = setKeywordsParam(query);
 
     // Execute query
     const { data, error } = await query;
@@ -68,29 +88,17 @@ export default function Finder() {
       return;
     }
 
+    if (!data) return;
+
     let newData = data;
 
-    // Filter duplicates
-    if (!reset) {
-      newData = data.filter((d) => !users.some((p) => p.id === d.id));
-    }
+    if (!reset) newData = filterUsersDuplicates(newData, users);
 
-    let newUsers = [...users, ...newData];
+    let newUsers = getNewUsersArray(reset, users, newData);
 
-    // if reset remove old users from list
-    if (reset) newUsers = newData;
+    const savedUsers = await getSavedUsersIds(newUsers.map((u) => u.id));
 
-    const ids = newUsers.map((u) => u.id);
-    const savedUsers = await getSavedUsersIds(ids);
-
-    if (savedUsers.length) {
-      newUsers = newUsers.map((u) => {
-        return {
-          ...u,
-          isSaved: savedUsers.includes(u.id),
-        };
-      });
-    }
+    if (savedUsers.length) newUsers = setUsersIsSaved(newUsers, savedUsers);
 
     setUsers(newUsers);
   };
@@ -109,10 +117,7 @@ export default function Finder() {
       .range(range, range + loadLimit);
 
     // Conditionaly add to query
-    const { keywords } = filterOptions;
-
-    if (keywords.length > 1) query.overlaps("profile.keywords", keywords);
-    if (keywords.length === 1) query.contains("profile.keywords", keywords);
+    query = setKeywordsParam(query);
 
     // Execute query
     const { data, error } = await query;
@@ -128,23 +133,16 @@ export default function Finder() {
 
     let newData = data.map((u) => u.profile);
 
-    // Filter duplicates
-    if (!reset) {
-      newData = newData.filter((d) => !users.some((p) => p.id === d.id));
-    }
+    if (!reset) newData = filterUsersDuplicates(newData, users);
 
-    let newUsers = [...users, ...newData];
+    let newUsers = getNewUsersArray(reset, users, newData);
 
-    // if reset remove old users from list
-    if (reset) newUsers = newData;
+    newUsers = setUsersIsSaved(
+      newUsers,
+      newUsers.map((u) => u.id)
+    );
 
-    newUsers = newUsers.map((u) => {
-      u.isSaved = true;
-
-      return u;
-    });
-
-    setUsers(newData);
+    setUsers(newUsers);
   };
 
   const handleOffset = () => {
