@@ -20,7 +20,9 @@ export default function OnboardingRadio({
             checked={option.value === selected}
             onChange={() => handleProperty(option.value)}
           />
-          <Label htmlFor={option.value}>{option.title}</Label>
+          <Label style={{ flexGrow: "1" }} htmlFor={option.value}>
+            {option.title}
+          </Label>
         </div>
       ))}
     </div>

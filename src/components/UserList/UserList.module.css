@@ -2,12 +2,6 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: var(--gap-md);
-  flex-grow: 1;
-  flex-basis: 0;
-  padding-right: var(--p-sm);
-  width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
 
   overflow-y: auto;
   scroll-behavior: smooth;
