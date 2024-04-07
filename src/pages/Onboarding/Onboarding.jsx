@@ -11,7 +11,6 @@ import X from "../../components/X/X";
 import Button from "../../components/Button/Button";
 import OnboardingTextArea from "../../components/OnboardingTextArea/OnboardingTextArea";
 import OnboardingRadio from "../../components/OnboardingRadio/OnboardingRadio";
-import OnboardingCheckBoxes from "../../components/OnboardingCheckBoxes/OnboardingCheckBoxes";
 import onboardingMap from "../../lib/onboardingMap.json";
 import GeoLocation from "../../components/GeoLocation/GeoLocation";
 import useUserContext from "../../hooks/useUserContext";
@@ -45,11 +44,8 @@ export default function Onboarding() {
       setIsValid(validateLength(field, 2, 75));
     }
 
-    if (["area", "employees"].includes(property)) {
-      let value = field;
-      if (typeof value === "string") value = [value];
-
-      setIsValid(validateOption(value, currentField.options));
+    if (property === "area") {
+      setIsValid(validateOption(field, currentField.options));
     }
 
     if (property === "href") {
@@ -91,10 +87,8 @@ export default function Onboarding() {
       // All questions answered
       setIsloading(true);
 
-      let { name, area } = onboarding;
+      const { name, area } = onboarding;
       const { email, password } = credentials;
-
-      if (typeof area === "string") area = [area]; // For students
 
       // Default data
       let data = {
@@ -207,18 +201,11 @@ export default function Onboarding() {
           {currentField.type === "map" && (
             <GeoLocation handleProperty={setOnboardingValues} />
           )}
-          {currentField.type === "check" && (
-            <OnboardingCheckBoxes
-              handleProperty={setOnboardingValues}
-              options={currentField.options}
-              checkedValues={onboarding[currentField.property]}
-            />
-          )}
           {currentField.type === "radio" && (
             <OnboardingRadio
               options={currentField.options}
               handleProperty={setOnboardingValues}
-              selectedValue={onboarding[currentField.property]}
+              selected={onboarding[currentField.property]}
             />
           )}
           {["text", "link"].includes(currentField.type) && (
@@ -229,7 +216,9 @@ export default function Onboarding() {
               handleProperty={setOnboardingValues}
               propertyValue={onboarding[currentField.property]}
               placeholder={
-                currentField.type === "link" ? "https://name.com" : "Type ..."
+                currentField.type === "link"
+                  ? "https://www.yrgo.se/"
+                  : "Type ..."
               }
             />
           )}
