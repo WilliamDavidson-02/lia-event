@@ -1,11 +1,11 @@
 import styles from "./Toggle.module.css";
 
-export default function Toggle({ checked }) {
+export default function Toggle({ checked, ...props }) {
   const handleToggle = (ev) => {
     ev.target.classList.add(styles.toggled);
   };
   return (
-    <div className={styles.container}>
+    <div {...props} className={styles.container}>
       <input
         checked={checked}
         onChange={handleToggle}

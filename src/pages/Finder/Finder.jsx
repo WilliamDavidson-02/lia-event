@@ -11,17 +11,20 @@ export default function Finder() {
   const [users, setUsers] = useState([]);
   const [offset, setOffset] = useState(0);
   const [isGettingUsers, setIsGettingUsers] = useState(false);
-  const [keywords, setKeywords] = useState([]);
+  const [filterOptions, setFilterOptions] = useState({
+    wishlist: false,
+    keywords: [],
+  });
 
   const loadLimit = 19;
 
   useEffect(() => {
     if (!user) return;
 
-    getUsers(offset);
+    filterOptions.wishlist ? getSavedUsers(offset) : getUsers(offset);
   }, [user]);
 
-  const getSavedUsers = async (ids) => {
+  const getSavedUsersIds = async (ids) => {
     const { data, error } = await supabase
       .from("saved_users")
       .select("saved_id")
@@ -50,6 +53,7 @@ export default function Finder() {
       .range(range, range + loadLimit);
 
     // Conditionaly add to query
+    const { keywords } = filterOptions;
 
     if (keywords.length > 1) query.overlaps("keywords", keywords);
     if (keywords.length === 1) query.contains("keywords", keywords);
@@ -77,7 +81,7 @@ export default function Finder() {
     if (reset) newUsers = newData;
 
     const ids = newUsers.map((u) => u.id);
-    const savedUsers = await getSavedUsers(ids);
+    const savedUsers = await getSavedUsersIds(ids);
 
     if (savedUsers.length) {
       newUsers = newUsers.map((u) => {
@@ -91,28 +95,81 @@ export default function Finder() {
     setUsers(newUsers);
   };
 
+  const getSavedUsers = async (range, reset) => {
+    if (isGettingUsers) return;
+
+    setIsGettingUsers(true);
+
+    let query = supabase
+      .from("saved_users")
+      .select("profile(name, avatar, href, id)")
+      .eq("user_id", user.id)
+      .not("profile", "is", null)
+      .order("profile(name)", { ascending: true })
+      .range(range, range + loadLimit);
+
+    // Conditionaly add to query
+    const { keywords } = filterOptions;
+
+    if (keywords.length > 1) query.overlaps("profile.keywords", keywords);
+    if (keywords.length === 1) query.contains("profile.keywords", keywords);
+
+    // Execute query
+    const { data, error } = await query;
+
+    setIsGettingUsers(false);
+
+    if (error) {
+      console.error("Error getting users", error);
+      return;
+    }
+
+    if (!data) return;
+
+    let newData = data.map((u) => u.profile);
+
+    // Filter duplicates
+    if (!reset) {
+      newData = newData.filter((d) => !users.some((p) => p.id === d.id));
+    }
+
+    let newUsers = [...users, ...newData];
+
+    // if reset remove old users from list
+    if (reset) newUsers = newData;
+
+    newUsers = newUsers.map((u) => {
+      u.isSaved = true;
+
+      return u;
+    });
+
+    setUsers(newData);
+  };
+
   const handleOffset = () => {
     setOffset((prev) => {
       const newOffset = prev + loadLimit + 1;
 
-      getUsers(newOffset);
+      filterOptions.wishlist ? getSavedUsers(newOffset) : getUsers(newOffset);
 
       return newOffset;
     });
   };
 
-  const handleNewKeywords = () => {
+  const resetOffset = (wishlist) => {
     setOffset(0);
-    getUsers(0, true);
+
+    wishlist ? getSavedUsers(0, true) : getUsers(0, true);
   };
 
   return (
     <main className={styles.container}>
       <Nav />
       <Filter
-        keywords={keywords}
-        setKeywords={setKeywords}
-        handleNewKeys={handleNewKeywords}
+        filterOptions={filterOptions}
+        setFilterOptions={setFilterOptions}
+        resetOffset={resetOffset}
       />
       <UserList setUsers={setUsers} handleOffset={handleOffset} users={users} />
     </main>

@@ -13,7 +13,11 @@ import Toggle from "../Toggle/Toggle";
 import Button from "../Button/Button";
 import { useClickAway } from "@uidotdev/usehooks";
 
-export default function Filter({ keywords, setKeywords, handleNewKeys }) {
+export default function Filter({
+  filterOptions,
+  setFilterOptions,
+  resetOffset,
+}) {
   const [showOptions, setShowOptions] = useState(false);
   const [activeSideMenu, setActiveSideMenu] = useState(false);
   const [timer, setTimer] = useState(null);
@@ -54,7 +58,16 @@ export default function Filter({ keywords, setKeywords, handleNewKeys }) {
 
   const handleSave = () => {
     handleMenuToggle(false);
-    handleNewKeys();
+    resetOffset(filterOptions.wishlist);
+  };
+
+  const handleFilterOptions = (prop, value) => {
+    setFilterOptions((prev) => ({ ...prev, [prop]: value }));
+  };
+
+  const handleWishlistToggle = () => {
+    handleFilterOptions("wishlist", !filterOptions.wishlist);
+    resetOffset(!filterOptions.wishlist);
   };
 
   return (
@@ -90,7 +103,7 @@ export default function Filter({ keywords, setKeywords, handleNewKeys }) {
               <Bookmark />
               <span>My WishList</span>
             </div>
-            <Toggle />
+            <Toggle onClick={handleWishlistToggle} />
           </div>
           <div className={styles.separator} />
           <div
@@ -109,8 +122,8 @@ export default function Filter({ keywords, setKeywords, handleNewKeys }) {
           >
             <EditKeywords
               style={{ maxHeight: "calc(100vh - 5rem - 232px)" }}
-              handleProperty={(words) => setKeywords(words)}
-              selected={keywords}
+              handleProperty={(words) => handleFilterOptions("keywords", words)}
+              selected={filterOptions.keywords}
               area={"all"}
             />
             <div className={styles.footer}>
