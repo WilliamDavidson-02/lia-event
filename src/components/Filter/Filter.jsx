@@ -17,6 +17,7 @@ export default function Filter({
   filterOptions,
   setFilterOptions,
   resetOffset,
+  handleShowMatches,
 }) {
   const [showOptions, setShowOptions] = useState(false);
   const [activeSideMenu, setActiveSideMenu] = useState(false);
@@ -85,6 +86,7 @@ export default function Filter({
         <div
           style={{ backgroundColor: "var(--yrgo-red)" }}
           className={styles.trigger}
+          onClick={() => handleShowMatches("all")}
         >
           <HeartHandshake size={24} />
           <span>Match Me</span>

@@ -1,15 +1,16 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import styles from "./UserList.module.css";
 import stylesCard from "../UserCard/UserCard.module.css";
 import UserCard from "../UserCard/UserCard";
 import MatchRating from "../MatchRating/MatchRating";
-import Skeleton from "../Skeleton/Skeleton";
 
 export default function UserList({
   users,
   handleOffset,
   setUsers,
   filterOptions,
+  handleShowMatches,
+  showMatches,
 }) {
   useEffect(() => {
     const container = document.querySelector("#finder-user-list-container");
@@ -44,14 +45,6 @@ export default function UserList({
     if (isScrollInRange) handleOffset();
   };
 
-  if (!users.length) {
-    return (
-      <div className={styles.skeleton}>
-        <Skeleton style={{ width: "100%", height: "100%" }} />
-      </div>
-    );
-  }
-
   const filterUsersfromWishlist = (users) => {
     if (!filterOptions.wishlist) return users;
 
@@ -85,7 +78,11 @@ export default function UserList({
     >
       {users.map((profile) => (
         <UserCard setSave={setSave} profile={profile} key={profile.id}>
-          <MatchRating />
+          <MatchRating
+            onClick={() => handleShowMatches(profile.id)}
+            show={showMatches.includes(profile.id)}
+            rating={profile.rating}
+          />
         </UserCard>
       ))}
     </section>

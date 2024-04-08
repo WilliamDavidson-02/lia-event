@@ -34,16 +34,3 @@
     border-radius: 100vmax;
   }
 }
-
-.skeleton {
-  position: relative;
-  z-index: 2;
-  border-radius: var(--rounded-xl);
-  overflow: hidden;
-
-  flex-grow: 1;
-
-  max-height: 200px;
-  min-width: 350px;
-  max-width: 390px;
-}

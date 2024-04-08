@@ -17,6 +17,7 @@ export default function Finder() {
     keywords: [],
     search: "",
   });
+  const [showMatches, setShowMatches] = useState([]);
   const searchDebounce = useDebounce(filterOptions.search, 300);
 
   const loadLimit = 19;
@@ -92,6 +93,33 @@ export default function Finder() {
     return sorted;
   };
 
+  const calcMatchMe = (user, profiles) => {
+    /**
+     * Calculate matches relative to to students keywords.
+     * Due to student only able to select there respective keywords for there program.
+     */
+
+    profiles = profiles.map((u) => {
+      const { user_type, keywords } = user.user_metadata;
+
+      const student = user_type === "student" ? keywords : u.keywords;
+      const company = user_type !== "student" ? keywords : u.keywords;
+
+      const matches = company.reduce((acc, cur) => {
+        if (student.includes(cur)) acc += 1;
+
+        return acc;
+      }, 0);
+
+      return {
+        ...u,
+        rating: Math.ceil(Math.floor((matches / student.length) * 100) / 20),
+      };
+    });
+
+    return profiles;
+  };
+
   const getUsers = async (range, reset) => {
     if (isGettingUsers) return;
 
@@ -100,7 +128,7 @@ export default function Finder() {
     // Default query
     let query = supabase
       .from("profile")
-      .select("name, avatar, href, id")
+      .select("name, avatar, href, id, keywords")
       .neq("user_type", user.user_metadata.user_type)
       .order("name", { ascending: true })
       .range(range, range + loadLimit);
@@ -133,6 +161,8 @@ export default function Finder() {
     // Sort by the already existing users on the list and the new users
     newUsers = sortUsersList(newUsers);
 
+    newUsers = calcMatchMe(user, newUsers);
+
     setUsers(newUsers);
   };
 
@@ -143,7 +173,7 @@ export default function Finder() {
 
     let query = supabase
       .from("saved_users")
-      .select("profile(name, avatar, href, id)")
+      .select("profile(name, avatar, href, id, keywords)")
       .eq("user_id", user.id)
       .not("profile", "is", null)
       .order("profile(name)", { ascending: true })
@@ -178,6 +208,8 @@ export default function Finder() {
     // Sort by the already existing users on the list and the new users
     newUsers = sortUsersList(newUsers);
 
+    newUsers = calcMatchMe(user, newUsers);
+
     setUsers(newUsers);
   };
 
@@ -197,6 +229,23 @@ export default function Finder() {
     wishlist ? getSavedUsers(0, true) : getUsers(0, true);
   };
 
+  const handleShowMatches = (id) => {
+    if (id === "all") {
+      setShowMatches(users.map((u) => u.id));
+      return;
+    }
+
+    setShowMatches((prev) => {
+      if (prev.includes(id)) {
+        return prev.filter((p) => p !== id);
+      }
+
+      prev = [...prev, id];
+
+      return prev;
+    });
+  };
+
   return (
     <main className={styles.container}>
       <Nav />
@@ -204,12 +253,15 @@ export default function Finder() {
         filterOptions={filterOptions}
         setFilterOptions={setFilterOptions}
         resetOffset={resetOffset}
+        handleShowMatches={handleShowMatches}
       />
       <UserList
         setUsers={setUsers}
         handleOffset={handleOffset}
         users={users}
         filterOptions={filterOptions}
+        handleShowMatches={handleShowMatches}
+        showMatches={showMatches}
       />
     </main>
   );

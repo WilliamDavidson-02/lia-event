@@ -47,7 +47,7 @@
 .content {
   position: relative;
   transform: translateY(0);
-  transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease;
 
   display: flex;
   flex-direction: column;
@@ -60,7 +60,7 @@
 
 .up {
   transform: translateY(-100%);
-  transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease;
 }
 
 .option {
