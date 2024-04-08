@@ -10,11 +10,10 @@
 }
 
 .hero {
-  height: calc(100vh - 2.25rem - 24px);
+  height: calc(100vh - 2.25rem - 20px);
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  gap: 8rem;
+  justify-content: space-between;
   padding: var(--p-md);
 }
 
