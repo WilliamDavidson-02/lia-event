@@ -14,6 +14,7 @@ export default function EditKeywords({
 }) {
   const [suggestins, setSuggestions] = useState([]);
   const [words, setWords] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const keywords = getKeywords(area);
@@ -57,6 +58,8 @@ export default function EditKeywords({
   };
 
   const handleSearch = (search) => {
+    setSearch(search);
+
     const unSelectedWords = words.filter((w) => !selected.includes(w));
     const result = unSelectedWords.filter((w) =>
       w.toLowerCase().includes(search.toLowerCase())
@@ -67,7 +70,7 @@ export default function EditKeywords({
 
   return (
     <section style={style} className={styles.container}>
-      <Search handleSearch={handleSearch} />
+      <Search value={search} onChange={(ev) => handleSearch(ev.target.value)} />
       <div className={styles.content}>
         <p className={styles.title}>
           Selected:
