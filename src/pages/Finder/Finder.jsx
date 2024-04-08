@@ -5,6 +5,7 @@ import UserList from "../../components/UserList/UserList";
 import supabase from "../../config/supabaseConfig";
 import useUserContext from "../../hooks/useUserContext";
 import Filter from "../../components/Filter/Filter";
+import { useDebounce } from "@uidotdev/usehooks";
 
 export default function Finder() {
   const { user } = useUserContext();
@@ -14,15 +15,17 @@ export default function Finder() {
   const [filterOptions, setFilterOptions] = useState({
     wishlist: false,
     keywords: [],
+    search: "",
   });
+  const searchDebounce = useDebounce(filterOptions.search, 300);
 
   const loadLimit = 19;
 
   useEffect(() => {
     if (!user) return;
 
-    filterOptions.wishlist ? getSavedUsers(offset) : getUsers(offset);
-  }, [user]);
+    filterOptions.wishlist ? getSavedUsers(0, true) : getUsers(0, true);
+  }, [user, searchDebounce]);
 
   const getSavedUsersIds = async (ids) => {
     const { data, error } = await supabase
@@ -53,11 +56,27 @@ export default function Finder() {
     return [...users, ...data];
   };
 
-  const setKeywordsParam = (query) => {
-    const { keywords } = filterOptions;
+  const setFilterOptionParams = (query, referencedTable) => {
+    const { keywords, search } = filterOptions;
 
-    if (keywords.length > 1) query.overlaps("keywords", keywords);
-    if (keywords.length === 1) query.contains("keywords", keywords);
+    if (keywords.length > 1) {
+      query.overlaps(
+        referencedTable ? `${referencedTable}.keywords` : "keywords",
+        keywords
+      );
+    } else if (keywords.length === 1) {
+      query.contains(
+        referencedTable ? `${referencedTable}.keywords` : "keywords",
+        keywords
+      );
+    }
+
+    if (search.length > 0) {
+      query.ilike(
+        referencedTable ? `${referencedTable}.name` : "name",
+        `%${search}%`
+      );
+    }
 
     return query;
   };
@@ -87,7 +106,7 @@ export default function Finder() {
       .range(range, range + loadLimit);
 
     // Conditionaly add to query
-    query = setKeywordsParam(query);
+    query = setFilterOptionParams(query);
 
     // Execute query
     const { data, error } = await query;
@@ -131,7 +150,7 @@ export default function Finder() {
       .range(range, range + loadLimit);
 
     // Conditionaly add to query
-    query = setKeywordsParam(query);
+    query = setFilterOptionParams(query, "profile");
 
     // Execute query
     const { data, error } = await query;
