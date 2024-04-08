@@ -37,7 +37,7 @@ export default function UserCard({ setSave, profile, children, ...props }) {
       <Bookmark
         onClick={handleSave}
         className={profile.isSaved ? styles.saved : ""}
-        style={{ marginLeft: "auto" }}
+        style={{ marginLeft: "auto", cursor: "pointer" }}
       />
       <div className={styles.content}>
         <Image

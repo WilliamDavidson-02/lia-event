@@ -82,10 +82,7 @@ export default function Filter({
           <span>Filter</span>
         </div>
         <div
-          style={{
-            color: "var(--yrgo-white)",
-            backgroundColor: "var(--yrgo-red)",
-          }}
+          style={{ backgroundColor: "var(--yrgo-red)" }}
           className={styles.trigger}
         >
           <HeartHandshake size={24} />
