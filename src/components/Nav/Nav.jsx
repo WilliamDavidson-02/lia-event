@@ -40,6 +40,9 @@ export default function Nav() {
     handleNavToggle();
   };
 
+  const userID = user?.id;
+  const userType = user?.user_metadata?.user_type;
+
   return (
     <>
       <div onClick={handleNavToggle} className={styles["nav-btn-container"]}>
@@ -57,28 +60,24 @@ export default function Nav() {
               Finder
             </Link>
           )}
+          {user && (
+            <Link onClick={handleNavToggle} to={`/profile/${userID}/${userType}`}>
+              Profile
+            </Link>
+          )}
           <Link onClick={handleNavToggle} to={"https://www.yrgo.se/"}>
             Yrgo.se
           </Link>
           {user ? (
             <div className={styles.space} onClick={handleSignOut}>
               {isSigningOutLoading && (
-                <Loader2
-                  className="loader"
-                  size={24}
-                  strokeWidth={3}
-                  style={{ marginRight: "10px" }}
-                />
+                <Loader2 className="loader" size={24} strokeWidth={3} style={{ marginRight: "10px" }} />
               )}
               <span>Logout</span>
             </div>
           ) : (
             <>
-              <Link
-                onClick={handleNavToggle}
-                className={styles.space}
-                to={"/login"}
-              >
+              <Link onClick={handleNavToggle} className={styles.space} to={"/login"}>
                 Login
               </Link>
               <Link onClick={handleNavToggle} to={"/onboarding"}>
