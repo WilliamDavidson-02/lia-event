@@ -10,44 +10,42 @@ import UserCard from "../../components/UserCard/UserCard";
 
 export default function Profile() {
   const { user } = useUserContext;
-  const [userData, setUserData] = useState(null);
-  const { userID, userType } = useParams();
+  const [profileData, setProfileData] = useState(null);
+  const { profileID, profileType } = useParams();
   const [doEdit, setDoEdit] = useState(false);
 
+  console.log(profileID);
+  console.log(profileType);
+
   useEffect(() => {
-    async function fetchUserData() {
-      const { data, error } = await supabase
-        .from("company_profile")
-        .select("*, profile(*)")
-        .eq("id", userID)
-        .single();
+    async function fetchProfileData() {
+      let data, error;
+
+      if (profileType === "company") {
+        ({ data, error } = await supabase
+          .from("profile")
+          .select("*, company_profile(*)")
+          .eq("id", profileID)
+          .single());
+      } else if (profileType === "student") {
+        ({ data, error } = await supabase.from("profile").select("*").eq("id", profileID).single());
+      } else {
+        console.log("Invalid profile type:", profileType);
+      }
 
       if (error) {
         console.log("error fetching profile", error);
         return;
       }
-      setUserData(data);
+      setProfileData(data);
     }
 
-    fetchUserData();
-  }, [userID]);
+    fetchProfileData();
+  }, [profileID]);
 
+  console.log(profileData);
   /* Doesn't work - needs fixing */
-  const setSave = async (userID) => {
-    if (!userData.profile.isSaved) {
-      await supabase.from("saved_users").insert({ user_id: user.id, saved_id: userData.profile.id });
-    } else {
-      await supabase.from("saved_users").delete().eq("saved_id", userData.profile.id).eq("user_id", user.id);
-    }
-
-    setUserData((prevUserData) => ({
-      ...prevUserData,
-      profile: {
-        ...prevUserData.profile,
-        isSaved: !prevUserData.profile.isSaved,
-      },
-    }));
-  };
+  //const setSave = async (profileID) => {};
 
   const openEdit = () => {
     console.log("edit mode");
@@ -57,22 +55,22 @@ export default function Profile() {
 
   return (
     <div className={styles.container}>
-      {userData && (
+      {profileData && (
         <>
           <UserCard
             profile={{
-              id: userData.profile.id,
-              name: userData.profile.name,
-              avatar: userData.profile.avatar,
-              href: userData.profile.href,
+              id: profileData.id,
+              name: profileData.name,
+              avatar: profileData.avatar,
+              href: profileData.href,
             }}
-            key={userData.profile.id}
-            setSave={setSave(userID)}
+            key={profileData.id}
+            //setSave={setSave(profileID)}
             //showEdit={user.id === userData.profile.id}
             showEdit={true}
             openEdit={openEdit}
           />
-          <ProfileAbout userType={userType} userData={userData} />
+          <ProfileAbout profileType={profileType} profileData={profileData} />
         </>
       )}
     </div>
