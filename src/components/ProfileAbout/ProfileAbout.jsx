@@ -30,7 +30,6 @@ export default function ProfileAbout({ userType, userData }) {
           <Tab>
             <h3>Contact</h3>
             <p>Mail: {userData.contact}</p>
-            <p>Phone:</p>
           </Tab>
         </Tabs>
       )}
@@ -38,20 +37,28 @@ export default function ProfileAbout({ userType, userData }) {
       {userType === "student" && (
         <Tabs style={{ height: "48.125rem" }}>
           <Tab>
-            <h3>Om mig</h3>
-            <p>Utbildning (pågående):</p>
+            <h3>About Me</h3>
+            <p>
+              Field:{" "}
+              {userData.profile.area.map((areaTitle, index) => (
+                <React.Fragment key={index}>
+                  {areaTitle}
+                  {/* If a company has both web devs and design, adds both separated by a forward slash */}
+                  {index !== userData.profile.area.length - 1 && "/"}
+                </React.Fragment>
+              ))}
+            </p>
             <p>Location:</p>
           </Tab>
           <Tab>
-            <h3>Jag är</h3>
-            <p>Chips här</p>
+            <h3>My Skills</h3>
+            <Chips defaultValue={userData.profile.keywords} />
             <p>Dev/ Design</p>
             <p>Fri text</p>
           </Tab>
           <Tab>
             <h3>Kontakt</h3>
-            <p>Mail:</p>
-            <p>Tel:</p>
+            <p>Mail: {userData.contact}</p>
           </Tab>
         </Tabs>
       )}

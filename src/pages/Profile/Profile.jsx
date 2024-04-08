@@ -9,9 +9,10 @@ import ProfileAbout from "../../components/ProfileAbout/ProfileAbout";
 import UserCard from "../../components/UserCard/UserCard";
 
 export default function Profile() {
+  const { user } = useUserContext;
   const [userData, setUserData] = useState(null);
   const { userID, userType } = useParams();
-  const { user } = useUserContext;
+  const [doEdit, setDoEdit] = useState(false);
 
   useEffect(() => {
     async function fetchUserData() {
@@ -25,17 +26,35 @@ export default function Profile() {
         console.log("error fetching profile", error);
         return;
       }
-      console.log(data);
       setUserData(data);
     }
 
     fetchUserData();
   }, [userID]);
 
+  /* Doesn't work - needs fixing */
   const setSave = async (userID) => {
-    await supabase.from("saved_users").insert({ user_id: userID, saved_id: userData.profile.id });
-    //await supabase.from("saved_users").delete().eq("saved_id", id).eq("user_id", user.id);
+    if (!userData.profile.isSaved) {
+      await supabase.from("saved_users").insert({ user_id: user.id, saved_id: userData.profile.id });
+    } else {
+      await supabase.from("saved_users").delete().eq("saved_id", userData.profile.id).eq("user_id", user.id);
+    }
+
+    setUserData((prevUserData) => ({
+      ...prevUserData,
+      profile: {
+        ...prevUserData.profile,
+        isSaved: !prevUserData.profile.isSaved,
+      },
+    }));
   };
+
+  const openEdit = () => {
+    console.log("edit mode");
+    setDoEdit(true);
+    console.log(doEdit);
+  };
+
   return (
     <div className={styles.container}>
       {userData && (
@@ -48,7 +67,10 @@ export default function Profile() {
               href: userData.profile.href,
             }}
             key={userData.profile.id}
-            setSave={setSave}
+            setSave={setSave(userID)}
+            //showEdit={user.id === userData.profile.id}
+            showEdit={true}
+            openEdit={openEdit}
           />
           <ProfileAbout userType={userType} userData={userData} />
         </>
