@@ -6,7 +6,6 @@ import MatchRating from "../MatchRating/MatchRating";
 
 export default function UserList({
   users,
-  handleOffset,
   setUsers,
   filterOptions,
   handleShowMatches,
@@ -38,13 +37,6 @@ export default function UserList({
     };
   }, [users]);
 
-  const handleScroll = (ev) => {
-    const { scrollTop, scrollHeight, clientHeight } = ev.target;
-    const isScrollInRange = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
-
-    if (isScrollInRange) handleOffset();
-  };
-
   const filterUsersfromWishlist = (users) => {
     if (!filterOptions.wishlist) return users;
 
@@ -71,11 +63,7 @@ export default function UserList({
   };
 
   return (
-    <section
-      id={"finder-user-list-container"}
-      onScroll={handleScroll}
-      className={styles.content}
-    >
+    <section id={"finder-user-list-container"} className={styles.content}>
       {users.map((profile) => (
         <UserCard setSave={setSave} profile={profile} key={profile.id}>
           <MatchRating

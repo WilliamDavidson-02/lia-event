@@ -10,7 +10,6 @@ import { useDebounce } from "@uidotdev/usehooks";
 export default function Finder() {
   const { user } = useUserContext();
   const [users, setUsers] = useState([]);
-  const [offset, setOffset] = useState(0);
   const [isGettingUsers, setIsGettingUsers] = useState(false);
   const [filterOptions, setFilterOptions] = useState({
     wishlist: false,
@@ -18,14 +17,14 @@ export default function Finder() {
     search: "",
   });
   const [showMatches, setShowMatches] = useState([]);
-  const searchDebounce = useDebounce(filterOptions.search, 300);
+  const [matchAll, setMatchAll] = useState(false);
 
-  const loadLimit = 19;
+  const searchDebounce = useDebounce(filterOptions.search, 300);
 
   useEffect(() => {
     if (!user) return;
 
-    filterOptions.wishlist ? getSavedUsers(0, true) : getUsers(0, true);
+    filterOptions.wishlist ? getSavedUsers() : getUsers();
   }, [user, searchDebounce]);
 
   const getSavedUsersIds = async (ids) => {
@@ -43,18 +42,8 @@ export default function Finder() {
     return data.map((u) => u.saved_id);
   };
 
-  const filterUsersDuplicates = (data, users) => {
-    return data.filter((d) => !users.some((p) => p.id === d.id));
-  };
-
   const setUsersIsSaved = (users, savedUsers) => {
     return users.map((u) => ({ ...u, isSaved: savedUsers.includes(u.id) }));
-  };
-
-  const getNewUsersArray = (reset, users, data) => {
-    if (reset) return data;
-
-    return [...users, ...data];
   };
 
   const setFilterOptionParams = (query, referencedTable) => {
@@ -80,17 +69,6 @@ export default function Finder() {
     }
 
     return query;
-  };
-
-  const sortUsersList = (users) => {
-    const sorted = users.sort((a, b) => {
-      const nameA = a.name.toLowerCase();
-      const nameB = b.name.toLowerCase();
-
-      return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
-    });
-
-    return sorted;
   };
 
   const calcMatchMe = (user, profiles) => {
@@ -120,7 +98,16 @@ export default function Finder() {
     return profiles;
   };
 
-  const getUsers = async (range, reset) => {
+  const sortByMatchRating = (users) => {
+    const sorted = users.sort((a, b) => b.rating - a.rating);
+
+    const ids = sorted.map((u) => u.id);
+    setShowMatches(ids);
+
+    return sorted;
+  };
+
+  const getUsers = async () => {
     if (isGettingUsers) return;
 
     setIsGettingUsers(true);
@@ -130,8 +117,7 @@ export default function Finder() {
       .from("profile")
       .select("name, avatar, href, id, keywords")
       .neq("user_type", user.user_metadata.user_type)
-      .order("name", { ascending: true })
-      .range(range, range + loadLimit);
+      .order("name", { ascending: true });
 
     // Conditionaly add to query
     query = setFilterOptionParams(query);
@@ -148,25 +134,22 @@ export default function Finder() {
 
     if (!data) return;
 
-    let newData = data;
-
-    if (!reset) newData = filterUsersDuplicates(newData, users);
-
-    let newUsers = getNewUsersArray(reset, users, newData);
+    let newUsers = data;
 
     const savedUsers = await getSavedUsersIds(newUsers.map((u) => u.id));
 
     if (savedUsers.length) newUsers = setUsersIsSaved(newUsers, savedUsers);
 
-    // Sort by the already existing users on the list and the new users
-    newUsers = sortUsersList(newUsers);
-
     newUsers = calcMatchMe(user, newUsers);
+
+    if (matchAll) {
+      newUsers = sortByMatchRating(newUsers);
+    }
 
     setUsers(newUsers);
   };
 
-  const getSavedUsers = async (range, reset) => {
+  const getSavedUsers = async () => {
     if (isGettingUsers) return;
 
     setIsGettingUsers(true);
@@ -176,8 +159,7 @@ export default function Finder() {
       .select("profile(name, avatar, href, id, keywords)")
       .eq("user_id", user.id)
       .not("profile", "is", null)
-      .order("profile(name)", { ascending: true })
-      .range(range, range + loadLimit);
+      .order("profile(name)", { ascending: true });
 
     // Conditionaly add to query
     query = setFilterOptionParams(query, "profile");
@@ -194,47 +176,23 @@ export default function Finder() {
 
     if (!data) return;
 
-    let newData = data.map((u) => u.profile);
-
-    if (!reset) newData = filterUsersDuplicates(newData, users);
-
-    let newUsers = getNewUsersArray(reset, users, newData);
+    let newUsers = data.map((u) => u.profile);
 
     newUsers = setUsersIsSaved(
       newUsers,
       newUsers.map((u) => u.id)
     );
 
-    // Sort by the already existing users on the list and the new users
-    newUsers = sortUsersList(newUsers);
-
     newUsers = calcMatchMe(user, newUsers);
+
+    if (matchAll) {
+      newUsers = sortByMatchRating(newUsers);
+    }
 
     setUsers(newUsers);
   };
 
-  const handleOffset = () => {
-    setOffset((prev) => {
-      const newOffset = prev + loadLimit + 1;
-
-      filterOptions.wishlist ? getSavedUsers(newOffset) : getUsers(newOffset);
-
-      return newOffset;
-    });
-  };
-
-  const resetOffset = (wishlist) => {
-    setOffset(0);
-
-    wishlist ? getSavedUsers(0, true) : getUsers(0, true);
-  };
-
   const handleShowMatches = (id) => {
-    if (id === "all") {
-      setShowMatches(users.map((u) => u.id));
-      return;
-    }
-
     setShowMatches((prev) => {
       if (prev.includes(id)) {
         return prev.filter((p) => p !== id);
@@ -246,18 +204,39 @@ export default function Finder() {
     });
   };
 
+  const handleShowAllMatches = () => {
+    const show = !matchAll;
+    let sorted;
+
+    if (show) {
+      sorted = sortByMatchRating(users);
+    } else {
+      sorted = users.sort((a, b) => {
+        const nameA = a.name.toLowerCase();
+        const nameB = b.name.toLowerCase();
+
+        return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+      });
+
+      setShowMatches([]);
+    }
+
+    setUsers(sorted);
+    setMatchAll(show);
+  };
+
   return (
     <main className={styles.container}>
       <Nav />
       <Filter
         filterOptions={filterOptions}
         setFilterOptions={setFilterOptions}
-        resetOffset={resetOffset}
-        handleShowMatches={handleShowMatches}
+        getSavedUsers={getSavedUsers}
+        getUsers={getUsers}
+        handleShowAllMatches={handleShowAllMatches}
       />
       <UserList
         setUsers={setUsers}
-        handleOffset={handleOffset}
         users={users}
         filterOptions={filterOptions}
         handleShowMatches={handleShowMatches}

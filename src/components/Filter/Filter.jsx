@@ -16,13 +16,13 @@ import { useClickAway } from "@uidotdev/usehooks";
 export default function Filter({
   filterOptions,
   setFilterOptions,
-  resetOffset,
-  handleShowMatches,
+  getSavedUsers,
+  getUsers,
+  handleShowAllMatches,
 }) {
   const [showOptions, setShowOptions] = useState(false);
   const [activeSideMenu, setActiveSideMenu] = useState(false);
   const [timer, setTimer] = useState(null);
-
   const content = useRef(null);
   const modal = useClickAway(() => handleMenuToggle(false));
 
@@ -57,7 +57,7 @@ export default function Filter({
 
   const handleSave = () => {
     handleMenuToggle(false);
-    resetOffset(filterOptions.wishlist);
+    filterOptions.wishlist ? getSavedUsers() : getUsers();
   };
 
   const handleFilterOptions = (prop, value) => {
@@ -65,8 +65,8 @@ export default function Filter({
   };
 
   const handleWishlistToggle = () => {
+    !filterOptions.wishlist ? getSavedUsers() : getUsers();
     handleFilterOptions("wishlist", !filterOptions.wishlist);
-    resetOffset(!filterOptions.wishlist);
   };
 
   return (
@@ -86,7 +86,7 @@ export default function Filter({
         <div
           style={{ backgroundColor: "var(--yrgo-red)" }}
           className={styles.trigger}
-          onClick={() => handleShowMatches("all")}
+          onClick={handleShowAllMatches}
         >
           <HeartHandshake size={24} />
           <span>Match Me</span>
