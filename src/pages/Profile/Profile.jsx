@@ -7,15 +7,13 @@ import supabase from "../../config/supabaseConfig";
 import styles from "./Profile.module.css";
 import ProfileAbout from "../../components/ProfileAbout/ProfileAbout";
 import UserCard from "../../components/UserCard/UserCard";
+import ProfileEdit from "../../components/ProfileEdit/ProfileEdit";
 
 export default function Profile() {
   const { user } = useUserContext;
   const [profileData, setProfileData] = useState(null);
   const { profileID, profileType } = useParams();
   const [doEdit, setDoEdit] = useState(false);
-
-  console.log(profileID);
-  console.log(profileType);
 
   useEffect(() => {
     async function fetchProfileData() {
@@ -43,14 +41,11 @@ export default function Profile() {
     fetchProfileData();
   }, [profileID]);
 
-  console.log(profileData);
   /* Doesn't work - needs fixing */
   //const setSave = async (profileID) => {};
 
   const openEdit = () => {
-    console.log("edit mode");
     setDoEdit(true);
-    console.log(doEdit);
   };
 
   return (
