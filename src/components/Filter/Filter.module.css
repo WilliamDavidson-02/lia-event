@@ -1,0 +1,117 @@
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  margin-top: var(--m-md);
+
+  border-radius: var(--rounded-sm);
+  padding: var(--p-sm);
+  border: var(--backdrop-border);
+  background-color: var(--backdrop-background);
+  backdrop-filter: var(--backdrop-backdrop-filter);
+  color: var(--yrgo-white);
+
+  display: flex;
+  gap: var(--gap-sm);
+}
+
+.trigger {
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 2.25rem;
+
+  display: flex;
+  align-items: center;
+  gap: var(--gap-md);
+  padding: 0 var(--p-md);
+  border-radius: var(--rounded-sm);
+  width: 50%;
+  cursor: pointer;
+}
+
+.wrapper {
+  position: absolute;
+  top: calc(100% + var(--gap-sm));
+  z-index: 5;
+
+  height: calc(100vh - 5rem - 128px - 30px);
+  width: calc(100% + 1px);
+
+  overflow: hidden;
+  border-radius: var(--rounded-sm);
+}
+
+.content {
+  position: relative;
+  transform: translateY(0);
+  transition: all 0.4s ease-in-out;
+
+  display: flex;
+  flex-direction: column;
+  padding: var(--p-md) 0;
+  height: 100%;
+
+  color: var(--yrgo-black);
+  background-color: var(--yrgo-grey-100);
+}
+
+.up {
+  transform: translateY(-100%);
+  transition: all 0.4s ease-in-out;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--p-md) var(--p-md) var(--p-md) 0;
+}
+
+.option > div:first-child {
+  width: fit-content;
+}
+
+.separator {
+  height: 1px;
+  width: calc(100% - 32px);
+  margin: 0 auto;
+  background-color: var(--yrgo-black);
+}
+
+.side {
+  position: absolute;
+  flex-direction: column;
+
+  max-height: calc(100vh - 5rem - 128px - 30px);
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 100%;
+
+  background-color: var(--yrgo-grey-100);
+  padding: var(--p-md) 0;
+
+  transition: all 0.3s ease-in-out;
+}
+
+.side-open {
+  transform: translateX(-100%);
+  transition: all 0.3s ease-in-out;
+}
+
+.side .footer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--gap-md);
+  width: calc(100% - 32px);
+  margin: 0 auto;
+}
+
+.footer > button {
+  width: 100%;
+  outline: none !important;
+}

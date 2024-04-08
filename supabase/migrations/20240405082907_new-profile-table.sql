@@ -62,7 +62,7 @@ alter table "public"."company_profile" drop column "avatar";
 
 alter table "public"."company_profile" drop column "href";
 
-alter table "public"."profile" add column "area" text[];
+alter table "public"."profile" add column "area" text;
 
 alter table "public"."profile" add column "avatar" text;
 
@@ -82,7 +82,7 @@ AS $function$begin
     new.id, 
     new.raw_user_meta_data->>'name',
     ARRAY(SELECT jsonb_array_elements_text(NEW.raw_user_meta_data->'keywords')),
-    ARRAY(SELECT jsonb_array_elements_text(NEW.raw_user_meta_data->'area')),
+    new.raw_user_meta_data->>'area',
     new.raw_user_meta_data->>'avatar',
     new.raw_user_meta_data->>'href'
   );

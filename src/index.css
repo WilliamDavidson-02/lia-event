@@ -13,6 +13,18 @@
   --yrgo-white: #ffffff;
   --yrgo-black: #333;
 
+  /* Background */
+  --circle-size: 100%;
+  --blending: "hard-light";
+  --color-red: 245, 42, 59;
+  --color-blue: 0, 26, 82;
+  --color-green: 197, 235, 216;
+
+  /* Backdrop filter */
+  --backdrop-border: 1px solid rgba(255, 255, 255, 0.15);
+  --backdrop-background: rgba(255, 255, 255, 0.2);
+  --backdrop-backdrop-filter: blur(64px);
+
   /* Spacing */
   --p-xs: 0.25rem;
   --p-sm: 0.5rem;
@@ -51,6 +63,7 @@
 
 body {
   overflow-x: hidden;
+  background-color: black;
 }
 
 button {

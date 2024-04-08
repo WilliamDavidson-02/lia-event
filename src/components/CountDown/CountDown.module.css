@@ -1,5 +1,3 @@
 .container {
-  display: flex;
-  gap: var(--gap-md);
-  margin: 0 auto;
+  height: 70%;
 }

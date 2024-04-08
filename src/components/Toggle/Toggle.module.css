@@ -1,0 +1,102 @@
+.container {
+  position: relative;
+  border-radius: 100vmax;
+  width: 48px;
+  height: 28px;
+}
+
+.checkbox {
+  -webkit-appearance: none;
+  appearance: none;
+  position: absolute;
+  z-index: 1;
+  border-radius: inherit;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-radius: inherit;
+  padding: 4px;
+  width: 100%;
+  height: 100%;
+  /* background-color: var(--yrgo-grey-300); */
+  border: 2px solid var(--yrgo-black);
+  transition: background-color 0.4s linear;
+}
+
+/* .container > .checkbox:checked + .track {
+  background-color: var(--yrgo-black);
+} */
+
+.thumb {
+  position: relative;
+  border-radius: 11px;
+  transform-origin: left;
+  width: 18px;
+  height: 18px;
+  /* background-color: var(--yrgo-black); */
+  border: 2px solid var(--yrgo-black);
+}
+
+.checkbox.toggled + .track > .thumb {
+  animation-name: grow-out, bounce-out;
+  animation-duration: 0.2s;
+  animation-timing-function: cubic-bezier(0.75, 0, 1, 1),
+    cubic-bezier(0, 0, 0.3, 1.5);
+  animation-delay: 0s, 0.2s;
+  animation-fill-mode: forwards;
+}
+
+.checkbox.toggled:checked + .track > .thumb {
+  animation-name: grow-in, bounce-in;
+}
+
+@keyframes grow-in {
+  0% {
+    border-radius: 11px;
+    transform: translateX(0) scale(1);
+  }
+  100% {
+    border-radius: calc(1 / (34 / 22) * 11px) / calc(1 / (16 / 22) * 11px);
+    transform: translateX(8px) scale(calc(34 / 22), calc(16 / 22));
+  }
+}
+
+@keyframes bounce-in {
+  0% {
+    border-radius: calc(1 / (34 / 22) * 11px) / calc(1 / (16 / 22) * 11px);
+    transform: translateX(8px) scale(calc(34 / 22), calc(16 / 22));
+  }
+  100% {
+    border-radius: 11px;
+    transform: translateX(100%) scale(1);
+  }
+}
+
+@keyframes grow-out {
+  0% {
+    border-radius: 11px;
+    transform: translateX(100%) scale(1);
+  }
+  100% {
+    border-radius: calc(1 / (34 / 22) * 11px) / calc(1 / (16 / 22) * 11px);
+    transform: translateX(2px) scale(calc(34 / 22), calc(16 / 22));
+  }
+}
+
+@keyframes bounce-out {
+  0% {
+    border-radius: calc(1 / (34 / 22) * 11px) / calc(1 / (16 / 22) * 11px);
+    transform: translateX(2px) scale(calc(34 / 22), calc(16 / 22));
+  }
+  100% {
+    border-radius: 11px;
+    transform: translateX(0) scale(1);
+  }
+}

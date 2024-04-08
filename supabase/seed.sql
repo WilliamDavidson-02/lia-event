@@ -29,7 +29,7 @@ select
     current_timestamp,
     current_timestamp,
     '{"provider":"email","providers":["email"]}',
-    '{"area":["developer","design"],"contact":"company@gmail.com","employees":"101 to 500","keywords":["Frontend","Backend","CSS","SCSS","Typescript","JavaScript","Figma","React","Headless"],"name":"company","user_type":"company"}',
+    '{"area":"all","contact":"company@gmail.com","employees":"101 to 500","keywords":["Frontend","Backend","CSS","SCSS","Typescript","JavaScript","Figma","React","Headless"],"name":"company","user_type":"company"}',
     current_timestamp,
     current_timestamp,
     '',

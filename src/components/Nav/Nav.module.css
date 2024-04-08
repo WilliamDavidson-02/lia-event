@@ -19,6 +19,7 @@
   left: 100%;
   z-index: 9999;
   background: var(--yrgo-grey-100);
+  color: var(--yrgo-black);
   width: 100vw;
   height: 100vh;
   padding: 2.25rem 1.25rem;

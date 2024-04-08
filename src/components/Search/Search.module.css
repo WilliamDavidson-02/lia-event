@@ -7,12 +7,7 @@
   padding: var(--p-md);
   border-radius: var(--rounded-sm);
   color: var(--yrgo-grey-500);
-  outline-offset: 2px;
   cursor: pointer;
-}
-
-.container:focus-within {
-  outline: 2px solid var(--yrgo-black);
 }
 
 .input {

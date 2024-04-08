@@ -5,8 +5,11 @@
   padding: var(--p-xl) var(--p-md);
   margin: 2.25rem 1.25rem;
   margin-top: 0;
-  background: var(--yrgo-grey-100);
+  border: var(--backdrop-border);
+  background-color: var(--backdrop-background);
+  backdrop-filter: var(--backdrop-backdrop-filter);
   border-radius: var(--rounded-xl);
+  color: var(--yrgo-white);
 
   font-size: 1rem;
   font-weight: 400;
@@ -17,6 +20,10 @@
   display: flex;
   flex-direction: column;
   gap: var(--gap-md);
+}
+
+.text {
+  color: var(--yrgo-grey-300);
 }
 
 .title {

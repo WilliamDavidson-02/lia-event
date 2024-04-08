@@ -4,8 +4,11 @@
   gap: var(--gap-md);
 
   padding: var(--p-md);
-  background: var(--yrgo-grey-100);
-  border-radius: var(--rounded-xl);
+  border-radius: var(--rounded-sm);
+  border: var(--backdrop-border);
+  background-color: var(--backdrop-background);
+  backdrop-filter: var(--backdrop-backdrop-filter);
+  color: var(--yrgo-white);
 
   transition: opacity 0.3s ease-in;
   opacity: 1;
@@ -23,7 +26,6 @@
 }
 
 .title {
-  color: var(--yrgo-black);
   font-size: 1.25rem;
   font-weight: 600;
   line-height: 1.5rem;
@@ -31,13 +33,12 @@
 }
 
 .paragraph {
-  color: var(--yrgo-black);
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5rem;
 }
 
 .saved {
-  fill: var(--yrgo-black);
-  stroke: var(--yrgo-black);
+  fill: var(--yrgo-white);
+  stroke: var(--yrgo-white);
 }

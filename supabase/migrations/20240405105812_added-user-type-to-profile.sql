@@ -14,7 +14,7 @@ AS $function$begin
     new.id, 
     new.raw_user_meta_data->>'name',
     ARRAY(SELECT jsonb_array_elements_text(NEW.raw_user_meta_data->'keywords')),
-    ARRAY(SELECT jsonb_array_elements_text(NEW.raw_user_meta_data->'area')),
+    new.raw_user_meta_data->>'area',
     new.raw_user_meta_data->>'avatar',
     new.raw_user_meta_data->>'href',
     new.raw_user_meta_data->>'user_type'
