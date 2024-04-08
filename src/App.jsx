@@ -19,7 +19,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/:userID/:userType" element={<Profile />} />
             <Route path="/finder" element={<Finder />} />
           </Routes>
         </UserContextProvider>

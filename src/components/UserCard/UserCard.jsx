@@ -1,10 +1,10 @@
 import styles from "./UserCard.module.css";
 import Image from "../Image/Image";
-import { Bookmark } from "lucide-react";
+import { Bookmark, UserCog } from "lucide-react";
 import useUserContext from "../../hooks/useUserContext";
 import supabase from "../../config/supabaseConfig";
 
-export default function UserCard({ setSave, profile, children, ...props }) {
+export default function UserCard({ setSave, profile, children, showEdit, openEdit, ...props }) {
   const { user } = useUserContext();
 
   const handleSave = async () => {
@@ -12,9 +12,7 @@ export default function UserCard({ setSave, profile, children, ...props }) {
     setSave(profile.id);
 
     if (!profile.isSaved) {
-      const { error } = await supabase
-        .from("saved_users")
-        .insert({ user_id: user.id, saved_id: profile.id });
+      const { error } = await supabase.from("saved_users").insert({ user_id: user.id, saved_id: profile.id });
 
       if (error) {
         console.log("Error handling saved users", error);
@@ -34,11 +32,15 @@ export default function UserCard({ setSave, profile, children, ...props }) {
 
   return (
     <div {...props} className={styles.card}>
-      <Bookmark
-        onClick={handleSave}
-        className={profile.isSaved ? styles.saved : ""}
-        style={{ marginLeft: "auto", cursor: "pointer" }}
-      />
+      {showEdit ? (
+        <UserCog onClick={openEdit} style={{ marginLeft: "auto" }} />
+      ) : (
+        <Bookmark
+          onClick={handleSave}
+          className={profile.isSaved ? styles.saved : ""}
+          style={{ marginLeft: "auto" }}
+        />
+      )}
       <div className={styles.content}>
         <Image
           src={profile.avatar}
