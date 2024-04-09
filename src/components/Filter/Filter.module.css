@@ -1,13 +1,17 @@
-.container {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
 .header {
   margin-top: var(--m-md);
 
-  border-radius: var(--rounded-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+
+  z-index: 5;
+}
+
+.header .menu {
+  position: relative;
+
+  border-radius: var(--rounded-md);
   padding: var(--p-sm);
   border: var(--backdrop-border);
   background-color: var(--backdrop-background);
@@ -30,18 +34,20 @@
   border-radius: var(--rounded-sm);
   width: 50%;
   cursor: pointer;
+  user-select: none;
 }
 
 .wrapper {
   position: absolute;
-  top: calc(100% + var(--gap-sm));
-  z-index: 5;
+  top: calc(100% + var(--gap-md));
+  left: 0;
+  z-index: 10;
 
   height: calc(100vh - 5rem - 128px - 30px);
-  width: calc(100% + 1px);
+  width: 100%;
 
   overflow: hidden;
-  border-radius: var(--rounded-sm);
+  border-radius: var(--rounded-md);
 }
 
 .content {
@@ -53,6 +59,7 @@
   flex-direction: column;
   padding: var(--p-md) 0;
   height: 100%;
+  width: 100%;
 
   color: var(--yrgo-black);
   background-color: var(--yrgo-grey-100);
@@ -69,6 +76,7 @@
   justify-content: space-between;
   width: 100%;
   padding: var(--p-md) var(--p-md) var(--p-md) 0;
+  cursor: pointer;
 }
 
 .option > div:first-child {
@@ -114,4 +122,21 @@
 .footer > button {
   width: 100%;
   outline: none !important;
+}
+
+@media (min-width: 760px) {
+  .header {
+    margin: 0 auto;
+    margin-top: 4.5rem;
+
+    flex-direction: row-reverse;
+    justify-content: center;
+
+    width: 100%;
+    max-width: calc(23.625rem * 2 + var(--gap-md));
+  }
+
+  .header > div {
+    width: 50%;
+  }
 }

@@ -1,7 +1,9 @@
 .content {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(1, 1fr);
   gap: var(--gap-md);
+  padding-bottom: 2.25rem;
+  margin-top: var(--p-md);
 
   overflow-y: auto;
   scroll-behavior: smooth;
@@ -32,5 +34,19 @@
   &::-webkit-scrollbar-thumb {
     background: var(--yrgo-grey-300);
     border-radius: 100vmax;
+  }
+}
+
+@media (min-width: 760px) {
+  .content {
+    margin-top: 4.5rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1128px) {
+  .content {
+    gap: var(--gap-lg);
+    grid-template-columns: repeat(3, 1fr);
   }
 }

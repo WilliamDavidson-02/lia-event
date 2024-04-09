@@ -8,6 +8,11 @@
 }
 
 .trigger {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+
   background: var(--yrgo-red);
   color: var(--yrgo-white);
   border-radius: 100vmax;
@@ -17,7 +22,6 @@
   display: grid;
   place-content: center;
   cursor: pointer;
-  z-index: 2;
 }
 
 .track {

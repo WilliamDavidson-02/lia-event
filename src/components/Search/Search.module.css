@@ -2,11 +2,8 @@
   display: flex;
   align-items: center;
   gap: var(--gap-sm);
-
-  background: var(--yrgo-white);
   padding: var(--p-md);
-  border-radius: var(--rounded-sm);
-  color: var(--yrgo-grey-500);
+
   cursor: pointer;
 }
 
@@ -14,12 +11,52 @@
   flex-grow: 1;
   border: none;
   outline: none;
+  background: none;
 
   font-size: 1rem;
   font-weight: 400;
+}
+
+.default .input::placeholder {
+  color: var(--yrgo-grey-500);
+}
+
+.default .input {
   color: var(--yrgo-black);
 }
 
-.input::placeholder {
+.default {
+  background: var(--yrgo-white);
+  border-radius: var(--rounded-sm);
   color: var(--yrgo-grey-500);
+}
+
+.ghost {
+  border: var(--backdrop-border);
+  background-color: var(--backdrop-background);
+  backdrop-filter: var(--backdrop-backdrop-filter);
+  color: var(--yrgo-grey-300);
+
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.ghost .input::placeholder {
+  color: var(--yrgo-grey-300);
+}
+
+.ghost .input {
+  color: var(--yrgo-white);
+}
+
+.ghost:focus-within {
+  background-color: var(--yrgo-white);
+  color: var(--yrgo-grey-500);
+}
+
+.ghost:focus-within .input::placeholder {
+  color: var(--yrgo-grey-500);
+}
+
+.ghost:focus-within .input {
+  color: var(--yrgo-black);
 }
