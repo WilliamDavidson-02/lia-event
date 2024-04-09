@@ -46,7 +46,7 @@ export default function ProfileEdit({ profileType, profileData, closeEdit }) {
     }
 
     /* Get the Base URL to supabase avatars bucket */
-    const avatarPrefix = "http://127.0.0.1:54321/storage/v1/object/public/avatars/public";
+    const avatarPrefix = import.meta.env.VITE_SUPABASE_AVATARS_BASE_URL;
 
     let avatarURL = `${avatarPrefix}/${avatarFileName}`;
 
