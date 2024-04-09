@@ -1,5 +1,7 @@
 .container {
-  background-color: var(--yrgo-grey);
-  border-radius: 1rem;
+  border-radius: var(--rounded-sm);
+  border: var(--backdrop-border);
+  background-color: var(--backdrop-background);
+  backdrop-filter: var(--backdrop-backdrop-filter);
   padding: var(--p-md);
 }
