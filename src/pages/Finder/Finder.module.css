@@ -3,7 +3,7 @@
   width: 100%;
   max-width: calc(22rem * 3 + 6rem);
   margin: 0 auto;
-  padding: 2.25rem 1.25rem 0 1.25rem;
+  padding: 0 1.25rem 0 1.25rem;
   display: flex;
   flex-direction: column;
 }

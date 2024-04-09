@@ -2,8 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2.25rem 1.25rem;
-  height: 100vh;
+  padding: 0 1.5rem 2.25rem 1.25rem;
+  height: calc(100vh - 84px);
 }
 
 .form {
@@ -54,4 +54,10 @@
 
 .paragraph a {
   text-decoration: underline;
+}
+
+@media (min-width: 760px) {
+  .continer {
+    height: calc(100vh - 96px);
+  }
 }
