@@ -7,15 +7,20 @@ import supabase from "../../config/supabaseConfig";
 import styles from "./Profile.module.css";
 import ProfileAbout from "../../components/ProfileAbout/ProfileAbout";
 import UserCard from "../../components/UserCard/UserCard";
+import ProfileEdit from "../../components/ProfileEdit/ProfileEdit";
+import Nav from "../../components/Nav/Nav";
 
 export default function Profile() {
-  const { user } = useUserContext;
+  const { user } = useUserContext();
   const [profileData, setProfileData] = useState(null);
   const { profileID, profileType } = useParams();
   const [doEdit, setDoEdit] = useState(false);
 
-  console.log(profileID);
-  console.log(profileType);
+  let displayEdit = false;
+
+  if (user?.id === profileID) {
+    displayEdit = true;
+  }
 
   useEffect(() => {
     async function fetchProfileData() {
@@ -43,34 +48,40 @@ export default function Profile() {
     fetchProfileData();
   }, [profileID]);
 
-  console.log(profileData);
   /* Doesn't work - needs fixing */
   //const setSave = async (profileID) => {};
 
   const openEdit = () => {
-    console.log("edit mode");
     setDoEdit(true);
-    console.log(doEdit);
   };
 
+  const cancelEdit = () => {
+    setDoEdit(false);
+  };
   return (
     <div className={styles.container}>
+      <Nav />
       {profileData && (
         <>
-          <UserCard
-            profile={{
-              id: profileData.id,
-              name: profileData.name,
-              avatar: profileData.avatar,
-              href: profileData.href,
-            }}
-            key={profileData.id}
-            //setSave={setSave(profileID)}
-            //showEdit={user.id === userData.profile.id}
-            showEdit={true}
-            openEdit={openEdit}
-          />
-          <ProfileAbout profileType={profileType} profileData={profileData} />
+          {doEdit ? (
+            <ProfileEdit profileData={profileData} profileType={profileType} closeEdit={cancelEdit} />
+          ) : (
+            <>
+              <UserCard
+                profile={{
+                  id: profileData.id,
+                  name: profileData.name,
+                  avatar: profileData.avatar,
+                  href: profileData.href,
+                }}
+                key={profileData.id}
+                //setSave={setSave(profileID)}
+                showEdit={displayEdit}
+                openEdit={openEdit}
+              />
+              <ProfileAbout profileType={profileType} profileData={profileData} />
+            </>
+          )}
         </>
       )}
     </div>
