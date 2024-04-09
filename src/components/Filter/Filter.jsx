@@ -70,12 +70,14 @@ export default function Filter({
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.header}>
       <Search
+        variant={filterOptions.search ? "default" : "ghost"}
+        style={{ borderRadius: "var(--rounded-md)" }}
         value={filterOptions.search}
         onChange={(ev) => handleFilterOptions("search", ev.target.value)}
       />
-      <div className={styles.header}>
+      <div className={styles.menu}>
         <div
           onClick={() => handleMenuToggle(!showOptions)}
           className={styles.trigger}
@@ -91,46 +93,48 @@ export default function Filter({
           <HeartHandshake size={24} />
           <span>Match Me</span>
         </div>
-      </div>
-      <div
-        ref={modal}
-        className={styles.wrapper}
-        style={{ display: showOptions ? "block" : "none" }}
-      >
-        <div ref={content} className={`${styles.content} ${styles.up}`}>
-          <div className={styles.option}>
-            <div className={styles.trigger}>
-              <Bookmark />
-              <span>My WishList</span>
+        <div
+          ref={modal}
+          className={styles.wrapper}
+          style={{ display: showOptions ? "flex" : "none" }}
+        >
+          <div ref={content} className={`${styles.content} ${styles.up}`}>
+            <div className={styles.option}>
+              <div className={styles.trigger}>
+                <Bookmark />
+                <span>My WishList</span>
+              </div>
+              <Toggle onClick={handleWishlistToggle} />
             </div>
-            <Toggle onClick={handleWishlistToggle} />
-          </div>
-          <div className={styles.separator} />
-          <div
-            onClick={() => setActiveSideMenu((prev) => !prev)}
-            className={styles.option}
-          >
-            <div className={styles.trigger}>Keywords</div>
-            <ChevronRight />
-          </div>
-          <div className={styles.separator} />
-          <div
-            style={{ display: showOptions ? "flex" : "none" }}
-            className={`${styles.side} ${
-              activeSideMenu ? styles["side-open"] : ""
-            }`}
-          >
-            <EditKeywords
-              style={{ maxHeight: "calc(100vh - 5rem - 232px)" }}
-              handleProperty={(words) => handleFilterOptions("keywords", words)}
-              selected={filterOptions.keywords}
-              area={"all"}
-            />
-            <div className={styles.footer}>
-              <Button variant="blue" onClick={() => setActiveSideMenu(false)}>
-                <ChevronLeft />
-              </Button>
-              <Button onClick={handleSave}>Save</Button>
+            <div className={styles.separator} />
+            <div
+              onClick={() => setActiveSideMenu((prev) => !prev)}
+              className={styles.option}
+            >
+              <div className={styles.trigger}>Keywords</div>
+              <ChevronRight />
+            </div>
+            <div className={styles.separator} />
+            <div
+              style={{ display: showOptions ? "flex" : "none" }}
+              className={`${styles.side} ${
+                activeSideMenu ? styles["side-open"] : ""
+              }`}
+            >
+              <EditKeywords
+                style={{ maxHeight: "calc(100vh - 5rem - 232px)" }}
+                handleProperty={(words) =>
+                  handleFilterOptions("keywords", words)
+                }
+                selected={filterOptions.keywords}
+                area={"all"}
+              />
+              <div className={styles.footer}>
+                <Button variant="blue" onClick={() => setActiveSideMenu(false)}>
+                  <ChevronLeft />
+                </Button>
+                <Button onClick={handleSave}>Save</Button>
+              </div>
             </div>
           </div>
         </div>
