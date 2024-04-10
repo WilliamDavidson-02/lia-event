@@ -37,6 +37,10 @@ export default function ProfileEdit({ profileType, profileData, closeEdit }) {
     imagePreview.readAsDataURL(file);
   };
 
+  const handleEditImage = () => {
+    document.getElementById("imgUpload").click();
+  };
+
   const handleImageUpload = async (event) => {
     event.preventDefault();
     if (!imageFile) return;
@@ -90,7 +94,6 @@ export default function ProfileEdit({ profileType, profileData, closeEdit }) {
 
   return (
     <div className={styles.container}>
-      <h2>Edit</h2>
       <form className={styles.field} autoComplete="off" autoCorrect="off">
         <div className={styles.editImage}>
           <Image
@@ -103,61 +106,106 @@ export default function ProfileEdit({ profileType, profileData, closeEdit }) {
               zIndex: "2",
             }}
           />
-          <Label>
+          <div onClick={handleEditImage}>
+            <label className={styles.editImgParagraph}>
+              Edit profile picture
+              <input
+                id="imgUpload"
+                type="file"
+                accept="image/"
+                style={{ display: "none" }}
+                onChange={handleImageChange}
+              />
+            </label>
+          </div>
+          {/* <Label style={{ color: "white" }}>
             Upload image:
             <Input type="file" onChange={handleImageChange} />
           </Label>
           <Button variant="primary" onClick={handleImageUpload}>
             Upload Image
-          </Button>
+          </Button> */}
         </div>
-        <Label>
+        <h2>Editing Profile</h2>
+        <Label style={{ color: "white" }}>
+          Company name
           <Input
-            style={{ fontSize: "1.2rem", fontWeight: "600" }}
+            style={{
+              fontSize: "1.2rem",
+              fontWeight: "600",
+            }}
             className={styles.inputField}
             placeholder="Name"
             defaultValue={profileData.name}></Input>
         </Label>
         {profileType === "company" && (
           <>
-            <Label>
+            <Label style={{ color: "white" }}>
+              Website
               <Input
                 className={styles.inputField}
                 placeholder="Website"
                 defaultValue={profileData.href}></Input>
             </Label>
-            <Label>
+            <Label style={{ color: "white" }}>
+              Contact mail
               <Input
                 className={styles.inputField}
                 placeholder="Enter mail"
                 defaultValue={profileData.contact}></Input>
             </Label>
-            <div>
-              Fields
-              {}
-              <OnboardingRadio
-                options={areaQuestionCompany.options}
-                selected={selectedArea}
-                handleProperty={handleAreaChange}
-              />
+
+            <div className={styles.loginInfo}>
+              <h2>Login Details:</h2>
+              <Label style={{ color: "white" }}>
+                Contact mail
+                <Input
+                  className={styles.inputField}
+                  placeholder="Enter mail"
+                  defaultValue={profileData.contact}></Input>
+              </Label>
+              <Label style={{ color: "white" }}>
+                Password
+                <Input className={styles.inputField} placeholder="New password"></Input>
+              </Label>
             </div>
-            <Label className={styles.location}>
-              Location
-              <GeoLocation handleProperty={handleLocationChange} />
-            </Label>
+
+            <div>
+              <h2>Looking for</h2>
+              <div className={styles.radioBg}>
+                <OnboardingRadio
+                  variant="profile"
+                  variantInput="profileRadio"
+                  options={areaQuestionCompany.options}
+                  selected={selectedArea}
+                  handleProperty={handleAreaChange}
+                />
+              </div>
+            </div>
             <EditKeywords
               handleProperty={handleKeywordsChange}
               selected={selectedKeywords}
               area={keywordArea}
             />
+            <Label className={styles.location}>
+              Location
+              <GeoLocation handleProperty={handleLocationChange} />
+            </Label>
           </>
         )}
         {profileType === "student" && (
           <>
-            <Label>
+            <div>
               Education
-              <OnboardingRadio options={areaQuestionStudent.options} selected={profileData.area} />
-            </Label>
+              {}
+              <OnboardingRadio
+                variant="profile"
+                variantInput="profileRadio"
+                options={areaQuestionStudent.options}
+                selected={selectedArea}
+                handleProperty={handleAreaChange}
+              />
+            </div>
             <Label>
               <Input
                 className={styles.inputField}

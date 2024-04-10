@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import UserContextProvider from "./context/UserContext";
 import Background from "./components/Background/Background";
@@ -21,10 +21,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/login" element={<Login />} />
-            <Route
-              path="/profile/:profileID/:profileType"
-              element={<Profile />}
-            />
+            <Route path="/profile/:profileID/:profileType" element={<Profile />} />
             <Route path="/finder" element={<Finder />} />
           </Routes>
         </UserContextProvider>
