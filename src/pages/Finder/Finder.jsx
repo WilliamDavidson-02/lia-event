@@ -227,7 +227,6 @@ export default function Finder() {
 
   return (
     <main className={styles.container}>
-      <Nav />
       <Filter
         filterOptions={filterOptions}
         setFilterOptions={setFilterOptions}

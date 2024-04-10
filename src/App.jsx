@@ -2,6 +2,7 @@ import { Suspense, lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import UserContextProvider from "./context/UserContext";
 import Background from "./components/Background/Background";
+import Nav from "./components/Nav/Nav";
 
 const Home = lazy(() => import("./pages/Home/Home"));
 const Onboarding = lazy(() => import("./pages/Onboarding/Onboarding"));
@@ -15,11 +16,15 @@ export default function App() {
       <Suspense>
         <Background />
         <UserContextProvider>
+          <Nav />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/profile/:profileID/:profileType" element={<Profile />} />
+            <Route
+              path="/profile/:profileID/:profileType"
+              element={<Profile />}
+            />
             <Route path="/finder" element={<Finder />} />
           </Routes>
         </UserContextProvider>
