@@ -1,10 +1,15 @@
 .container {
-  height: 100vh;
+  height: calc(100vh - 84px);
   width: 100%;
-  max-width: 1440px;
+  max-width: calc(22rem * 3 + 6rem);
   margin: 0 auto;
-  padding: 2.25rem 1.25rem;
+  padding: 0 1.25rem 0 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: var(--gap-md);
+}
+
+@media (min-width: 760px) {
+  .container {
+    height: calc(100vh - 96px);
+  }
 }

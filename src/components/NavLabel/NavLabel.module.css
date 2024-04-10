@@ -1,0 +1,50 @@
+.container {
+  position: relative;
+  overflow: hidden;
+
+  font-size: 1.9375rem;
+  font-weight: 600;
+  line-height: 2.25rem;
+  text-transform: uppercase;
+
+  height: 4.375rem;
+}
+
+.container > div {
+  position: absolute;
+  height: 100%;
+  width: calc(100% + 2rem);
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  padding: 0 2rem;
+  transition: all 0.3s;
+}
+
+.light {
+  color: var(--yrgo-black);
+  background: none;
+
+  width: 100%;
+  top: 0;
+  left: -2rem;
+}
+
+.dark {
+  background-color: var(--yrgo-black);
+  color: var(--yrgo-white);
+
+  top: 100%;
+}
+
+.container:hover .dark {
+  transform: translateY(-100%) translateX(-2rem);
+  transition: all 0.3s;
+}
+
+.container:hover .light {
+  transform: translateY(100%) translateX(2rem);
+  transition: all 0.3s;
+}

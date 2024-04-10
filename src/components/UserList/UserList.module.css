@@ -1,7 +1,9 @@
 .content {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(1, 1fr);
   gap: var(--gap-md);
+  padding-bottom: 2.25rem;
+  margin-top: var(--p-md);
 
   overflow-y: auto;
   scroll-behavior: smooth;
@@ -35,15 +37,16 @@
   }
 }
 
-.skeleton {
-  position: relative;
-  z-index: 2;
-  border-radius: var(--rounded-xl);
-  overflow: hidden;
+@media (min-width: 760px) {
+  .content {
+    margin-top: 4.5rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 
-  flex-grow: 1;
-
-  max-height: 200px;
-  min-width: 350px;
-  max-width: 390px;
+@media (min-width: 1128px) {
+  .content {
+    gap: var(--gap-lg);
+    grid-template-columns: repeat(3, 1fr);
+  }
 }

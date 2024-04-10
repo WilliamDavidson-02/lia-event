@@ -4,7 +4,14 @@ import { Bookmark, UserCog } from "lucide-react";
 import useUserContext from "../../hooks/useUserContext";
 import supabase from "../../config/supabaseConfig";
 
-export default function UserCard({ setSave, profile, children, showEdit, openEdit, ...props }) {
+export default function UserCard({
+  setSave,
+  profile,
+  children,
+  showEdit,
+  openEdit,
+  ...props
+}) {
   const { user } = useUserContext();
 
   const handleSave = async () => {
@@ -12,7 +19,9 @@ export default function UserCard({ setSave, profile, children, showEdit, openEdi
     setSave(profile.id);
 
     if (!profile.isSaved) {
-      const { error } = await supabase.from("saved_users").insert({ user_id: user.id, saved_id: profile.id });
+      const { error } = await supabase
+        .from("saved_users")
+        .insert({ user_id: user.id, saved_id: profile.id });
 
       if (error) {
         console.log("Error handling saved users", error);
@@ -48,7 +57,6 @@ export default function UserCard({ setSave, profile, children, showEdit, openEdi
             aspectRatio: 1 / 1,
             width: "5.3rem",
             borderRadius: "100vmax",
-            zIndex: "2",
           }}
         />
         <div>

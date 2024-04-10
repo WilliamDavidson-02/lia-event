@@ -10,21 +10,21 @@ import { useDebounce } from "@uidotdev/usehooks";
 export default function Finder() {
   const { user } = useUserContext();
   const [users, setUsers] = useState([]);
-  const [offset, setOffset] = useState(0);
   const [isGettingUsers, setIsGettingUsers] = useState(false);
   const [filterOptions, setFilterOptions] = useState({
     wishlist: false,
     keywords: [],
     search: "",
   });
-  const searchDebounce = useDebounce(filterOptions.search, 300);
+  const [showMatches, setShowMatches] = useState([]);
+  const [matchAll, setMatchAll] = useState(false);
 
-  const loadLimit = 19;
+  const searchDebounce = useDebounce(filterOptions.search, 300);
 
   useEffect(() => {
     if (!user) return;
 
-    filterOptions.wishlist ? getSavedUsers(0, true) : getUsers(0, true);
+    filterOptions.wishlist ? getSavedUsers() : getUsers();
   }, [user, searchDebounce]);
 
   const getSavedUsersIds = async (ids) => {
@@ -42,18 +42,8 @@ export default function Finder() {
     return data.map((u) => u.saved_id);
   };
 
-  const filterUsersDuplicates = (data, users) => {
-    return data.filter((d) => !users.some((p) => p.id === d.id));
-  };
-
   const setUsersIsSaved = (users, savedUsers) => {
     return users.map((u) => ({ ...u, isSaved: savedUsers.includes(u.id) }));
-  };
-
-  const getNewUsersArray = (reset, users, data) => {
-    if (reset) return data;
-
-    return [...users, ...data];
   };
 
   const setFilterOptionParams = (query, referencedTable) => {
@@ -81,18 +71,43 @@ export default function Finder() {
     return query;
   };
 
-  const sortUsersList = (users) => {
-    const sorted = users.sort((a, b) => {
-      const nameA = a.name.toLowerCase();
-      const nameB = b.name.toLowerCase();
+  const calcMatchMe = (user, profiles) => {
+    /**
+     * Calculate matches relative to to students keywords.
+     * Due to student only able to select there respective keywords for there program.
+     */
 
-      return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+    profiles = profiles.map((u) => {
+      const { user_type, keywords } = user.user_metadata;
+
+      const student = user_type === "student" ? keywords : u.keywords;
+      const company = user_type !== "student" ? keywords : u.keywords;
+
+      const matches = company.reduce((acc, cur) => {
+        if (student.includes(cur)) acc += 1;
+
+        return acc;
+      }, 0);
+
+      return {
+        ...u,
+        rating: Math.ceil(Math.floor((matches / student.length) * 100) / 20),
+      };
     });
+
+    return profiles;
+  };
+
+  const sortByMatchRating = (users) => {
+    const sorted = users.sort((a, b) => b.rating - a.rating);
+
+    const ids = sorted.map((u) => u.id);
+    setShowMatches(ids);
 
     return sorted;
   };
 
-  const getUsers = async (range, reset) => {
+  const getUsers = async () => {
     if (isGettingUsers) return;
 
     setIsGettingUsers(true);
@@ -100,10 +115,9 @@ export default function Finder() {
     // Default query
     let query = supabase
       .from("profile")
-      .select("name, avatar, href, id")
+      .select("name, avatar, href, id, keywords")
       .neq("user_type", user.user_metadata.user_type)
-      .order("name", { ascending: true })
-      .range(range, range + loadLimit);
+      .order("name", { ascending: true });
 
     // Conditionaly add to query
     query = setFilterOptionParams(query);
@@ -120,34 +134,32 @@ export default function Finder() {
 
     if (!data) return;
 
-    let newData = data;
-
-    if (!reset) newData = filterUsersDuplicates(newData, users);
-
-    let newUsers = getNewUsersArray(reset, users, newData);
+    let newUsers = data;
 
     const savedUsers = await getSavedUsersIds(newUsers.map((u) => u.id));
 
     if (savedUsers.length) newUsers = setUsersIsSaved(newUsers, savedUsers);
 
-    // Sort by the already existing users on the list and the new users
-    newUsers = sortUsersList(newUsers);
+    newUsers = calcMatchMe(user, newUsers);
+
+    if (matchAll) {
+      newUsers = sortByMatchRating(newUsers);
+    }
 
     setUsers(newUsers);
   };
 
-  const getSavedUsers = async (range, reset) => {
+  const getSavedUsers = async () => {
     if (isGettingUsers) return;
 
     setIsGettingUsers(true);
 
     let query = supabase
       .from("saved_users")
-      .select("profile(name, avatar, href, id)")
+      .select("profile(name, avatar, href, id, keywords)")
       .eq("user_id", user.id)
       .not("profile", "is", null)
-      .order("profile(name)", { ascending: true })
-      .range(range, range + loadLimit);
+      .order("profile(name)", { ascending: true });
 
     // Conditionaly add to query
     query = setFilterOptionParams(query, "profile");
@@ -164,52 +176,70 @@ export default function Finder() {
 
     if (!data) return;
 
-    let newData = data.map((u) => u.profile);
-
-    if (!reset) newData = filterUsersDuplicates(newData, users);
-
-    let newUsers = getNewUsersArray(reset, users, newData);
+    let newUsers = data.map((u) => u.profile);
 
     newUsers = setUsersIsSaved(
       newUsers,
       newUsers.map((u) => u.id)
     );
 
-    // Sort by the already existing users on the list and the new users
-    newUsers = sortUsersList(newUsers);
+    newUsers = calcMatchMe(user, newUsers);
+
+    if (matchAll) {
+      newUsers = sortByMatchRating(newUsers);
+    }
 
     setUsers(newUsers);
   };
 
-  const handleOffset = () => {
-    setOffset((prev) => {
-      const newOffset = prev + loadLimit + 1;
+  const handleShowMatches = (id) => {
+    setShowMatches((prev) => {
+      if (prev.includes(id)) {
+        return prev.filter((p) => p !== id);
+      }
 
-      filterOptions.wishlist ? getSavedUsers(newOffset) : getUsers(newOffset);
+      prev = [...prev, id];
 
-      return newOffset;
+      return prev;
     });
   };
 
-  const resetOffset = (wishlist) => {
-    setOffset(0);
+  const handleShowAllMatches = () => {
+    const show = !matchAll;
+    let sorted;
 
-    wishlist ? getSavedUsers(0, true) : getUsers(0, true);
+    if (show) {
+      sorted = sortByMatchRating(users);
+    } else {
+      sorted = users.sort((a, b) => {
+        const nameA = a.name.toLowerCase();
+        const nameB = b.name.toLowerCase();
+
+        return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+      });
+
+      setShowMatches([]);
+    }
+
+    setUsers(sorted);
+    setMatchAll(show);
   };
 
   return (
     <main className={styles.container}>
-      <Nav />
       <Filter
         filterOptions={filterOptions}
         setFilterOptions={setFilterOptions}
-        resetOffset={resetOffset}
+        getSavedUsers={getSavedUsers}
+        getUsers={getUsers}
+        handleShowAllMatches={handleShowAllMatches}
       />
       <UserList
         setUsers={setUsers}
-        handleOffset={handleOffset}
         users={users}
         filterOptions={filterOptions}
+        handleShowMatches={handleShowMatches}
+        showMatches={showMatches}
       />
     </main>
   );

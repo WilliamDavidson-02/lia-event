@@ -1,0 +1,38 @@
+.container {
+  width: 3rem;
+  height: 3rem;
+
+  border-radius: var(--rounded-md);
+  border: var(--backdrop-border);
+  background-color: var(--backdrop-background);
+  backdrop-filter: var(--backdrop-backdrop-filter);
+  color: var(--yrgo-white);
+  padding: 0.8rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  cursor: pointer;
+}
+
+.bar {
+  width: 100%;
+  height: 1px;
+  border-radius: 100vmax;
+  background: var(--yrgo-white);
+  transform-origin: center center;
+}
+
+@media (min-width: 760px) {
+  .container {
+    width: 3.75rem;
+    height: 3.75rem;
+
+    padding: 1rem;
+  }
+
+  .container > div {
+    height: 2px;
+  }
+}

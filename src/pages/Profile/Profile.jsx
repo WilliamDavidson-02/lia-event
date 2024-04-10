@@ -7,72 +7,81 @@ import supabase from "../../config/supabaseConfig";
 import styles from "./Profile.module.css";
 import ProfileAbout from "../../components/ProfileAbout/ProfileAbout";
 import UserCard from "../../components/UserCard/UserCard";
+import ProfileEdit from "../../components/ProfileEdit/ProfileEdit";
+import Nav from "../../components/Nav/Nav";
 
 export default function Profile() {
-  const { user } = useUserContext;
-  const [userData, setUserData] = useState(null);
-  const { userID, userType } = useParams();
+  const { user } = useUserContext();
+  const [profileData, setProfileData] = useState(null);
+  const { profileID, profileType } = useParams();
   const [doEdit, setDoEdit] = useState(false);
 
+  let displayEdit = false;
+
+  if (user?.id === profileID) {
+    displayEdit = true;
+  }
+
   useEffect(() => {
-    async function fetchUserData() {
-      const { data, error } = await supabase
-        .from("company_profile")
-        .select("*, profile(*)")
-        .eq("id", userID)
-        .single();
+    async function fetchProfileData() {
+      let data, error;
+
+      if (profileType === "company") {
+        ({ data, error } = await supabase
+          .from("profile")
+          .select("*, company_profile(*)")
+          .eq("id", profileID)
+          .single());
+      } else if (profileType === "student") {
+        ({ data, error } = await supabase.from("profile").select("*").eq("id", profileID).single());
+      } else {
+        console.log("Invalid profile type:", profileType);
+      }
 
       if (error) {
         console.log("error fetching profile", error);
         return;
       }
-      setUserData(data);
+      setProfileData(data);
     }
 
-    fetchUserData();
-  }, [userID]);
+    fetchProfileData();
+  }, [profileID]);
 
   /* Doesn't work - needs fixing */
-  const setSave = async (userID) => {
-    if (!userData.profile.isSaved) {
-      await supabase.from("saved_users").insert({ user_id: user.id, saved_id: userData.profile.id });
-    } else {
-      await supabase.from("saved_users").delete().eq("saved_id", userData.profile.id).eq("user_id", user.id);
-    }
-
-    setUserData((prevUserData) => ({
-      ...prevUserData,
-      profile: {
-        ...prevUserData.profile,
-        isSaved: !prevUserData.profile.isSaved,
-      },
-    }));
-  };
+  //const setSave = async (profileID) => {};
 
   const openEdit = () => {
-    console.log("edit mode");
     setDoEdit(true);
-    console.log(doEdit);
   };
 
+  const cancelEdit = () => {
+    setDoEdit(false);
+  };
   return (
     <div className={styles.container}>
-      {userData && (
+      <Nav />
+      {profileData && (
         <>
-          <UserCard
-            profile={{
-              id: userData.profile.id,
-              name: userData.profile.name,
-              avatar: userData.profile.avatar,
-              href: userData.profile.href,
-            }}
-            key={userData.profile.id}
-            setSave={setSave(userID)}
-            //showEdit={user.id === userData.profile.id}
-            showEdit={true}
-            openEdit={openEdit}
-          />
-          <ProfileAbout userType={userType} userData={userData} />
+          {doEdit ? (
+            <ProfileEdit profileData={profileData} profileType={profileType} closeEdit={cancelEdit} />
+          ) : (
+            <>
+              <UserCard
+                profile={{
+                  id: profileData.id,
+                  name: profileData.name,
+                  avatar: profileData.avatar,
+                  href: profileData.href,
+                }}
+                key={profileData.id}
+                //setSave={setSave(profileID)}
+                showEdit={displayEdit}
+                openEdit={openEdit}
+              />
+              <ProfileAbout profileType={profileType} profileData={profileData} />
+            </>
+          )}
         </>
       )}
     </div>
