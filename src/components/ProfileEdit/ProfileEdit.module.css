@@ -1,10 +1,11 @@
 .container {
   display: flex;
   flex-direction: column;
-  border-radius: var(--rounded-sm);
+  border-radius: var(--rounded-md);
   border: var(--backdrop-border);
   background-color: var(--backdrop-background);
   backdrop-filter: var(--backdrop-backdrop-filter);
+  color: var(--yrgo-white);
   padding: var(--p-md);
   gap: var(--gap-md);
 }
@@ -12,13 +13,21 @@
 .field {
   display: flex;
   flex-direction: column;
+  /*   border: var(--backdrop-border);
+  background-color: var(--backdrop-background);
+  backdrop-filter: var(--backdrop-backdrop-filter);
+  border-radius: var(--rounded-md); */
+  color: var(--yrgo-white);
   gap: var(--gap-md);
 }
 
 .inputField {
-  border: 1px solid var(--yrgo-white);
-  background-color: var(--yrgo-grey);
-  color: var(--yrgo-black);
+  font-family: "Inter", sans-serif;
+  border: var(--backdrop-border);
+  background-color: inherit;
+  backdrop-filter: none;
+  border-radius: var(--rounded-md);
+  color: var(--yrgo-white);
   padding: var(--p-sm);
   box-shadow: none;
   border-radius: 0.75em;
@@ -31,6 +40,13 @@
   display: flex;
   flex-direction: column;
   gap: var(--gap-md);
+}
+
+.location {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  aspect-ratio: 9/11;
 }
 
 .buttons {

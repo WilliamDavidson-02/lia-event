@@ -6,13 +6,25 @@ import Label from "../Label/Label";
 import OnboardingRadio from "../OnboardingRadio/OnboardingRadio";
 import styles from "./ProfileEdit.module.css";
 import onboardingMap from "../../lib/onboardingMap.json";
-import OnboardingTextArea from "../OnboardingTextArea/OnboardingTextArea";
+import keywords from "../../lib/keywords.json";
 import Button from "../Button/Button";
 import { useState } from "react";
+import EditKeywords from "../EditKeywords/EditKeywords";
+import GeoLocation from "../GeoLocation/GeoLocation";
+import { defaultCords } from "../../lib/mapData";
 
 export default function ProfileEdit({ profileType, profileData, closeEdit }) {
   const [imageFile, setImageFile] = useState(null);
   const [imageURL, setImageURL] = useState(profileData.avatar);
+  const [selectedArea, setSelectedArea] = useState(profileData.area);
+
+  const [selectedKeywords, setSelectedKeywords] = useState(profileData.keywords || []);
+
+  const handleKeywordsChange = (keywords) => {
+    setSelectedKeywords(keywords);
+  };
+
+  const keywordArea = profileType === "company" ? "developer" : "design";
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -65,6 +77,16 @@ export default function ProfileEdit({ profileType, profileData, closeEdit }) {
 
   const onboardingQuestions = onboardingMap;
   const areaQuestionCompany = onboardingQuestions.company[1];
+  const areaQuestionStudent = onboardingQuestions.student[1];
+
+  const handleAreaChange = (optionValue) => {
+    setSelectedArea(optionValue);
+  };
+
+  const [location, setLocation] = useState(profileData.location || defaultCords);
+  const handleLocationChange = (newLocation) => {
+    setLocation(newLocation);
+  };
 
   return (
     <div className={styles.container}>
@@ -90,7 +112,11 @@ export default function ProfileEdit({ profileType, profileData, closeEdit }) {
           </Button>
         </div>
         <Label>
-          <Input className={styles.inputField} placeholder="Name" defaultValue={profileData.name}></Input>
+          <Input
+            style={{ fontSize: "1.2rem", fontWeight: "600" }}
+            className={styles.inputField}
+            placeholder="Name"
+            defaultValue={profileData.name}></Input>
         </Label>
         {profileType === "company" && (
           <>
@@ -106,21 +132,31 @@ export default function ProfileEdit({ profileType, profileData, closeEdit }) {
                 placeholder="Enter mail"
                 defaultValue={profileData.contact}></Input>
             </Label>
-            <Label className={styles.container}>
+            <div>
               Fields
-              <OnboardingRadio options={areaQuestionCompany.options} selected={profileData.area} />
+              {}
+              <OnboardingRadio
+                options={areaQuestionCompany.options}
+                selected={selectedArea}
+                handleProperty={handleAreaChange}
+              />
+            </div>
+            <Label className={styles.location}>
+              Location
+              <GeoLocation handleProperty={handleLocationChange} />
             </Label>
-            <Label>Location</Label>
-            <Label>LIA</Label>
-            <Chips defaultValue={profileData.keywords} />
-            <OnboardingTextArea placeholder="About us.." />
+            <EditKeywords
+              handleProperty={handleKeywordsChange}
+              selected={selectedKeywords}
+              area={keywordArea}
+            />
           </>
         )}
         {profileType === "student" && (
           <>
             <Label>
               Education
-              <OnboardingRadio options={areaQuestionCompany.options} selected={profileData.area} />
+              <OnboardingRadio options={areaQuestionStudent.options} selected={profileData.area} />
             </Label>
             <Label>
               <Input

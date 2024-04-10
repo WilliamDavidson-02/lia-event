@@ -1,12 +1,7 @@
 import styles from "./Chips.module.css";
 import { CircleX } from "lucide-react";
 
-export default function Chips({
-  defaultValue,
-  selected = [],
-  select,
-  ...props
-}) {
+export default function Chips({ defaultValue, selected = [], select, ...props }) {
   const handleSelect = (word) => {
     // If no select is passed, chips are view only
     if (!select) return;
@@ -20,10 +15,7 @@ export default function Chips({
         <span
           key={word}
           onClick={() => handleSelect(word)}
-          className={`${styles.chip} ${
-            selected.includes(word) ? styles.selected : ""
-          }`}
-        >
+          className={`${styles.chip} ${selected.includes(word) ? styles.selected : ""}`}>
           <p>{word}</p>
           {selected.includes(word) && <CircleX size={20} />}
         </span>
