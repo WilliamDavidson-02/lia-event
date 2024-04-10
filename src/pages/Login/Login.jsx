@@ -85,6 +85,13 @@ export default function Login() {
           <p className={styles.paragraph}>
             Don&apos;t have an account? <Link to="/onboarding">Sign up</Link>
           </p>
+          <Link
+            to={"/request-email"}
+            style={{ textDecoration: "underline" }}
+            className={styles.paragraph}
+          >
+            Forgot password ?
+          </Link>
         </div>
       </form>
     </main>

@@ -20,6 +20,28 @@
   color: var(--yrgo-grey-300);
 }
 
+.dark-grey {
+  padding: 0.91rem var(--p-sm);
+  border-radius: var(--rounded-sm);
+  border: 1px solid var(--yrgo-grey-500);
+  background: var(--yrgo-grey-600);
+
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: normal;
+  color: var(--yrgo-white);
+
+  outline-offset: 2px;
+}
+
+.dark-grey:focus {
+  outline: 2px solid var(--yrgo-grey-500);
+}
+
+.dark-grey::placeholder {
+  color: var(--yrgo-grey-500);
+}
+
 .lg-transparent {
   border-radius: none;
   border: none;
@@ -142,4 +164,8 @@
 .profileRadio[type="radio"]:checked::before {
   transform: scale(1);
   transition: all 0.15s;
+}
+
+.error {
+  border-color: var(--yrgo-red) !important;
 }
