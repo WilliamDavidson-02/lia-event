@@ -1,9 +1,15 @@
 .container {
-  height: 100vh;
+  height: calc(100vh - 84px);
   width: 100%;
   max-width: calc(22rem * 3 + 6rem);
   margin: 0 auto;
   padding: 0 1.25rem 0 1.25rem;
   display: flex;
   flex-direction: column;
+}
+
+@media (min-width: 760px) {
+  .container {
+    height: calc(100vh - 96px);
+  }
 }

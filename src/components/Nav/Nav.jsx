@@ -6,6 +6,7 @@ import useUserContext from "../../hooks/useUserContext";
 import { Loader2 } from "lucide-react";
 import Hamburger from "../Hamburger/Hamburger";
 import Spline from "@splinetool/react-spline";
+import NavLabel from "../NavLabel/NavLabel";
 
 export default function Nav() {
   const { user, signOut } = useUserContext();
@@ -57,14 +58,14 @@ export default function Nav() {
         onClick={handleNavToggle}
       />
       <nav ref={nav} className={styles.nav}>
-        <X onClick={handleNavToggle} />
+        <X style={{ padding: "1rem 2rem" }} onClick={handleNavToggle} />
         <div className={styles.content}>
           <Link onClick={handleNavToggle} to={"/"}>
-            Home
+            <NavLabel>Home</NavLabel>
           </Link>
           {user && (
             <Link onClick={handleNavToggle} to={"/finder"}>
-              Finder
+              <NavLabel>Finder</NavLabel>
             </Link>
           )}
           {user && (
@@ -72,23 +73,25 @@ export default function Nav() {
               onClick={handleNavToggle}
               to={`/profile/${userID}/${userType}`}
             >
-              Profile
+              <NavLabel>Profile</NavLabel>
             </Link>
           )}
           <Link onClick={handleNavToggle} to={"https://www.yrgo.se/"}>
-            Yrgo.se
+            <NavLabel>Yrgo.se</NavLabel>
           </Link>
           {user ? (
             <div className={styles.space} onClick={handleSignOut}>
-              {isSigningOutLoading && (
-                <Loader2
-                  className="loader"
-                  size={24}
-                  strokeWidth={3}
-                  style={{ marginRight: "10px" }}
-                />
-              )}
-              <span>Logout</span>
+              <NavLabel>
+                {isSigningOutLoading && (
+                  <Loader2
+                    className="loader"
+                    size={24}
+                    strokeWidth={3}
+                    style={{ marginRight: "10px" }}
+                  />
+                )}
+                <span>Logout</span>
+              </NavLabel>
             </div>
           ) : (
             <>
@@ -97,10 +100,10 @@ export default function Nav() {
                 className={styles.space}
                 to={"/login"}
               >
-                Login
+                <NavLabel>Login</NavLabel>
               </Link>
               <Link onClick={handleNavToggle} to={"/onboarding"}>
-                Create account
+                <NavLabel>Attend event</NavLabel>
               </Link>
             </>
           )}
