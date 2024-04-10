@@ -11,6 +11,7 @@ export default function Map({
   position = defaultCords,
   getMap,
   zoom = 11,
+  dragPan = true,
   ...props
 }) {
   const mapContainer = useRef(null);
@@ -27,6 +28,7 @@ export default function Map({
       center: lngLat,
       zoom: zoom,
       attributionControl: false,
+      dragPan: dragPan,
     });
 
     // GeoLocation needs acces to map.current

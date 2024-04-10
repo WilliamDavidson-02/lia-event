@@ -123,6 +123,7 @@ export default function Home() {
                 position={visualArenaCords}
                 style={{ height: "29.3125rem" }}
                 zoom={16}
+                dragPan={false}
                 getMap={(map) => setMap(map)}
               />
               <span>Visual Arena</span>
