@@ -4,6 +4,8 @@
   gap: var(--gap-md);
   margin-bottom: auto;
 
+  max-height: 100%;
+
   overflow-y: auto;
   scrollbar-width: none;
   scroll-behavior: smooth;
@@ -38,5 +40,5 @@
 
 .selected {
   transition: background-color 0.3s ease-in-out, opacity 0.4s;
-  background-color: var(--yrgo-grey);
+  background-color: var(--backdrop-background);
 }

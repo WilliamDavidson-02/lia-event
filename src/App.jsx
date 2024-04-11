@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import UserContextProvider from "./context/UserContext";
 import Background from "./components/Background/Background";
@@ -9,6 +9,11 @@ const Onboarding = lazy(() => import("./pages/Onboarding/Onboarding"));
 const Login = lazy(() => import("./pages/Login/Login"));
 const Profile = lazy(() => import("./pages/Profile/Profile"));
 const Finder = lazy(() => import("./pages/Finder/Finder"));
+const RequestEmail = lazy(() => import("./pages/RequestEmail/RequestEmail"));
+const UpdatePassword = lazy(() =>
+  import("./pages/UpdatePassword/UpdatePassword")
+);
+const NotFound = lazy(() => import("./pages/NotFound/NotFound"));
 
 export default function App() {
   return (
@@ -26,6 +31,9 @@ export default function App() {
               element={<Profile />}
             />
             <Route path="/finder" element={<Finder />} />
+            <Route path="/request-email" element={<RequestEmail />} />
+            <Route path="/update-password" element={<UpdatePassword />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </UserContextProvider>
       </Suspense>

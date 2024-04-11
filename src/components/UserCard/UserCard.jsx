@@ -47,7 +47,7 @@ export default function UserCard({
         <Bookmark
           onClick={handleSave}
           className={profile.isSaved ? styles.saved : ""}
-          style={{ marginLeft: "auto" }}
+          style={{ marginLeft: "auto", cursor: "pointer" }}
         />
       )}
       <div className={styles.content}>

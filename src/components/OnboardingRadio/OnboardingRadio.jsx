@@ -6,21 +6,26 @@ export default function OnboardingRadio({
   handleProperty,
   options,
   selected = "",
+  variantInput = "radio",
+  variant = "onboarding",
 }) {
   return (
     <div className={styles.container}>
       {options.map((option, i) => (
-        <div className={styles.item} key={option.value}>
+        <div className={`${styles.item} ${styles[variant]}`} key={option.value}>
           <Input
             tabIndex={i + 1}
             id={option.value}
-            variant={"radio"}
+            variant={variantInput}
             type={"radio"}
             value={option.value}
             checked={option.value === selected}
             onChange={() => handleProperty(option.value)}
           />
-          <Label style={{ flexGrow: "1" }} htmlFor={option.value}>
+          <Label
+            style={{ flexGrow: "1", cursor: "pointer" }}
+            htmlFor={option.value}
+          >
             {option.title}
           </Label>
         </div>

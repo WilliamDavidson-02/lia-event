@@ -4,14 +4,14 @@
       "type": "text",
       "property": "name",
       "defaultValue": "",
-      "question": "Campany name",
+      "question": "Campany name *",
       "required": true
     },
     {
       "type": "radio",
       "property": "area",
       "defaultValue": "",
-      "question": "What expertise are you seeking?",
+      "question": "What expertise are you seeking? *",
       "required": true,
       "options": [
         { "title": "Web Development", "value": "developer" },
@@ -23,14 +23,14 @@
       "type": "chip",
       "property": "keywords",
       "defaultValue": [],
-      "question": "What expertise are you seeking? ",
+      "question": "What expertise are you seeking? *",
       "required": true
     },
     {
       "type": "link",
       "property": "href",
       "defaultValue": "",
-      "question": "Company website",
+      "question": "Company website *",
       "required": true
     },
     {
@@ -46,14 +46,14 @@
       "type": "text",
       "property": "name",
       "defaultValue": "",
-      "question": "What's your name?",
+      "question": "What's your name? *",
       "required": true
     },
     {
       "type": "radio",
       "property": "area",
       "defaultValue": "",
-      "question": "Your education?",
+      "question": "Your education? *",
       "required": true,
       "options": [
         { "title": "Web Development", "value": "developer" },
@@ -64,7 +64,7 @@
       "type": "chip",
       "property": "keywords",
       "defaultValue": [],
-      "question": "Your expertise?",
+      "question": "Your expertise? *",
       "required": true
     },
     {

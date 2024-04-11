@@ -8,7 +8,6 @@ import styles from "./Profile.module.css";
 import ProfileAbout from "../../components/ProfileAbout/ProfileAbout";
 import UserCard from "../../components/UserCard/UserCard";
 import ProfileEdit from "../../components/ProfileEdit/ProfileEdit";
-import Nav from "../../components/Nav/Nav";
 
 export default function Profile() {
   const { user } = useUserContext();
@@ -60,11 +59,15 @@ export default function Profile() {
   };
   return (
     <div className={styles.container}>
-      <Nav />
       {profileData && (
         <>
           {doEdit ? (
-            <ProfileEdit profileData={profileData} profileType={profileType} closeEdit={cancelEdit} />
+            <ProfileEdit
+              profileData={profileData}
+              setProfileData={setProfileData}
+              profileType={profileType}
+              closeEdit={cancelEdit}
+            />
           ) : (
             <>
               <UserCard

@@ -1,10 +1,26 @@
 .container {
-  display: grid;
-  place-content: center;
-  padding: var(--p-md);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: var(--p-lg) 0;
   border-radius: var(--rounded-md);
-  background: var(--yrgo-grey-100);
-  color: var(--yrgo-black);
+  border: var(--backdrop-border);
+  background-color: var(--backdrop-background);
+  backdrop-filter: var(--backdrop-backdrop-filter);
+  color: var(--yrgo-white);
   flex-grow: 1;
+  flex-basis: 0;
   cursor: pointer;
+
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.5rem;
+  letter-spacing: 0.01125rem;
+}
+
+@media (min-width: 760px) {
+  .container {
+    align-items: center;
+    font-size: 1rem;
+  }
 }
