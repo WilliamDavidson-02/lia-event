@@ -107,7 +107,7 @@
 
   outline: none;
   border-radius: 100vmax;
-  border: 2px solid var(--yrgo-black);
+  border: 2px solid var(--yrgo-white);
 
   display: grid;
   place-content: center;
@@ -121,7 +121,7 @@
   content: "";
   width: 14px;
   height: 14px;
-  background: var(--yrgo-black);
+  background: var(--yrgo-white);
   border-radius: 100vmax;
 
   transform: scale(0);

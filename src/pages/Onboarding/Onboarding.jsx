@@ -7,7 +7,6 @@ import {
   validateUrl,
 } from "../../lib/validations";
 import styles from "./Onboarding.module.css";
-import X from "../../components/X/X";
 import Button from "../../components/Button/Button";
 import OnboardingTextArea from "../../components/OnboardingTextArea/OnboardingTextArea";
 import OnboardingRadio from "../../components/OnboardingRadio/OnboardingRadio";
@@ -26,7 +25,7 @@ export default function Onboarding() {
   const [userType, setUserType] = useState(null);
   const [isLoading, setIsloading] = useState(false);
   const [isValid, setIsValid] = useState(false);
-  const [station, setStation] = useState(0); // 0, 1, 2 = {email, password}, {userType}, {onboarding steps}
+  const [station, setStation] = useState(0); // 0, 1, 2 = {userType}, {email, password}, {onboarding steps}
 
   const { signUp } = useUserContext();
 
@@ -38,7 +37,7 @@ export default function Onboarding() {
     const property = currentField.property;
     const field = onboarding[property];
 
-    if (!property || !field) return;
+    if (!property || field === undefined) return;
 
     if (property === "name") {
       setIsValid(validateLength(field, 2, 75));
@@ -135,7 +134,7 @@ export default function Onboarding() {
     // Set default value for property
     setOnboarding((prev) => ({
       ...prev,
-      [current.property]: current.defaultValue,
+      [current.property]: onboarding[current.property] ?? current.defaultValue,
     }));
 
     setCurrentField(current);
@@ -163,33 +162,49 @@ export default function Onboarding() {
   const handleUserType = (type) => {
     setUserType(type);
     nextField(0, type);
-    setStation(2);
+    setStation((prev) => prev + 1);
   };
 
   if (station === 0) {
     return (
-      <Signup
-        credentials={credentials}
-        setCredentials={setCredentials}
-        next={() => setStation(1)}
-      />
+      <div className={styles.wrapper}>
+        <div className={styles.choice}>
+          <div>
+            <strong>
+              Thrilled to see your keen interest in our lively industry meet-up
+              event!
+            </strong>{" "}
+            Before diving in, you need to swiftly set up an account and toss us
+            a sprinkle of information about yourself or the company you
+            represent.
+          </div>
+          <div>
+            <UserType
+              onClick={() => handleUserType("student")}
+              title={"Student"}
+            />
+            <UserType
+              onClick={() => handleUserType("company")}
+              title={"Company"}
+            />
+          </div>
+        </div>
+      </div>
     );
   }
 
   if (station === 1) {
     return (
-      <div className={styles.wrapper}>
-        <UserType onClick={() => handleUserType("student")} title={"Student"} />
-        <UserType onClick={() => handleUserType("company")} title={"Company"} />
-      </div>
+      <Signup
+        credentials={credentials}
+        setCredentials={setCredentials}
+        next={() => setStation(station + 1)}
+      />
     );
   }
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.header}>
-        <X to={"/"} />
-      </div>
       <form
         autoComplete="off"
         autoCorrect="off"
@@ -232,7 +247,6 @@ export default function Onboarding() {
           <div className={styles.footer}>
             {currentFieldIndex > 0 && (
               <Button
-                style={{ color: "var(--yrgo-black)" }}
                 disabled={isLoading}
                 variant="tertiery"
                 type="button"
@@ -245,7 +259,6 @@ export default function Onboarding() {
             <div className={styles.right}>
               {!currentField.required && (
                 <Button
-                  style={{ color: "var(--yrgo-black)" }}
                   disabled={isLoading}
                   onClick={handleSkip}
                   type="button"
