@@ -20,5 +20,5 @@
 }
 
 .textarea::placeholder {
-  color: var(--yrgo-white);
+  color: var(--yrgo-grey-300);
 }

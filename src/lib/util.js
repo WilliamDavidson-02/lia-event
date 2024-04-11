@@ -18,11 +18,21 @@ export const validateOption = (value, options) => {
 };
 
 export const validateUrl = (value) => {
-  try {
-    const url = new URL(value);
+  const regexp =
+    /^(?:(?:https?|ftp):\/\/)(?:www\.)?[a-z0-9-]+(?:\.[a-z0-9-]+)+[^\s]*$/i;
 
-    return ["http:", "https:"].includes(url.protocol);
-  } catch (error) {
-    return false;
-  }
+  return regexp.test(value);
+};
+
+export const sanitize = (string) => {
+  const map = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#x27;",
+    "/": "&#x2F;",
+  };
+  const reg = /[&<>"'/]/gi;
+  return string.replace(reg, (match) => map[match]);
 };

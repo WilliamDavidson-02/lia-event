@@ -5,7 +5,8 @@ import {
   validateLength,
   validateOption,
   validateUrl,
-} from "../../lib/validations";
+  sanitize,
+} from "../../lib/util";
 import styles from "./Onboarding.module.css";
 import Button from "../../components/Button/Button";
 import OnboardingTextArea from "../../components/OnboardingTextArea/OnboardingTextArea";
@@ -98,7 +99,7 @@ export default function Onboarding() {
         password,
         options: {
           data: {
-            name: name.trim(),
+            name: sanitize(name.trim()),
             area,
             user_type: userType,
           },
@@ -238,9 +239,7 @@ export default function Onboarding() {
               handleProperty={setOnboardingValues}
               propertyValue={onboarding[currentField.property]}
               placeholder={
-                currentField.type === "link"
-                  ? "https://www.yrgo.se/"
-                  : "Type ..."
+                currentField.type === "link" ? "https://yrgo.se" : "Type ..."
               }
             />
           )}

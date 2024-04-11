@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { validateEmail, validateLength } from "../../lib/validations";
+import { validateEmail, validateLength } from "../../lib/util";
 import styles from "./Signup.module.css";
 import formStyles from "../Form/Form.module.css";
 import Label from "../Label/Label";
