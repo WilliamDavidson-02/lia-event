@@ -73,7 +73,7 @@
 
   outline-offset: 2px;
   border-radius: var(--rounded-xs);
-  border: 2px solid var(--yrgo-black);
+  border: 2px solid var(--yrgo-white);
 
   display: grid;
   place-content: center;
@@ -84,6 +84,7 @@
 }
 
 .checkbox[type="checkbox"]::before {
+  color: var(--yrgo-white);
   content: url("/check.svg");
   width: 14px;
   height: 14px;
@@ -95,7 +96,7 @@
 }
 
 .checkbox[type="checkbox"]:focus {
-  outline: 2px solid var(--yrgo-black);
+  outline: 2px solid var(--yrgo-white);
 }
 
 .radio[type="radio"] {

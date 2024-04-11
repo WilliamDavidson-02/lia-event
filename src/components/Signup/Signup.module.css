@@ -1,60 +1,8 @@
 .container {
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 2.25rem 1.25rem;
+  padding: 4.5rem 1.5rem 2.25rem 1.25rem;
   height: 100vh;
-}
-
-.form {
-  background: var(--yrgo-white);
-  padding: var(--p-3xl) var(--p-lg);
-  border-radius: var(--rounded-md);
-  width: 100%;
-  max-width: 500px;
-}
-
-.title {
-  font-size: 2.125rem;
-  font-weight: 700;
-  line-height: normal;
-  color: var(--yrgo-black);
-  margin-bottom: var(--m-xl);
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-sm);
-  width: 100%;
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-md);
-}
-
-.submit-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: var(--gap-sm);
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5rem;
-}
-
-.paragraph {
-  font-size: 0.75rem;
-  font-weight: 400;
-  line-height: normal;
-  text-align: center;
-}
-
-.paragraph a,
-.gdpr a {
-  text-decoration: underline;
 }
 
 .gdpr {
@@ -66,7 +14,7 @@
 }
 
 .gdpr label {
-  color: var(--yrgo-black);
+  color: var(--yrgo-white);
   font-size: 0.75rem;
   font-weight: 400;
   line-height: normal;

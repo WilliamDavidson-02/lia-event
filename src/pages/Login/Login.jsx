@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import styles from "./Login.module.css";
+import formStyles from "../../components/Form/Form.module.css";
 import Input from "../../components/Input/Input.jsx";
 import Label from "../../components/Label/Label.jsx";
 import Button from "../../components/Button/Button";
@@ -7,6 +8,7 @@ import { ArrowUpRight } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import useUserContext from "../../hooks/useUserContext.jsx";
 import { validateEmail, validateLength } from "../../lib/validations.js";
+import Form from "../../components/Form/Form";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -46,10 +48,10 @@ export default function Login() {
 
   return (
     <main className={styles.container}>
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <h1 className={styles.title}>Log in</h1>
-        <div className={styles.content}>
-          <div className={styles.field}>
+      <Form onSubmit={handleSubmit}>
+        <h1 className={formStyles.title}>Log in</h1>
+        <div className={formStyles.content}>
+          <div className={formStyles.field}>
             <Label htmlFor={"email"}>Email</Label>
             <Input
               type={"text"}
@@ -58,9 +60,10 @@ export default function Login() {
               value={email}
               onChange={(ev) => setEmail(ev.target.value)}
               autoComplete={"email"}
+              variant={"dark-grey"}
             />
           </div>
-          <div className={styles.field}>
+          <div className={formStyles.field}>
             <Label htmlFor={"password"}>Password</Label>
             <Input
               type={"password"}
@@ -69,31 +72,32 @@ export default function Login() {
               value={password}
               onChange={(ev) => setPassword(ev.target.value)}
               autoComplete={"current-password"}
+              variant={"dark-grey"}
             />
           </div>
           <Button
             disabled={isLoading || !isValid}
             isLoading={isLoading}
-            style={{ width: "100%" }}
+            style={{ width: "100%", outlineColor: "var(--yrgo-grey-500)" }}
             variant="blue"
           >
-            <div className={styles["submit-content"]}>
+            <div className={formStyles["submit-content"]}>
               <span>Login in</span>
               <ArrowUpRight size={24} />
             </div>
           </Button>
-          <p className={styles.paragraph}>
+          <p className={formStyles.paragraph}>
             Don&apos;t have an account? <Link to="/onboarding">Sign up</Link>
           </p>
           <Link
             to={"/request-email"}
             style={{ textDecoration: "underline" }}
-            className={styles.paragraph}
+            className={formStyles.paragraph}
           >
             Forgot password ?
           </Link>
         </div>
-      </form>
+      </Form>
     </main>
   );
 }
