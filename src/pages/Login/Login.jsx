@@ -7,7 +7,7 @@ import Button from "../../components/Button/Button";
 import { ArrowUpRight } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import useUserContext from "../../hooks/useUserContext.jsx";
-import { validateEmail, validateLength } from "../../lib/validations.js";
+import { validateEmail, validateLength } from "../../lib/util.js";
 import Form from "../../components/Form/Form";
 
 export default function Login() {

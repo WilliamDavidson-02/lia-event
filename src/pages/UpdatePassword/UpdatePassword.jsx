@@ -6,7 +6,7 @@ import Label from "../../components/Label/Label";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import Form from "../../components/Form/Form";
-import { validateEmail, validateLength } from "../../lib/validations";
+import { validateEmail, validateLength } from "../../lib/util";
 import supabase from "../../config/supabaseConfig";
 import { useNavigate } from "react-router-dom";
 

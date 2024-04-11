@@ -6,7 +6,7 @@ import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import { ArrowUpRight } from "lucide-react";
 import Form from "../../components/Form/Form";
-import { validateEmail } from "../../lib/validations";
+import { validateEmail } from "../../lib/util";
 import supabase from "../../config/supabaseConfig";
 
 export default function RequestEmail() {
