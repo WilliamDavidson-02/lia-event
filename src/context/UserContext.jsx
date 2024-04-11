@@ -13,10 +13,7 @@ export default function UserContextProvider({ children }) {
   const signUp = async (credentials) => {
     const { error } = await supabase.auth.signUp(credentials);
 
-    if (error) {
-      console.error(error);
-      return { error: "Sign up failed" };
-    }
+    if (error) return { error };
 
     const { error: signInError } = signInWithPassword({
       email: credentials.email,
@@ -24,7 +21,6 @@ export default function UserContextProvider({ children }) {
     });
 
     if (signInError) {
-      console.log("Account created sign in failed", signInError);
       const error = signInError;
       return error;
     }

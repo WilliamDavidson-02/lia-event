@@ -116,13 +116,12 @@ export default function Filter({
             </div>
             <div className={styles.separator} />
             <div
-              style={{ display: showOptions ? "flex" : "none" }}
+              style={{ display: showOptions ? "grid" : "none" }}
               className={`${styles.side} ${
                 activeSideMenu ? styles["side-open"] : ""
               }`}
             >
               <EditKeywords
-                style={{ maxHeight: "calc(100vh - 5rem - 232px)" }}
                 handleProperty={(words) =>
                   handleFilterOptions("keywords", words)
                 }

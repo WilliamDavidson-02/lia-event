@@ -19,3 +19,8 @@
   font-weight: 400;
   line-height: normal;
 }
+
+.gdpr label a {
+  color: var(--yrgo-white);
+  text-decoration: underline;
+}
