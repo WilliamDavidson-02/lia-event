@@ -13,6 +13,7 @@ const RequestEmail = lazy(() => import("./pages/RequestEmail/RequestEmail"));
 const UpdatePassword = lazy(() =>
   import("./pages/UpdatePassword/UpdatePassword")
 );
+const NotFound = lazy(() => import("./pages/NotFound/NotFound"));
 
 export default function App() {
   return (
@@ -25,10 +26,14 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/profile/:profileID/:profileType" element={<Profile />} />
+            <Route
+              path="/profile/:profileID/:profileType"
+              element={<Profile />}
+            />
             <Route path="/finder" element={<Finder />} />
             <Route path="/request-email" element={<RequestEmail />} />
             <Route path="/update-password" element={<UpdatePassword />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </UserContextProvider>
       </Suspense>
