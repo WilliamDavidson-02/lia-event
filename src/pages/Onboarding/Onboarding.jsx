@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
   validateLength,
@@ -16,6 +16,7 @@ import useUserContext from "../../hooks/useUserContext";
 import Signup from "../../components/Signup/Signup";
 import UserType from "../../components/UserType/UserType";
 import EditKeywords from "../../components/EditKeywords/EditKeywords";
+import { useWindowSize } from "@uidotdev/usehooks";
 
 export default function Onboarding() {
   const [onboarding, setOnboarding] = useState({});
@@ -30,6 +31,7 @@ export default function Onboarding() {
   const { signUp } = useUserContext();
 
   const navigate = useNavigate();
+  const size = useWindowSize();
 
   useEffect(() => {
     if (!currentField) return;
@@ -248,11 +250,13 @@ export default function Onboarding() {
             {currentFieldIndex > 0 && (
               <Button
                 disabled={isLoading}
-                variant="tertiery"
-                type="button"
+                variant={"tertiery"}
+                size={size.width <= 760 ? "md" : "lg"}
+                type={"button"}
+                style={{ height: "100%" }}
                 onClick={() => handlePrev(userType, currentFieldIndex)}
               >
-                <ArrowLeft size={24} />
+                <ChevronLeft size={size.width <= 760 ? 24 : 28} />
                 Prev
               </Button>
             )}
@@ -261,8 +265,9 @@ export default function Onboarding() {
                 <Button
                   disabled={isLoading}
                   onClick={handleSkip}
-                  type="button"
-                  variant="tertiery"
+                  type={"button"}
+                  variant={"tertiery"}
+                  size={size.width <= 760 ? "md" : "lg"}
                 >
                   Skip
                 </Button>
@@ -273,7 +278,10 @@ export default function Onboarding() {
                 square
                 type="submit"
               >
-                <ArrowRight size={24} />
+                <ArrowRight
+                  size={size.width <= 760 ? 24 : 48}
+                  strokeWidth={size.width <= 760 ? 2 : 1}
+                />
               </Button>
             </div>
           </div>

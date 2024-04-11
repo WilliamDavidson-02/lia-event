@@ -126,4 +126,13 @@
     grid-row-start: 4;
     grid-row-end: 13;
   }
+
+  .container .card > :first-child {
+    grid-row: span 10;
+  }
+
+  .card .footer {
+    grid-row: span 2;
+    align-items: end;
+  }
 }
