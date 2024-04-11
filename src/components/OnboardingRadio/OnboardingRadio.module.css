@@ -17,9 +17,32 @@
 
 .item label {
   text-transform: capitalize;
+}
+
+.onboarding {
+  gap: var(--gap-lg);
+  padding: var(--p-md) var(--p-lg);
+  border-bottom: 1px solid var(--yrgo-white);
+}
+
+.onboarding label {
+  color: var(--yrgo-black);
   font-size: 1.5rem;
   font-weight: 400;
   line-height: 2.25rem;
   color: var(--yrgo-white);
   padding-left: var(--p-lg);
+}
+
+.profile {
+  gap: var(--gap-md);
+  padding: var(--p-sm) var(--p-md);
+  border-bottom: none;
+}
+
+.profile label {
+  color: var(--yrgo-white);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.25rem;
 }

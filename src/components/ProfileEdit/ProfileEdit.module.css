@@ -1,10 +1,12 @@
+body {
+  background-color: var(--yrgo-black);
+}
 .container {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   border-radius: var(--rounded-md);
-  border: var(--backdrop-border);
-  background-color: var(--backdrop-background);
-  backdrop-filter: var(--backdrop-backdrop-filter);
+  background-color: none;
   color: var(--yrgo-white);
   padding: var(--p-md);
   gap: var(--gap-md);
@@ -13,40 +15,64 @@
 .field {
   display: flex;
   flex-direction: column;
-  /*   border: var(--backdrop-border);
+  /* border: var(--backdrop-border);
   background-color: var(--backdrop-background);
   backdrop-filter: var(--backdrop-backdrop-filter);
   border-radius: var(--rounded-md); */
   color: var(--yrgo-white);
-  gap: var(--gap-md);
+  gap: var(--gap-lg);
 }
 
 .inputField {
   font-family: "Inter", sans-serif;
-  border: var(--backdrop-border);
-  background-color: inherit;
+  border: 1px solid var(--yrgo-white);
+  background-color: rgba(0, 26, 82, 0.6);
   backdrop-filter: none;
   border-radius: var(--rounded-md);
   color: var(--yrgo-white);
   padding: var(--p-sm);
   box-shadow: none;
+  margin-top: 0.25rem;
   border-radius: 0.75em;
   width: 100%;
   font-size: 1rem;
   font-weight: 400;
 }
 
-.editImage {
+.elementContainer {
   display: flex;
   flex-direction: column;
+  margin-top: 3rem;
   gap: var(--gap-md);
+}
+
+.radioBg {
+  background-color: rgba(0, 26, 82, 0.6);
+  border-radius: 0.75em;
+  padding: var(--p-sm);
+  border: 1px solid white;
+}
+
+.editImage {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: var(--gap-md);
+  padding-bottom: 2rem;
+}
+
+.editImgParagraph {
+  text-decoration: underline;
 }
 
 .location {
   display: flex;
   flex-direction: column;
+  gap: var(--gap-md);
   flex-grow: 1;
-  aspect-ratio: 9/11;
+  aspect-ratio: 9/11.5;
 }
 
 .buttons {

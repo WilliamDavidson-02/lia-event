@@ -13,12 +13,26 @@ import EditKeywords from "../EditKeywords/EditKeywords";
 import GeoLocation from "../GeoLocation/GeoLocation";
 import { defaultCords } from "../../lib/mapData";
 
-export default function ProfileEdit({ profileType, profileData, closeEdit }) {
+export default function ProfileEdit({ profileType, profileData, setProfileData, closeEdit }) {
+  const [newPassword, setNewPassword] = useState({
+    password: "",
+  });
+
   const [imageFile, setImageFile] = useState(null);
   const [imageURL, setImageURL] = useState(profileData.avatar);
   const [selectedArea, setSelectedArea] = useState(profileData.area);
 
   const [selectedKeywords, setSelectedKeywords] = useState(profileData.keywords || []);
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setProfileData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  console.log(profileData.area);
 
   const handleKeywordsChange = (keywords) => {
     setSelectedKeywords(keywords);
@@ -37,8 +51,11 @@ export default function ProfileEdit({ profileType, profileData, closeEdit }) {
     imagePreview.readAsDataURL(file);
   };
 
-  const handleImageUpload = async (event) => {
-    event.preventDefault();
+  const handleEditImage = () => {
+    document.getElementById("imgUpload").click();
+  };
+
+  const handleImageUpload = async () => {
     if (!imageFile) return;
 
     /* get unix time to use as ID to append to uploaded files */
@@ -88,9 +105,33 @@ export default function ProfileEdit({ profileType, profileData, closeEdit }) {
     setLocation(newLocation);
   };
 
+  const handleSaveSettings = async (event) => {
+    event.preventDefault();
+    handleImageUpload();
+
+    const { data: userData, error: userError } = await supabase
+      .from("profile")
+      .update({
+        name: profileData.name,
+        href: profileData.href,
+        //contact: profileData.mail,
+        //email,
+        //password,
+        area: selectedArea,
+        keywords: profileData.keywords,
+        //location: location,
+      })
+      .eq("id", profileData.id);
+
+    if (userError) {
+      console.error("Error updating user profile: ", userError.message);
+      return;
+    }
+    closeEdit();
+  };
+
   return (
     <div className={styles.container}>
-      <h2>Edit</h2>
       <form className={styles.field} autoComplete="off" autoCorrect="off">
         <div className={styles.editImage}>
           <Image
@@ -103,81 +144,164 @@ export default function ProfileEdit({ profileType, profileData, closeEdit }) {
               zIndex: "2",
             }}
           />
-          <Label>
-            Upload image:
-            <Input type="file" onChange={handleImageChange} />
-          </Label>
-          <Button variant="primary" onClick={handleImageUpload}>
-            Upload Image
-          </Button>
+          <div onClick={handleEditImage}>
+            <label className={styles.editImgParagraph}>
+              Edit profile picture
+              <input
+                id="imgUpload"
+                type="file"
+                accept="image/"
+                style={{ display: "none" }}
+                onChange={handleImageChange}
+              />
+            </label>
+          </div>
         </div>
-        <Label>
+        <h2>Editing Profile</h2>
+        <Label style={{ color: "white" }}>
+          Company name
           <Input
-            style={{ fontSize: "1.2rem", fontWeight: "600" }}
+            style={{
+              fontSize: "1.2rem",
+              fontWeight: "600",
+            }}
+            name="name"
             className={styles.inputField}
             placeholder="Name"
-            defaultValue={profileData.name}></Input>
+            onChange={handleInputChange}
+            value={profileData.name}
+          />
         </Label>
         {profileType === "company" && (
           <>
-            <Label>
+            <Label style={{ color: "white" }}>
+              Website
               <Input
                 className={styles.inputField}
                 placeholder="Website"
-                defaultValue={profileData.href}></Input>
+                name="href"
+                onChange={handleInputChange}
+                value={profileData.href}></Input>
             </Label>
-            <Label>
+            <Label style={{ color: "white" }}>
+              Contact mail
               <Input
                 className={styles.inputField}
                 placeholder="Enter mail"
-                defaultValue={profileData.contact}></Input>
+                name="contact"
+                onChange={handleInputChange}
+                value={profileData.contact}></Input>
             </Label>
-            <div>
-              Fields
-              {}
-              <OnboardingRadio
-                options={areaQuestionCompany.options}
-                selected={selectedArea}
-                handleProperty={handleAreaChange}
-              />
+
+            <div className={styles.elementContainer}>
+              <h2>Login Details:</h2>
+              <Label style={{ color: "white" }}>
+                Email
+                <Input
+                  className={styles.inputField}
+                  placeholder="Enter mail"
+                  name="email"
+                  onChange={handleInputChange}></Input>
+              </Label>
+              <Label style={{ color: "white" }}>
+                Password
+                <Input
+                  className={styles.inputField}
+                  name="password"
+                  placeholder="New password"
+                  onChange={handleInputChange}></Input>
+              </Label>
             </div>
-            <Label className={styles.location}>
-              Location
-              <GeoLocation handleProperty={handleLocationChange} />
-            </Label>
+
+            <div className={styles.elementContainer}>
+              <h2>Looking for</h2>
+              <div className={styles.radioBg}>
+                <OnboardingRadio
+                  variant="profile"
+                  name="area"
+                  variantInput="profileRadio"
+                  options={areaQuestionCompany.options}
+                  selected={selectedArea}
+                  handleProperty={handleAreaChange}
+                />
+              </div>
+            </div>
+
             <EditKeywords
+              name="keywords"
               handleProperty={handleKeywordsChange}
-              selected={selectedKeywords}
+              selected={profileData.keywords}
               area={keywordArea}
             />
+            <div className={styles.elementContainer}>
+              <Label className={styles.location}>
+                <h2>Location</h2>
+                <GeoLocation handleProperty={handleLocationChange} />
+              </Label>
+            </div>
           </>
         )}
         {profileType === "student" && (
           <>
-            <Label>
+            <div>
               Education
-              <OnboardingRadio options={areaQuestionStudent.options} selected={profileData.area} />
-            </Label>
+              {}
+              <OnboardingRadio
+                variant="profile"
+                variantInput="profileRadio"
+                name="area"
+                options={areaQuestionStudent.options}
+                selected={selectedArea}
+                handleProperty={handleAreaChange}
+              />
+            </div>
             <Label>
               <Input
                 className={styles.inputField}
                 placeholder="Website"
-                defaultValue={profileData.href}></Input>
+                name="href"
+                value={profileData.href}
+                onChange={handleInputChange}></Input>
             </Label>
             <Label>
               <Input
                 className={styles.inputField}
                 placeholder="E-mail"
-                defaultValue={profileData.contact}></Input>
+                name="contact"
+                value={profileData.contact}
+                onChange={handleInputChange}></Input>
             </Label>
+
             <Chips defaultValue={profileData.keywords} />
+
+            <div className={styles.loginInfo}>
+              <h2>Login Details:</h2>
+              <Label style={{ color: "white" }}>
+                Email
+                <Input
+                  className={styles.inputField}
+                  placeholder="Enter mail"
+                  name="email"
+                  onChange={handleInputChange}></Input>
+              </Label>
+              <Label style={{ color: "white" }}>
+                Password
+                <Input
+                  className={styles.inputField}
+                  name="password"
+                  placeholder="New password"
+                  onChange={handleInputChange}></Input>
+              </Label>
+            </div>
           </>
         )}
         <div className={styles.buttons}>
           <Button variant="secondary" onClick={closeEdit}>
             Cancel
           </Button>
-          <Button variant="primary">Save Settings</Button>
+          <Button variant="primary" onClick={handleSaveSettings}>
+            Save Settings
+          </Button>
         </div>
       </form>
     </div>
