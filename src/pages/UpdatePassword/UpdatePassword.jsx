@@ -1,23 +1,23 @@
 import { useMemo, useState } from "react";
-import styles from "./Login.module.css";
-import formStyles from "../../components/Form/Form.module.css";
-import Input from "../../components/Input/Input.jsx";
-import Label from "../../components/Label/Label.jsx";
-import Button from "../../components/Button/Button";
 import { ArrowUpRight } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import useUserContext from "../../hooks/useUserContext.jsx";
-import { validateEmail, validateLength } from "../../lib/validations.js";
+import styles from "./UpdatePassword.module.css";
+import formStyles from "../../components/Form/Form.module.css";
+import Label from "../../components/Label/Label";
+import Input from "../../components/Input/Input";
+import Button from "../../components/Button/Button";
 import Form from "../../components/Form/Form";
+import { validateEmail, validateLength } from "../../lib/validations";
+import supabase from "../../config/supabaseConfig";
+import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function UpdatePassword() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [statusMsg, setStatusMsg] = useState("");
+  const [isSamePassword, setIsSamePassword] = useState(false);
 
   const navigate = useNavigate();
-
-  const { signInWithPassword } = useUserContext();
 
   const isEmailValid = useMemo(() => validateEmail(email), [email]);
   const isPasswordValid = useMemo(
@@ -27,19 +27,25 @@ export default function Login() {
 
   const isValid = isEmailValid && isPasswordValid;
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (ev) => {
+    ev.preventDefault();
 
-    if (!email || !password) return;
+    if (!isValid) return;
+    setStatusMsg("");
+    setIsSamePassword(false);
 
     setIsLoading(true);
 
-    const { error } = await signInWithPassword({ email, password });
+    const { error } = await supabase.auth.updateUser({ password });
 
     setIsLoading(false);
 
     if (error) {
-      console.error("error login", error);
+      if (error.status === 422) {
+        setIsSamePassword(true);
+      }
+
+      setStatusMsg(error.message);
       return;
     }
 
@@ -49,7 +55,7 @@ export default function Login() {
   return (
     <main className={styles.container}>
       <Form onSubmit={handleSubmit}>
-        <h1 className={formStyles.title}>Log in</h1>
+        <h1 className={formStyles.title}>Reset password</h1>
         <div className={formStyles.content}>
           <div className={formStyles.field}>
             <Label htmlFor={"email"}>Email</Label>
@@ -60,11 +66,11 @@ export default function Login() {
               value={email}
               onChange={(ev) => setEmail(ev.target.value)}
               autoComplete={"email"}
-              variant={"dark-grey"}
+              variant="dark-grey"
             />
           </div>
           <div className={formStyles.field}>
-            <Label htmlFor={"password"}>Password</Label>
+            <Label htmlFor={"password"}>New Password</Label>
             <Input
               type={"password"}
               placeholder={"iloveyrgo"}
@@ -72,7 +78,8 @@ export default function Login() {
               value={password}
               onChange={(ev) => setPassword(ev.target.value)}
               autoComplete={"current-password"}
-              variant={"dark-grey"}
+              variant="dark-grey"
+              isError={isSamePassword}
             />
           </div>
           <Button
@@ -82,20 +89,11 @@ export default function Login() {
             variant="blue"
           >
             <div className={formStyles["submit-content"]}>
-              <span>Login in</span>
+              <span>Save</span>
               <ArrowUpRight size={24} />
             </div>
           </Button>
-          <p className={formStyles.paragraph}>
-            Don&apos;t have an account? <Link to="/onboarding">Sign up</Link>
-          </p>
-          <Link
-            to={"/request-email"}
-            style={{ textDecoration: "underline" }}
-            className={formStyles.paragraph}
-          >
-            Forgot password ?
-          </Link>
+          {statusMsg && <p className={formStyles.status}>{statusMsg}</p>}
         </div>
       </Form>
     </main>

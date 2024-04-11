@@ -9,6 +9,10 @@ const Onboarding = lazy(() => import("./pages/Onboarding/Onboarding"));
 const Login = lazy(() => import("./pages/Login/Login"));
 const Profile = lazy(() => import("./pages/Profile/Profile"));
 const Finder = lazy(() => import("./pages/Finder/Finder"));
+const RequestEmail = lazy(() => import("./pages/RequestEmail/RequestEmail"));
+const UpdatePassword = lazy(() =>
+  import("./pages/UpdatePassword/UpdatePassword")
+);
 
 export default function App() {
   return (
@@ -23,6 +27,8 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/profile/:profileID/:profileType" element={<Profile />} />
             <Route path="/finder" element={<Finder />} />
+            <Route path="/request-email" element={<RequestEmail />} />
+            <Route path="/update-password" element={<UpdatePassword />} />
           </Routes>
         </UserContextProvider>
       </Suspense>

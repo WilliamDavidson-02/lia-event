@@ -3,12 +3,11 @@
   flex-direction: column;
   gap: 3.25rem;
   padding: var(--p-xl) var(--p-md);
-  margin: 2.25rem 1.25rem;
   margin-top: 0;
   border: var(--backdrop-border);
   background-color: var(--backdrop-background);
   backdrop-filter: var(--backdrop-backdrop-filter);
-  border-radius: var(--rounded-xl);
+  border-radius: var(--rounded-md);
   color: var(--yrgo-white);
 
   font-size: 1rem;

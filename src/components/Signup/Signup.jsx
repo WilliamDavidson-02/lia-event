@@ -1,11 +1,13 @@
 import { useMemo, useState } from "react";
 import { validateEmail, validateLength } from "../../lib/validations";
 import styles from "./Signup.module.css";
+import formStyles from "../Form/Form.module.css";
 import Label from "../Label/Label";
 import Input from "../Input/Input";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import Button from "../Button/Button";
+import Form from "../Form/Form";
 
 export default function Signup({ credentials, setCredentials, next }) {
   const [isChecked, setIsChecked] = useState(false);
@@ -31,10 +33,10 @@ export default function Signup({ credentials, setCredentials, next }) {
 
   return (
     <main className={styles.container}>
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <h1 className={styles.title}>Get started</h1>
-        <div className={styles.content}>
-          <div className={styles.field}>
+      <Form onSubmit={handleSubmit}>
+        <h1 className={formStyles.title}>Get started</h1>
+        <div className={formStyles.content}>
+          <div className={formStyles.field}>
             <Label htmlFor={"email"}>Email</Label>
             <Input
               tabIndex={1}
@@ -44,9 +46,10 @@ export default function Signup({ credentials, setCredentials, next }) {
               value={email}
               onChange={(ev) => handleOnChange("email", ev.target.value)}
               autoComplete={"email"}
+              variant="dark-grey"
             />
           </div>
-          <div className={styles.field}>
+          <div className={formStyles.field}>
             <Label htmlFor={"password"}>Password</Label>
             <Input
               tabIndex={2}
@@ -56,6 +59,7 @@ export default function Signup({ credentials, setCredentials, next }) {
               value={password}
               onChange={(ev) => handleOnChange("password", ev.target.value)}
               autoComplete={"current-password"}
+              variant="dark-grey"
             />
           </div>
           <div className={styles.gdpr}>
@@ -82,19 +86,19 @@ export default function Signup({ credentials, setCredentials, next }) {
           <Button
             tabIndex={4}
             disabled={!isValid || !isChecked}
-            style={{ width: "100%" }}
+            style={{ width: "100%", outlineColor: "var(--yrgo-grey-500)" }}
             variant="blue"
           >
-            <div className={styles["submit-content"]}>
+            <div className={formStyles["submit-content"]}>
               <span>Continue</span>
               <ArrowUpRight size={24} />
             </div>
           </Button>
-          <p className={styles.paragraph}>
+          <p className={formStyles.paragraph}>
             Already have an account? <Link to="/login">Sign in</Link>
           </p>
         </div>
-      </form>
+      </Form>
     </main>
   );
 }

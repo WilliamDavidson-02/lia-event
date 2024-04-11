@@ -7,7 +7,13 @@ import { defaultCords } from "../../lib/mapData.js";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
-export default function Map({ position = defaultCords, getMap, ...props }) {
+export default function Map({
+  position = defaultCords,
+  getMap,
+  zoom = 11,
+  dragPan = true,
+  ...props
+}) {
   const mapContainer = useRef(null);
   const map = useRef(null);
 
@@ -20,8 +26,9 @@ export default function Map({ position = defaultCords, getMap, ...props }) {
       container: mapContainer.current,
       style: "mapbox://styles/oatmeal02/clu2g5ydm01ql01nrfpbihe3r",
       center: lngLat,
-      zoom: 11,
+      zoom: zoom,
       attributionControl: false,
+      dragPan: dragPan,
     });
 
     // GeoLocation needs acces to map.current
