@@ -27,6 +27,7 @@ export default function Onboarding() {
   const [isLoading, setIsloading] = useState(false);
   const [isValid, setIsValid] = useState(false);
   const [station, setStation] = useState(0); // 0, 1, 2 = {userType}, {email, password}, {onboarding steps}
+  const [error, setError] = useState("");
 
   const { signUp } = useUserContext();
 
@@ -122,7 +123,10 @@ export default function Onboarding() {
       setIsloading(false);
 
       if (error) {
-        console.log(error);
+        if (error.status === 400) {
+          setError(error.message);
+          setStation(1);
+        }
         return;
       }
 
@@ -201,6 +205,7 @@ export default function Onboarding() {
         credentials={credentials}
         setCredentials={setCredentials}
         next={() => setStation(station + 1)}
+        error={error}
       />
     );
   }

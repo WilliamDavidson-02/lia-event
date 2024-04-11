@@ -9,7 +9,7 @@ import { ArrowUpRight } from "lucide-react";
 import Button from "../Button/Button";
 import Form from "../Form/Form";
 
-export default function Signup({ credentials, setCredentials, next }) {
+export default function Signup({ credentials, setCredentials, next, error }) {
   const [isChecked, setIsChecked] = useState(false);
   const { email, password } = credentials;
 
@@ -47,7 +47,9 @@ export default function Signup({ credentials, setCredentials, next }) {
               onChange={(ev) => handleOnChange("email", ev.target.value)}
               autoComplete={"email"}
               variant="dark-grey"
+              isError={error}
             />
+            {error && <p className={formStyles.status}>{error}</p>}
           </div>
           <div className={formStyles.field}>
             <Label htmlFor={"password"}>Password</Label>
