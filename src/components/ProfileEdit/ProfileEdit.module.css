@@ -20,7 +20,7 @@ body {
   backdrop-filter: var(--backdrop-backdrop-filter);
   border-radius: var(--rounded-md); */
   color: var(--yrgo-white);
-  gap: var(--gap-md);
+  gap: var(--gap-lg);
 }
 
 .inputField {
@@ -32,15 +32,17 @@ body {
   color: var(--yrgo-white);
   padding: var(--p-sm);
   box-shadow: none;
+  margin-top: 0.25rem;
   border-radius: 0.75em;
   width: 100%;
   font-size: 1rem;
   font-weight: 400;
 }
 
-.loginInfo {
+.elementContainer {
   display: flex;
   flex-direction: column;
+  margin-top: 3rem;
   gap: var(--gap-md);
 }
 
@@ -68,8 +70,9 @@ body {
 .location {
   display: flex;
   flex-direction: column;
+  gap: var(--gap-md);
   flex-grow: 1;
-  aspect-ratio: 9/11;
+  aspect-ratio: 9/11.5;
 }
 
 .buttons {

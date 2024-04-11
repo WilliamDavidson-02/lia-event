@@ -62,7 +62,12 @@ export default function Profile() {
       {profileData && (
         <>
           {doEdit ? (
-            <ProfileEdit profileData={profileData} profileType={profileType} closeEdit={cancelEdit} />
+            <ProfileEdit
+              profileData={profileData}
+              setProfileData={setProfileData}
+              profileType={profileType}
+              closeEdit={cancelEdit}
+            />
           ) : (
             <>
               <UserCard
