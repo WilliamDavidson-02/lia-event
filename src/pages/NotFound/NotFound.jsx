@@ -1,7 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
-import Button from "../../components/Button/Button";
 import styles from "./NotFound.module.css";
-import { useNavigate } from "react-router-dom";
+import buttonStyles from "../../components/Button/Button.module.css";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function NotFound() {
   const navigate = useNavigate();
@@ -14,10 +14,13 @@ export default function NotFound() {
         <p className={styles.paragraph}>
           You seam to be lost, please return back home
         </p>
-        <Button onClick={() => navigate("/")}>
+        <Link
+          to={"/"}
+          className={`${buttonStyles.button} ${buttonStyles.primary}`}
+        >
           Home
           <ArrowUpRight />
-        </Button>
+        </Link>
       </div>
     </main>
   );
