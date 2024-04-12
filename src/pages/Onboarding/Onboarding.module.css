@@ -67,7 +67,7 @@
 .container .card {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: repeat(12, 1fr);
+  grid-template-rows: repeat(14, 1fr);
   gap: var(--gap-md);
   border-radius: var(--rounded-md);
   border: var(--backdrop-border);
@@ -79,11 +79,12 @@
 }
 
 .container .card > :first-child {
-  grid-row: span 11;
+  grid-row: span 13;
 }
 
 .footer {
   display: flex;
+  align-items: center;
   gap: var(--gap-md);
   padding-right: var(--p-md);
 }
@@ -128,11 +129,10 @@
   }
 
   .container .card > :first-child {
-    grid-row: span 10;
+    grid-row: span 12;
   }
 
   .card .footer {
     grid-row: span 2;
-    align-items: end;
   }
 }
