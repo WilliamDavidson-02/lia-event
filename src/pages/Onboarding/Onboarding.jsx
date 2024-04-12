@@ -124,7 +124,7 @@ export default function Onboarding() {
       setIsloading(false);
 
       if (error) {
-        if (error.status === 400) {
+        if (error.message.toLowerCase() === "user already registered") {
           setError(error.message);
           setStation(1);
         }
