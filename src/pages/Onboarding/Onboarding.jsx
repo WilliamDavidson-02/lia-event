@@ -257,7 +257,6 @@ export default function Onboarding() {
                 variant={"tertiery"}
                 size={size.width <= 760 ? "md" : "lg"}
                 type={"button"}
-                style={{ height: "100%" }}
                 onClick={() => handlePrev(userType, currentFieldIndex)}
               >
                 <ChevronLeft size={size.width <= 760 ? 24 : 28} />
