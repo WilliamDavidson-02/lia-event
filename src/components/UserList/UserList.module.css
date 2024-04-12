@@ -37,6 +37,16 @@
   }
 }
 
+.empty {
+  color: var(--yrgo-grey-500);
+  font-size: 2rem;
+  font-weight: 500;
+
+  flex-grow: 1;
+  display: grid;
+  place-content: center;
+}
+
 @media (min-width: 760px) {
   .content {
     margin-top: 4.5rem;
