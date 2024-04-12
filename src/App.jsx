@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import UserContextProvider from "./context/UserContext";
 import Background from "./components/Background/Background";
 import Nav from "./components/Nav/Nav";
+import GuestRoute from "./GuestRoute";
+import PrivateRoute from "./PrivateRoute";
 
 const Home = lazy(() => import("./pages/Home/Home"));
 const Onboarding = lazy(() => import("./pages/Onboarding/Onboarding"));
@@ -24,15 +26,22 @@ export default function App() {
           <Nav />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/onboarding" element={<Onboarding />} />
-            <Route path="/login" element={<Login />} />
-            <Route
-              path="/profile/:profileID/:profileType"
-              element={<Profile />}
-            />
-            <Route path="/finder" element={<Finder />} />
-            <Route path="/request-email" element={<RequestEmail />} />
-            <Route path="/update-password" element={<UpdatePassword />} />
+
+            <Route element={<GuestRoute />}>
+              <Route path="/onboarding" element={<Onboarding />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/request-email" element={<RequestEmail />} />
+            </Route>
+
+            <Route element={<PrivateRoute />}>
+              <Route
+                path="/profile/:profileID/:profileType"
+                element={<Profile />}
+              />
+              <Route path="/finder" element={<Finder />} />
+              <Route path="/update-password" element={<UpdatePassword />} />
+            </Route>
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </UserContextProvider>

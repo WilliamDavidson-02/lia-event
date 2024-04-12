@@ -63,16 +63,22 @@ export default function UserList({
   };
 
   return (
-    <section id={"finder-user-list-container"} className={styles.content}>
-      {users.map((profile) => (
-        <UserCard setSave={setSave} profile={profile} key={profile.id}>
-          <MatchRating
-            onClick={() => handleShowMatches(profile.id)}
-            show={showMatches.includes(profile.id)}
-            rating={profile.rating}
-          />
-        </UserCard>
-      ))}
-    </section>
+    <>
+      {users.length > 0 ? (
+        <section id={"finder-user-list-container"} className={styles.content}>
+          {users.map((profile) => (
+            <UserCard setSave={setSave} profile={profile} key={profile.id}>
+              <MatchRating
+                onClick={() => handleShowMatches(profile.id)}
+                show={showMatches.includes(profile.id)}
+                rating={profile.rating}
+              />
+            </UserCard>
+          ))}
+        </section>
+      ) : (
+        <div className={styles.empty}>No users found</div>
+      )}
+    </>
   );
 }

@@ -116,14 +116,14 @@
 
     grid-column-start: 1;
     grid-column-end: 2;
-    grid-row-start: 4;
+    grid-row-start: 5;
     grid-row-end: 13;
   }
 
   .container .card {
     grid-column-start: 2;
     grid-column-end: 3;
-    grid-row-start: 4;
+    grid-row-start: 5;
     grid-row-end: 13;
   }
 

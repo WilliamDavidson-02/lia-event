@@ -5,7 +5,7 @@ import Input from "../../components/Input/Input.jsx";
 import Label from "../../components/Label/Label.jsx";
 import Button from "../../components/Button/Button";
 import { ArrowUpRight } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import useUserContext from "../../hooks/useUserContext.jsx";
 import { validateEmail, validateLength } from "../../lib/util.js";
 import Form from "../../components/Form/Form";
@@ -16,6 +16,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { signInWithPassword } = useUserContext();
 
@@ -43,7 +44,8 @@ export default function Login() {
       return;
     }
 
-    navigate("/");
+    const { from } = location.state || { from: { pathname: "/" } };
+    navigate(from);
   };
 
   return (
