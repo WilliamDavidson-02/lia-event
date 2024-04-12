@@ -21,6 +21,8 @@
 
   padding: 0 2rem;
   transition: all 0.3s;
+
+  cursor: pointer;
 }
 
 .light {
@@ -37,6 +39,7 @@
   color: var(--yrgo-white);
 
   top: 100%;
+  width: 100%;
 }
 
 .container:hover .dark {

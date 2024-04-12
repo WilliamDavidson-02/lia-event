@@ -5,6 +5,7 @@ export const UserContext = createContext(null);
 
 export default function UserContextProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getUser();
@@ -32,8 +33,7 @@ export default function UserContextProvider({ children }) {
     const { data, error } = await supabase.auth.signInWithPassword(credentials);
 
     if (error) {
-      console.log("Sign in failed, check credentials", error);
-      return error;
+      return { error };
     }
 
     setUser(data.user);
@@ -43,6 +43,7 @@ export default function UserContextProvider({ children }) {
 
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
+
     if (!error) {
       setUser(null);
     }
@@ -53,6 +54,7 @@ export default function UserContextProvider({ children }) {
     } = await supabase.auth.getSession();
 
     if (!session) {
+      setIsLoading(false);
       return;
     }
 
@@ -64,6 +66,7 @@ export default function UserContextProvider({ children }) {
     }
 
     setUser(data.user);
+    setIsLoading(false);
   };
 
   return (
@@ -73,6 +76,7 @@ export default function UserContextProvider({ children }) {
         signInWithPassword,
         signOut,
         signUp,
+        isLoading,
       }}
     >
       {children}
