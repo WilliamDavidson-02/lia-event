@@ -1,5 +1,4 @@
 import styles from "./Nav.module.css";
-import X from "../X/X";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import useUserContext from "../../hooks/useUserContext";
@@ -58,7 +57,13 @@ export default function Nav() {
         onClick={handleNavToggle}
       />
       <nav ref={nav} className={styles.nav}>
-        <X style={{ padding: "1rem 2rem" }} onClick={handleNavToggle} />
+        <Link
+          style={{ padding: "1rem 2rem" }}
+          onClick={handleNavToggle}
+          className={styles.x}
+        >
+          <div>X</div>
+        </Link>
         <div className={styles.content}>
           <Link onClick={handleNavToggle} to={"/"}>
             <NavLabel>Home</NavLabel>

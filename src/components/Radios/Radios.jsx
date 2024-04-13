@@ -1,8 +1,8 @@
-import styles from "./OnboardingRadio.module.css";
+import styles from "./Radios.module.css";
 import Input from "../Input/Input";
 import Label from "../Label/Label";
 
-export default function OnboardingRadio({
+export default function Radios({
   handleProperty,
   options,
   selected = "",

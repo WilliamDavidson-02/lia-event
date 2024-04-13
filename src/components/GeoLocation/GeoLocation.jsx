@@ -22,15 +22,23 @@ export default function GeoLocation({ handleProperty }) {
       /**
        * Replace mapbox geocoder default icons to lucide icons
        */
-      const searchIcon = document.querySelector(".mapboxgl-ctrl-geocoder--icon-search");
-      const closeIcon = document.querySelector(".mapboxgl-ctrl-geocoder--icon-close");
+      const searchIcon = document.querySelector(
+        ".mapboxgl-ctrl-geocoder--icon-search"
+      );
+      const closeIcon = document.querySelector(
+        ".mapboxgl-ctrl-geocoder--icon-close"
+      );
 
       // Search Icon
-      const searchClass = [...searchIcon.classList, "mapbox-lucide-icon"].join(" ");
+      const searchClass = [...searchIcon.classList, "mapbox-lucide-icon"].join(
+        " "
+      );
       const newSearchIcon = <Search className={searchClass} />;
 
       // Close Icon
-      const closeClass = [...closeIcon.classList, "mapbox-lucide-icon"].join(" ");
+      const closeClass = [...closeIcon.classList, "mapbox-lucide-icon"].join(
+        " "
+      );
       const newCloseIcon = <X className={closeClass} />;
 
       // Add lucid react icon to dom node
@@ -64,7 +72,9 @@ export default function GeoLocation({ handleProperty }) {
 
     // Create Marker
     const markerElement = document.createElement("div");
-    markerElement.innerHTML = ReactDOMServer.renderToString(<MapMarker size={24} />);
+    markerElement.innerHTML = ReactDOMServer.renderToString(
+      <MapMarker size={24} />
+    );
 
     marker.current = new mapboxgl.Marker({
       draggable: true,

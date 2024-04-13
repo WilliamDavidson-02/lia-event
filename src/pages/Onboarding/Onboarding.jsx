@@ -9,8 +9,8 @@ import {
 } from "../../lib/util";
 import styles from "./Onboarding.module.css";
 import Button from "../../components/Button/Button";
-import OnboardingTextArea from "../../components/OnboardingTextArea/OnboardingTextArea";
-import OnboardingRadio from "../../components/OnboardingRadio/OnboardingRadio";
+import Textarea from "../../components/Textarea/Textarea";
+import Radios from "../../components/Radios/Radios";
 import onboardingMap from "../../lib/onboardingMap.json";
 import GeoLocation from "../../components/GeoLocation/GeoLocation";
 import useUserContext from "../../hooks/useUserContext";
@@ -225,14 +225,14 @@ export default function Onboarding() {
             <GeoLocation handleProperty={setOnboardingValues} />
           )}
           {currentField.type === "radio" && (
-            <OnboardingRadio
+            <Radios
               options={currentField.options}
               handleProperty={setOnboardingValues}
               selected={onboarding[currentField.property]}
             />
           )}
           {["text", "link"].includes(currentField.type) && (
-            <OnboardingTextArea
+            <Textarea
               autoFocus
               id={currentField.property}
               handleSubmit={handleSubmit}
