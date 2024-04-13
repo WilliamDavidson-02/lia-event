@@ -5,6 +5,7 @@ import Background from "./components/Background/Background";
 import Nav from "./components/Nav/Nav";
 import GuestRoute from "./GuestRoute";
 import PrivateRoute from "./PrivateRoute";
+import OnboardingContextProvider from "./context/OnboardingContext";
 
 const Home = lazy(() => import("./pages/Home/Home"));
 const Onboarding = lazy(() => import("./pages/Onboarding/Onboarding"));
@@ -28,7 +29,14 @@ export default function App() {
             <Route path="/" element={<Home />} />
 
             <Route element={<GuestRoute />}>
-              <Route path="/onboarding" element={<Onboarding />} />
+              <Route
+                path="/onboarding"
+                element={
+                  <OnboardingContextProvider>
+                    <Onboarding />
+                  </OnboardingContextProvider>
+                }
+              />
               <Route path="/login" element={<Login />} />
               <Route path="/request-email" element={<RequestEmail />} />
             </Route>

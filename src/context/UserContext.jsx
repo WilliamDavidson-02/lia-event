@@ -25,6 +25,8 @@ export default function UserContextProvider({ children }) {
       const error = signInError;
       return error;
     }
+
+    return { error };
   };
 
   const signInWithPassword = async (credentials) => {
