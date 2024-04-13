@@ -43,22 +43,14 @@ export default function UserList({
     return users.filter((u) => u.isSaved);
   };
 
-  const setSave = (id) => {
+  const setSave = (id, isSaved) => {
     setUsers((prev) => {
-      let users = prev.map((u) => {
-        if (u.id === id) {
-          return {
-            ...u,
-            isSaved: !u.isSaved,
-          };
-        }
-
+      const users = prev.map((u) => {
+        if (u.id === id) u.isSaved = isSaved;
         return u;
       });
 
-      users = filterUsersfromWishlist(users);
-
-      return users;
+      return filterUsersfromWishlist(users);
     });
   };
 

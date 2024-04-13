@@ -15,27 +15,29 @@ export default function UserCard({
   const { user } = useUserContext();
 
   const handleSave = async () => {
-    // Toggle like for profile
-    setSave(profile.id);
+    /**
+     * Display optimistic ui change for saved users.
+     * If there is an error from supabase, saved users is toggled back to it's initial value.
+     */
 
     if (!profile.isSaved) {
+      setSave(profile.id, true);
+
       const { error } = await supabase
         .from("saved_users")
         .insert({ user_id: user.id, saved_id: profile.id });
 
-      if (error) {
-        console.log("Error handling saved users", error);
-      }
+      if (error) setSave(profile.id, false);
     } else {
+      setSave(profile.id, false);
+
       const { error } = await supabase
         .from("saved_users")
         .delete()
         .eq("saved_id", profile.id)
         .eq("user_id", user.id);
 
-      if (error) {
-        console.log("Error handling unsave users", error);
-      }
+      if (error) setSave(profile.id, true);
     }
   };
 
