@@ -41,13 +41,21 @@ export default function UserCard({
     }
   };
 
+  const withStopPropagation = (callback) => (ev) => {
+    ev.stopPropagation();
+    callback(ev);
+  };
+
   return (
     <div {...props} className={styles.card}>
       {showEdit ? (
-        <UserCog onClick={openEdit} style={{ marginLeft: "auto" }} />
+        <UserCog
+          onClick={withStopPropagation(openEdit)}
+          style={{ marginLeft: "auto" }}
+        />
       ) : (
         <Bookmark
-          onClick={handleSave}
+          onClick={withStopPropagation(handleSave)}
           className={profile.isSaved ? styles.saved : ""}
           style={{ marginLeft: "auto", cursor: "pointer" }}
         />

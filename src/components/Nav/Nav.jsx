@@ -42,9 +42,6 @@ export default function Nav() {
     handleNavToggle();
   };
 
-  const userID = user?.id;
-  const userType = user?.user_metadata?.user_type;
-
   return (
     <header className={styles.container}>
       <Link to={"/"} className={styles.logo}>
@@ -76,7 +73,7 @@ export default function Nav() {
           {user && (
             <Link
               onClick={handleNavToggle}
-              to={`/profile/${userID}/${userType}`}
+              to={`/profile/${user.id}/${user?.user_metadata.user_type}`}
             >
               <NavLabel>Profile</NavLabel>
             </Link>

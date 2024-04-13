@@ -105,7 +105,7 @@ export default function Finder() {
     // Default query
     let query = supabase
       .from("profile")
-      .select("name, avatar, href, id, keywords")
+      .select("name, avatar, href, id, keywords, user_type")
       .neq("user_type", user.user_metadata.user_type)
       .order("name", { ascending: true });
 
@@ -143,7 +143,7 @@ export default function Finder() {
 
     let query = supabase
       .from("saved_users")
-      .select("profile(name, avatar, href, id, keywords)")
+      .select("profile(name, avatar, href, id, keywords, user_type)")
       .eq("user_id", user.id)
       .not("profile", "is", null)
       .order("profile(name)", { ascending: true });
