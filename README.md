@@ -8,12 +8,14 @@
 - [Digital Solution Requirements](#digital-solution-requirements)
 - [Mapbox](#mapbox)
 - [Supabase](#supabase)
+  - [Supabase (local development)](#supabase-local-development)
 - [Installation](#installation)
 
 ## Prerequisite
 
 - Mapbox account
 - Supabase account
+- Docker desktop
 
 ## DD+WU Project 2024
 
@@ -50,15 +52,42 @@ VITE_SUPABASE_URL= /* PUBLIC URL */
 VITE_SUPABASE_KEY= /* ANON KEY */
 ```
 
+### Supabase (local development)
+
+If you want to use supabase on your local development machine, make sure you have `supabase cli` and `docker desktop` installed.
+
+There is a supabase folder with migration and seeder located in the folder `/supabase`.
+
+To start supabase locally run
+
+```bash
+supabase start
+```
+
+Make sure to include the `url` and `anon key` for the local supabase database in your `.env`.
+
+```js
+VITE_SUPABASE_URL= /* API URL */
+VITE_SUPABASE_KEY= /* ANON KEY */
+```
+
+For more information about developing lcoally with supabase please refer to supabases [documentation](https://supabase.com/docs/guides/cli/local-development)
+
 ## Installation
 
 Download to your project directory
 
 ```bash
 git clone https://github.com/WilliamDavidson-02/lia-event.git
+
 cd lia-event
+
+cp .env.example .env
+
 npm install
 ```
+
+When every thing is setup correctly run your local server
 
 ```bash
 npm run dev
