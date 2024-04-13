@@ -59,6 +59,7 @@ export default function Login() {
           <div className={formStyles.field}>
             <Label htmlFor={"email"}>Email</Label>
             <Input
+              tabIndex={1}
               type={"text"}
               placeholder={"name@email.com"}
               id={"email"}
@@ -72,6 +73,7 @@ export default function Login() {
           <div className={formStyles.field}>
             <Label htmlFor={"password"}>Password</Label>
             <Input
+              tabIndex={2}
               type={"password"}
               placeholder={"iloveyrgo"}
               id={"password"}
@@ -83,6 +85,7 @@ export default function Login() {
             />
           </div>
           <Button
+            tabIndex={3}
             disabled={isLoading || !isValid}
             isLoading={isLoading}
             style={{ width: "100%", outlineColor: "var(--yrgo-grey-500)" }}
