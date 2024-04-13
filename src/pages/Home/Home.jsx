@@ -104,8 +104,8 @@ export default function Home() {
                 <p>
                   Join us for an exciting networking event where leading
                   companies and talented individuals come together to explore
-                  opportunities in the IT and design industries. Don't miss out
-                  on this chance to connect with our top-tier talent!
+                  opportunities in the IT and design industries. Don&apos;t miss
+                  out on this chance to connect with our top-tier talent!
                 </p>
               </div>
               {size.width >= 760 && (

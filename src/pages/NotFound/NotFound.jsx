@@ -1,11 +1,9 @@
 import { ArrowUpRight } from "lucide-react";
 import styles from "./NotFound.module.css";
 import buttonStyles from "../../components/Button/Button.module.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function NotFound() {
-  const navigate = useNavigate();
-
   return (
     <main className={styles.container}>
       <div>

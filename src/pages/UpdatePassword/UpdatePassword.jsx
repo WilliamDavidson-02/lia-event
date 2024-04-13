@@ -54,7 +54,7 @@ export default function UpdatePassword() {
 
   return (
     <main className={styles.container}>
-      <Form onSubmit={handleSubmit}>
+      <Form autoComplete={"off"} onSubmit={handleSubmit}>
         <h1 className={formStyles.title}>Reset password</h1>
         <div className={formStyles.content}>
           <div className={formStyles.field}>
@@ -65,7 +65,6 @@ export default function UpdatePassword() {
               id={"email"}
               value={email}
               onChange={(ev) => setEmail(ev.target.value)}
-              autoComplete={"email"}
               variant="dark-grey"
             />
           </div>
@@ -77,7 +76,6 @@ export default function UpdatePassword() {
               id={"password"}
               value={password}
               onChange={(ev) => setPassword(ev.target.value)}
-              autoComplete={"current-password"}
               variant="dark-grey"
               isError={isSamePassword}
             />

@@ -14,6 +14,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,7 +32,7 @@ export default function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!email || !password) return;
+    if (!isValid) return;
 
     setIsLoading(true);
 
@@ -40,7 +41,9 @@ export default function Login() {
     setIsLoading(false);
 
     if (error) {
-      console.error("error login", error);
+      if (error.message.toLowerCase() === "invalid login credentials") {
+        setError(error.message);
+      }
       return;
     }
 
@@ -56,6 +59,7 @@ export default function Login() {
           <div className={formStyles.field}>
             <Label htmlFor={"email"}>Email</Label>
             <Input
+              tabIndex={1}
               type={"text"}
               placeholder={"name@email.com"}
               id={"email"}
@@ -63,11 +67,13 @@ export default function Login() {
               onChange={(ev) => setEmail(ev.target.value)}
               autoComplete={"email"}
               variant={"dark-grey"}
+              isError={error.length}
             />
           </div>
           <div className={formStyles.field}>
             <Label htmlFor={"password"}>Password</Label>
             <Input
+              tabIndex={2}
               type={"password"}
               placeholder={"iloveyrgo"}
               id={"password"}
@@ -75,9 +81,11 @@ export default function Login() {
               onChange={(ev) => setPassword(ev.target.value)}
               autoComplete={"current-password"}
               variant={"dark-grey"}
+              isError={error.length}
             />
           </div>
           <Button
+            tabIndex={3}
             disabled={isLoading || !isValid}
             isLoading={isLoading}
             style={{ width: "100%", outlineColor: "var(--yrgo-grey-500)" }}
@@ -88,6 +96,7 @@ export default function Login() {
               <ArrowUpRight size={24} />
             </div>
           </Button>
+          {error && <p className={formStyles.status}>{error}</p>}
           <p className={formStyles.paragraph}>
             Don&apos;t have an account? <Link to="/onboarding">Sign up</Link>
           </p>

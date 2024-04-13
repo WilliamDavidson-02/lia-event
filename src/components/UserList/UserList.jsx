@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styles from "./UserList.module.css";
 import stylesCard from "../UserCard/UserCard.module.css";
 import UserCard from "../UserCard/UserCard";
 import MatchRating from "../MatchRating/MatchRating";
+import { useNavigate } from "react-router-dom";
 
 export default function UserList({
   users,
@@ -11,6 +12,8 @@ export default function UserList({
   handleShowMatches,
   showMatches,
 }) {
+  const navigate = useNavigate();
+
   useEffect(() => {
     const container = document.querySelector("#finder-user-list-container");
 
@@ -43,23 +46,20 @@ export default function UserList({
     return users.filter((u) => u.isSaved);
   };
 
-  const setSave = (id) => {
+  const setSave = (id, isSaved) => {
     setUsers((prev) => {
-      let users = prev.map((u) => {
-        if (u.id === id) {
-          return {
-            ...u,
-            isSaved: !u.isSaved,
-          };
-        }
-
+      const users = prev.map((u) => {
+        if (u.id === id) u.isSaved = isSaved;
         return u;
       });
 
-      users = filterUsersfromWishlist(users);
-
-      return users;
+      return filterUsersfromWishlist(users);
     });
+  };
+
+  const withStopPropagation = (callback) => (ev) => {
+    ev.stopPropagation();
+    callback(ev);
   };
 
   return (
@@ -67,9 +67,19 @@ export default function UserList({
       {users.length > 0 ? (
         <section id={"finder-user-list-container"} className={styles.content}>
           {users.map((profile) => (
-            <UserCard setSave={setSave} profile={profile} key={profile.id}>
+            <UserCard
+              onClick={() =>
+                navigate(`/profile/${profile.id}/${profile.user_type}`)
+              }
+              style={{ cursor: "pointer" }}
+              setSave={setSave}
+              profile={profile}
+              key={profile.id}
+            >
               <MatchRating
-                onClick={() => handleShowMatches(profile.id)}
+                onClick={withStopPropagation(() =>
+                  handleShowMatches(profile.id)
+                )}
                 show={showMatches.includes(profile.id)}
                 rating={profile.rating}
               />

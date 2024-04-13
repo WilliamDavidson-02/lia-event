@@ -1,6 +1,6 @@
-import styles from "./OnboardingTextArea.module.css";
+import styles from "./Textarea.module.css";
 
-export default function OnboardingTextArea({
+export default function Textarea({
   handleSubmit,
   handleProperty,
   propertyValue = "",

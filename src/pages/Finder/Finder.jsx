@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
 import styles from "./Finder.module.css";
-import Nav from "../../components/Nav/Nav";
 import UserList from "../../components/UserList/UserList";
 import supabase from "../../config/supabaseConfig";
 import useUserContext from "../../hooks/useUserContext";
 import Filter from "../../components/Filter/Filter";
 import { useDebounce } from "@uidotdev/usehooks";
 
+const initFilterOptions = {
+  wishlist: false,
+  keywords: [],
+  search: "",
+};
+
 export default function Finder() {
   const { user } = useUserContext();
   const [users, setUsers] = useState([]);
   const [isGettingUsers, setIsGettingUsers] = useState(false);
-  const [filterOptions, setFilterOptions] = useState({
-    wishlist: false,
-    keywords: [],
-    search: "",
-  });
+  const [filterOptions, setFilterOptions] = useState(initFilterOptions);
   const [showMatches, setShowMatches] = useState([]);
   const [matchAll, setMatchAll] = useState(false);
 
@@ -34,10 +35,7 @@ export default function Finder() {
       .in("saved_id", ids)
       .eq("user_id", user.id);
 
-    if (error) {
-      console.log("error getting saved users", error);
-      return [];
-    }
+    if (error) return [];
 
     return data.map((u) => u.saved_id);
   };
@@ -49,23 +47,18 @@ export default function Finder() {
   const setFilterOptionParams = (query, referencedTable) => {
     const { keywords, search } = filterOptions;
 
+    const getColumnName = (col) => {
+      return referencedTable ? `${referencedTable}.${col}` : col;
+    };
+
     if (keywords.length > 1) {
-      query.overlaps(
-        referencedTable ? `${referencedTable}.keywords` : "keywords",
-        keywords
-      );
+      query.overlaps(getColumnName("keywords"), keywords);
     } else if (keywords.length === 1) {
-      query.contains(
-        referencedTable ? `${referencedTable}.keywords` : "keywords",
-        keywords
-      );
+      query.contains(getColumnName("keywords"), keywords);
     }
 
     if (search.length > 0) {
-      query.ilike(
-        referencedTable ? `${referencedTable}.name` : "name",
-        `%${search}%`
-      );
+      query.ilike(getColumnName("name")`%${search}%`);
     }
 
     return query;
@@ -77,7 +70,7 @@ export default function Finder() {
      * Due to student only able to select there respective keywords for there program.
      */
 
-    profiles = profiles.map((u) => {
+    return profiles.map((u) => {
       const { user_type, keywords } = user.user_metadata;
 
       const student = user_type === "student" ? keywords : u.keywords;
@@ -89,21 +82,18 @@ export default function Finder() {
         return acc;
       }, 0);
 
-      return {
-        ...u,
-        rating: Math.ceil(Math.floor((matches / student.length) * 100) / 20),
-      };
-    });
+      const rating = Math.ceil(
+        Math.floor((matches / student.length) * 100) / 20
+      );
 
-    return profiles;
+      return { ...u, rating };
+    });
   };
 
   const sortByMatchRating = (users) => {
     const sorted = users.sort((a, b) => b.rating - a.rating);
 
-    const ids = sorted.map((u) => u.id);
-    setShowMatches(ids);
-
+    setShowMatches(sorted.map((u) => u.id));
     return sorted;
   };
 
@@ -115,7 +105,7 @@ export default function Finder() {
     // Default query
     let query = supabase
       .from("profile")
-      .select("name, avatar, href, id, keywords")
+      .select("name, avatar, href, id, keywords, user_type")
       .neq("user_type", user.user_metadata.user_type)
       .order("name", { ascending: true });
 
@@ -127,18 +117,15 @@ export default function Finder() {
 
     setIsGettingUsers(false);
 
-    if (error) {
-      console.error("Error getting users", error);
-      return;
-    }
-
-    if (!data) return;
+    if (error || !data) return;
 
     let newUsers = data;
 
     const savedUsers = await getSavedUsersIds(newUsers.map((u) => u.id));
 
-    if (savedUsers.length) newUsers = setUsersIsSaved(newUsers, savedUsers);
+    if (savedUsers.length) {
+      newUsers = setUsersIsSaved(newUsers, savedUsers);
+    }
 
     newUsers = calcMatchMe(user, newUsers);
 
@@ -156,7 +143,7 @@ export default function Finder() {
 
     let query = supabase
       .from("saved_users")
-      .select("profile(name, avatar, href, id, keywords)")
+      .select("profile(name, avatar, href, id, keywords, user_type)")
       .eq("user_id", user.id)
       .not("profile", "is", null)
       .order("profile(name)", { ascending: true });
@@ -169,12 +156,7 @@ export default function Finder() {
 
     setIsGettingUsers(false);
 
-    if (error) {
-      console.error("Error getting users", error);
-      return;
-    }
-
-    if (!data) return;
+    if (error || !data) return;
 
     let newUsers = data.map((u) => u.profile);
 

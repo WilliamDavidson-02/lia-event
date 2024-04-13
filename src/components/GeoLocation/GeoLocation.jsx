@@ -11,7 +11,7 @@ import markerStyles from "../MapMarker/MapMarker.module.css";
 import "./geocoderOverride.css";
 import { Search, X } from "lucide-react";
 
-export default function GeoLocation({ handleProperty }) {
+export default function GeoLocation({ handleProperty, position }) {
   const geocoder = useRef(null);
   const marker = useRef(null);
   const [cords, setCords] = useState(defaultCords);
@@ -22,15 +22,23 @@ export default function GeoLocation({ handleProperty }) {
       /**
        * Replace mapbox geocoder default icons to lucide icons
        */
-      const searchIcon = document.querySelector(".mapboxgl-ctrl-geocoder--icon-search");
-      const closeIcon = document.querySelector(".mapboxgl-ctrl-geocoder--icon-close");
+      const searchIcon = document.querySelector(
+        ".mapboxgl-ctrl-geocoder--icon-search"
+      );
+      const closeIcon = document.querySelector(
+        ".mapboxgl-ctrl-geocoder--icon-close"
+      );
 
       // Search Icon
-      const searchClass = [...searchIcon.classList, "mapbox-lucide-icon"].join(" ");
+      const searchClass = [...searchIcon.classList, "mapbox-lucide-icon"].join(
+        " "
+      );
       const newSearchIcon = <Search className={searchClass} />;
 
       // Close Icon
-      const closeClass = [...closeIcon.classList, "mapbox-lucide-icon"].join(" ");
+      const closeClass = [...closeIcon.classList, "mapbox-lucide-icon"].join(
+        " "
+      );
       const newCloseIcon = <X className={closeClass} />;
 
       // Add lucid react icon to dom node
@@ -59,21 +67,31 @@ export default function GeoLocation({ handleProperty }) {
   useEffect(() => {
     if (!map) return;
 
+    if (position && position.length) {
+      map.flyTo({
+        center: position,
+      });
+    }
+
     geocoder.current.on("result", handleGeoCoderResult);
     map.on("click", ({ lngLat }) => handleMarker(lngLat));
 
     // Create Marker
     const markerElement = document.createElement("div");
-    markerElement.innerHTML = ReactDOMServer.renderToString(<MapMarker size={24} />);
+    markerElement.innerHTML = ReactDOMServer.renderToString(
+      <MapMarker size={24} />
+    );
 
     marker.current = new mapboxgl.Marker({
       draggable: true,
       element: markerElement,
     })
-      .setLngLat(defaultCords)
+      .setLngLat(position && position.length ? position : defaultCords)
       .addTo(map);
 
-    marker.current.addClassName(markerStyles.hidden);
+    if (!position || !position.length) {
+      marker.current.addClassName(markerStyles.hidden);
+    }
 
     marker.current.on("dragend", () => {
       const cords = marker.current.getLngLat();
@@ -99,7 +117,7 @@ export default function GeoLocation({ handleProperty }) {
     }
 
     setCords(cords);
-    handleProperty(cords);
+    handleProperty([cords.lng, cords.lat]);
     handleMarker(cords);
   };
 
