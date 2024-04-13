@@ -32,7 +32,7 @@ export default function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!email || !password) return;
+    if (!isValid) return;
 
     setIsLoading(true);
 

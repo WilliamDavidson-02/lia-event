@@ -16,7 +16,7 @@ export default function EditKeywords({ handleProperty, selected = [], area }) {
 
     setSuggestions(keywords);
     setWords(keywords);
-  }, []);
+  }, [area]);
 
   const getKeywords = (area) => {
     const keywordProps = areaValue[area];

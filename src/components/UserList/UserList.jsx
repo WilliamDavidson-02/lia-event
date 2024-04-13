@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styles from "./UserList.module.css";
 import stylesCard from "../UserCard/UserCard.module.css";
 import UserCard from "../UserCard/UserCard";

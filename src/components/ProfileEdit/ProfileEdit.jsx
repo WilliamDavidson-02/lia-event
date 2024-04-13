@@ -3,7 +3,7 @@ import Chips from "../Chips/Chips";
 import Image from "../Image/Image";
 import Input from "../Input/Input";
 import Label from "../Label/Label";
-import OnboardingRadio from "../OnboardingRadio/OnboardingRadio";
+import Radios from "../Radios/Radios";
 import styles from "./ProfileEdit.module.css";
 import onboardingMap from "../../lib/onboardingMap.json";
 import keywords from "../../lib/keywords.json";
@@ -13,7 +13,12 @@ import EditKeywords from "../EditKeywords/EditKeywords";
 import GeoLocation from "../GeoLocation/GeoLocation";
 import { defaultCords } from "../../lib/mapData";
 
-export default function ProfileEdit({ profileType, profileData, setProfileData, closeEdit }) {
+export default function ProfileEdit({
+  profileType,
+  profileData,
+  setProfileData,
+  closeEdit,
+}) {
   const [newPassword, setNewPassword] = useState({
     password: "",
   });
@@ -22,7 +27,9 @@ export default function ProfileEdit({ profileType, profileData, setProfileData, 
   const [imageURL, setImageURL] = useState(profileData.avatar);
   const [selectedArea, setSelectedArea] = useState(profileData.area);
 
-  const [selectedKeywords, setSelectedKeywords] = useState(profileData.keywords || []);
+  const [selectedKeywords, setSelectedKeywords] = useState(
+    profileData.keywords || []
+  );
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -100,7 +107,9 @@ export default function ProfileEdit({ profileType, profileData, setProfileData, 
     setSelectedArea(optionValue);
   };
 
-  const [location, setLocation] = useState(profileData.location || defaultCords);
+  const [location, setLocation] = useState(
+    profileData.location || defaultCords
+  );
   const handleLocationChange = (newLocation) => {
     setLocation(newLocation);
   };
@@ -181,7 +190,8 @@ export default function ProfileEdit({ profileType, profileData, setProfileData, 
                 placeholder="Website"
                 name="href"
                 onChange={handleInputChange}
-                value={profileData.href}></Input>
+                value={profileData.href}
+              ></Input>
             </Label>
             <Label style={{ color: "white" }}>
               Contact mail
@@ -190,7 +200,8 @@ export default function ProfileEdit({ profileType, profileData, setProfileData, 
                 placeholder="Enter mail"
                 name="contact"
                 onChange={handleInputChange}
-                value={profileData.contact}></Input>
+                value={profileData.contact}
+              ></Input>
             </Label>
 
             <div className={styles.elementContainer}>
@@ -201,7 +212,8 @@ export default function ProfileEdit({ profileType, profileData, setProfileData, 
                   className={styles.inputField}
                   placeholder="Enter mail"
                   name="email"
-                  onChange={handleInputChange}></Input>
+                  onChange={handleInputChange}
+                ></Input>
               </Label>
               <Label style={{ color: "white" }}>
                 Password
@@ -209,14 +221,15 @@ export default function ProfileEdit({ profileType, profileData, setProfileData, 
                   className={styles.inputField}
                   name="password"
                   placeholder="New password"
-                  onChange={handleInputChange}></Input>
+                  onChange={handleInputChange}
+                ></Input>
               </Label>
             </div>
 
             <div className={styles.elementContainer}>
               <h2>Looking for</h2>
               <div className={styles.radioBg}>
-                <OnboardingRadio
+                <Radios
                   variant="profile"
                   name="area"
                   variantInput="profileRadio"
@@ -246,7 +259,7 @@ export default function ProfileEdit({ profileType, profileData, setProfileData, 
             <div>
               Education
               {}
-              <OnboardingRadio
+              <Radios
                 variant="profile"
                 variantInput="profileRadio"
                 name="area"
@@ -261,7 +274,8 @@ export default function ProfileEdit({ profileType, profileData, setProfileData, 
                 placeholder="Website"
                 name="href"
                 value={profileData.href}
-                onChange={handleInputChange}></Input>
+                onChange={handleInputChange}
+              ></Input>
             </Label>
             <Label>
               <Input
@@ -269,7 +283,8 @@ export default function ProfileEdit({ profileType, profileData, setProfileData, 
                 placeholder="E-mail"
                 name="contact"
                 value={profileData.contact}
-                onChange={handleInputChange}></Input>
+                onChange={handleInputChange}
+              ></Input>
             </Label>
 
             <Chips defaultValue={profileData.keywords} />
@@ -282,7 +297,8 @@ export default function ProfileEdit({ profileType, profileData, setProfileData, 
                   className={styles.inputField}
                   placeholder="Enter mail"
                   name="email"
-                  onChange={handleInputChange}></Input>
+                  onChange={handleInputChange}
+                ></Input>
               </Label>
               <Label style={{ color: "white" }}>
                 Password
@@ -290,7 +306,8 @@ export default function ProfileEdit({ profileType, profileData, setProfileData, 
                   className={styles.inputField}
                   name="password"
                   placeholder="New password"
-                  onChange={handleInputChange}></Input>
+                  onChange={handleInputChange}
+                ></Input>
               </Label>
             </div>
           </>

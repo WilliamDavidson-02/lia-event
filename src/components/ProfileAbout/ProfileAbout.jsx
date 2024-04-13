@@ -36,7 +36,7 @@ export default function ProfileAbout({ profileType, profileData }) {
             {area && renderAreas(areaValue[area])}
           </Tab>
           <Tab>
-            <h3>What We're Looking For</h3>
+            <h3>What We&apos;re Looking For</h3>
             <Chips defaultValue={profileData.keywords} />
             <p>Fri text</p>
           </Tab>

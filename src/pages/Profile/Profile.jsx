@@ -32,7 +32,11 @@ export default function Profile() {
           .eq("id", profileID)
           .single());
       } else if (profileType === "student") {
-        ({ data, error } = await supabase.from("profile").select("*").eq("id", profileID).single());
+        ({ data, error } = await supabase
+          .from("profile")
+          .select("*")
+          .eq("id", profileID)
+          .single());
       } else {
         console.log("Invalid profile type:", profileType);
       }
@@ -59,34 +63,31 @@ export default function Profile() {
   };
   return (
     <div className={styles.container}>
-      {profileData && (
-        <>
-          {doEdit ? (
-            <ProfileEdit
-              profileData={profileData}
-              setProfileData={setProfileData}
-              profileType={profileType}
-              closeEdit={cancelEdit}
+      {profileData &&
+        (doEdit ? (
+          <ProfileEdit
+            profileData={profileData}
+            setProfileData={setProfileData}
+            profileType={profileType}
+            closeEdit={cancelEdit}
+          />
+        ) : (
+          <>
+            <UserCard
+              profile={{
+                id: profileData.id,
+                name: profileData.name,
+                avatar: profileData.avatar,
+                href: profileData.href,
+              }}
+              key={profileData.id}
+              //setSave={setSave(profileID)}
+              showEdit={displayEdit}
+              openEdit={openEdit}
             />
-          ) : (
-            <>
-              <UserCard
-                profile={{
-                  id: profileData.id,
-                  name: profileData.name,
-                  avatar: profileData.avatar,
-                  href: profileData.href,
-                }}
-                key={profileData.id}
-                //setSave={setSave(profileID)}
-                showEdit={displayEdit}
-                openEdit={openEdit}
-              />
-              <ProfileAbout profileType={profileType} profileData={profileData} />
-            </>
-          )}
-        </>
-      )}
+            <ProfileAbout profileType={profileType} profileData={profileData} />
+          </>
+        ))}
     </div>
   );
 }
