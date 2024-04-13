@@ -56,14 +56,14 @@
   position: relative;
 
   height: 6rem;
-  padding: var(--p-sm);
   width: fit-content;
   margin: 0 auto;
 }
 
 .bounce div {
   position: absolute;
-  bottom: 0.5rem;
+  bottom: 1rem;
+  left: -0.25rem;
 
   width: 0.5rem;
   height: 0.5rem;
@@ -71,7 +71,7 @@
   background-color: var(--yrgo-red);
   border-radius: 100vmax;
 
-  animation: bounce 0.6s ease-out alternate infinite;
+  animation: bounce 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) infinite alternate;
 }
 
 @keyframes bounce {
