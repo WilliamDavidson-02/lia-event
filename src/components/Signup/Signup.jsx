@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { validateEmail, validateLength } from "../../lib/util";
 import styles from "./Signup.module.css";
 import formStyles from "../Form/Form.module.css";
@@ -8,9 +8,13 @@ import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import Button from "../Button/Button";
 import Form from "../Form/Form";
+import { OnboardingContext } from "../../context/OnboardingContext";
 
-export default function Signup({ credentials, setCredentials, next, error }) {
+export default function Signup() {
+  const { credentials, setCredentials, setStation, error } =
+    useContext(OnboardingContext);
   const [isChecked, setIsChecked] = useState(false);
+
   const { email, password } = credentials;
 
   const isEmailValid = useMemo(() => validateEmail(email), [email]);
@@ -28,7 +32,7 @@ export default function Signup({ credentials, setCredentials, next, error }) {
   const handleSubmit = (ev) => {
     ev.preventDefault();
 
-    if (isValid) next();
+    if (isValid) setStation((prev) => prev + 1);
   };
 
   return (
