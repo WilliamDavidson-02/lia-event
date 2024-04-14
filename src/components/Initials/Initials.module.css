@@ -1,0 +1,23 @@
+.container {
+  display: grid;
+  place-content: center;
+
+  background-color: var(--yrgo-dark-blue);
+  color: var(--yrgo-white);
+
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: normal;
+  text-align: center;
+  text-transform: uppercase;
+
+  user-select: none;
+}
+
+.md {
+  font-size: 2rem;
+}
+
+.lg {
+  font-size: 4rem;
+}

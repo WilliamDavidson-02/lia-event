@@ -127,6 +127,7 @@ export default function Filter({
                 }
                 selected={filterOptions.keywords}
                 area={"all"}
+                variant="dark"
               />
               <div className={styles.footer}>
                 <Button variant="blue" onClick={() => setActiveSideMenu(false)}>

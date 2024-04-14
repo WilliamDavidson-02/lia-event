@@ -1,7 +1,7 @@
 .container {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--gap-md);
+  gap: var(--gap-sm);
   margin-bottom: auto;
 
   max-height: 100%;
@@ -25,7 +25,6 @@
   width: fit-content;
   height: fit-content;
   padding: 0 0.75rem;
-  border: 1px solid var(--yrgo-grey);
   border-radius: 100vmax;
   user-select: none;
   cursor: pointer;
@@ -36,6 +35,18 @@
   transition: background-color 0.3s ease-in-out;
 
   scroll-snap-align: start;
+}
+
+.default {
+  border: var(--backdrop-border);
+}
+
+.transparent {
+  border: 1px solid var(--yrgo-white);
+}
+
+.dark {
+  border: 1px solid var(--yrgo-black);
 }
 
 .selected {

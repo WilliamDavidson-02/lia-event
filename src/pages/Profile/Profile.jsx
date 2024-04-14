@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import useUserContext from "../../hooks/useUserContext";
-import { useParams } from "react-router-dom";
-
+import { useNavigate, useParams } from "react-router-dom";
 import supabase from "../../config/supabaseConfig";
 
 import styles from "./Profile.module.css";
@@ -11,83 +10,96 @@ import ProfileEdit from "../../components/ProfileEdit/ProfileEdit";
 
 export default function Profile() {
   const { user } = useUserContext();
-  const [profileData, setProfileData] = useState(null);
   const { profileID, profileType } = useParams();
+  const [profileData, setProfileData] = useState(null);
   const [doEdit, setDoEdit] = useState(false);
 
-  let displayEdit = false;
-
-  if (user?.id === profileID) {
-    displayEdit = true;
-  }
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!["student", "company"].includes(profileType)) {
+      navigate("/");
+    }
+
+    const getSavedUser = async (id) => {
+      const { count } = await supabase
+        .from("saved_users")
+        .select("", { count: "exact" })
+        .eq("user_id", user.id)
+        .eq("saved_id", id);
+
+      return count > 0;
+    };
+
+    const formatProfileData = (profile) => {
+      const companyData = profile.company_profile;
+
+      delete profile.company_profile;
+
+      return { ...profile, ...companyData };
+    };
+
     async function fetchProfileData() {
-      let data, error;
+      let query = supabase
+        .from("profile")
+        .select()
+        .eq("id", profileID)
+        .single();
 
       if (profileType === "company") {
-        ({ data, error } = await supabase
-          .from("profile")
-          .select("*, company_profile(*)")
-          .eq("id", profileID)
-          .single());
-      } else if (profileType === "student") {
-        ({ data, error } = await supabase
-          .from("profile")
-          .select("*")
-          .eq("id", profileID)
-          .single());
-      } else {
-        console.log("Invalid profile type:", profileType);
+        query = query.select("*, company_profile(*)");
       }
+
+      let { data, error } = await query;
 
       if (error) {
         console.log("error fetching profile", error);
         return;
       }
+
+      if (!data) return;
+
+      if (user.id !== data.id) {
+        const isSaved = await getSavedUser(data.id);
+
+        data.isSaved = isSaved;
+      }
+
+      if (data.user_type === "company") {
+        data = formatProfileData(data);
+      }
+
       setProfileData(data);
     }
 
     fetchProfileData();
-  }, [profileID]);
+  }, [profileID, profileType]);
 
-  /* Doesn't work - needs fixing */
-  //const setSave = async (profileID) => {};
-
-  const openEdit = () => {
-    setDoEdit(true);
+  const setSave = (id, isSaved) => {
+    setProfileData((prev) => ({ ...prev, isSaved }));
   };
 
-  const cancelEdit = () => {
-    setDoEdit(false);
-  };
   return (
-    <div className={styles.container}>
+    <main className={styles.container}>
       {profileData &&
         (doEdit ? (
           <ProfileEdit
             profileData={profileData}
             setProfileData={setProfileData}
-            profileType={profileType}
-            closeEdit={cancelEdit}
+            closeEdit={() => setDoEdit(false)}
           />
         ) : (
           <>
             <UserCard
-              profile={{
-                id: profileData.id,
-                name: profileData.name,
-                avatar: profileData.avatar,
-                href: profileData.href,
-              }}
-              key={profileData.id}
-              //setSave={setSave(profileID)}
-              showEdit={displayEdit}
-              openEdit={openEdit}
+              profile={profileData}
+              setSave={setSave}
+              showEdit={user?.id === profileID}
+              openEdit={() => setDoEdit(true)}
+              variant="profile"
             />
-            <ProfileAbout profileType={profileType} profileData={profileData} />
+            <ProfileAbout profile={profileData} />
           </>
         ))}
-    </div>
+    </main>
   );
 }
