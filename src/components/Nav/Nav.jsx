@@ -73,7 +73,7 @@ export default function Nav() {
           {user && (
             <Link
               onClick={handleNavToggle}
-              to={`/profile/${user.id}/${user?.user_metadata.user_type}`}
+              to={`/profile/${user?.user_metadata.user_type}/${user.id}`}
             >
               <NavLabel>Profile</NavLabel>
             </Link>

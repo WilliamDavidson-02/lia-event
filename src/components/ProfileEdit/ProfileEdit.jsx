@@ -12,13 +12,14 @@ import { useState } from "react";
 import EditKeywords from "../EditKeywords/EditKeywords";
 import GeoLocation from "../GeoLocation/GeoLocation";
 import { defaultCords } from "../../lib/mapData";
+import { useParams } from "react-router-dom";
 
 export default function ProfileEdit({
-  profileType,
   profileData,
   setProfileData,
   closeEdit,
 }) {
+  const { profileType } = useParams();
   const [newPassword, setNewPassword] = useState({
     password: "",
   });

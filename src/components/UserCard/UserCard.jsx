@@ -1,8 +1,11 @@
 import styles from "./UserCard.module.css";
 import Image from "../Image/Image";
-import { Bookmark, UserCog } from "lucide-react";
+import { Bookmark, Pencil } from "lucide-react";
 import useUserContext from "../../hooks/useUserContext";
 import supabase from "../../config/supabaseConfig";
+import Initials from "../Initials/Initials";
+import { useParams } from "react-router-dom";
+import { useWindowSize } from "@uidotdev/usehooks";
 
 export default function UserCard({
   setSave,
@@ -10,9 +13,13 @@ export default function UserCard({
   children,
   showEdit,
   openEdit,
+  variant = "default",
   ...props
 }) {
   const { user } = useUserContext();
+  const { profileType } = useParams();
+
+  const size = useWindowSize();
 
   const handleSave = async () => {
     /**
@@ -47,11 +54,11 @@ export default function UserCard({
   };
 
   return (
-    <div {...props} className={styles.card}>
+    <div {...props} className={`${styles[variant]} ${styles.card}`}>
       {showEdit ? (
-        <UserCog
+        <Pencil
           onClick={withStopPropagation(openEdit)}
-          style={{ marginLeft: "auto" }}
+          style={{ marginLeft: "auto", cursor: "pointer" }}
         />
       ) : (
         <Bookmark
@@ -61,17 +68,31 @@ export default function UserCard({
         />
       )}
       <div className={styles.content}>
-        <Image
-          src={profile.avatar}
-          style={{
-            aspectRatio: 1 / 1,
-            width: "5.3rem",
-            borderRadius: "100vmax",
-          }}
-        />
+        <div className={styles.avatar}>
+          {profile.avatar ? (
+            <Image src={profile.avatar} style={{ aspectRatio: 1 / 1 }} />
+          ) : (
+            <Initials
+              name={profile.name}
+              size={profileType && size.width >= 760 ? "lg" : "md"}
+              style={{ aspectRatio: 1 / 1 }}
+            />
+          )}
+        </div>
         <div>
           <div className={styles.title}>{profile.name}</div>
-          <div className={styles.paragraph}>{profile.href}</div>
+          {profile.href && (
+            <div className={styles.paragraph}>
+              <a href={profile.href} target="_blank" rel="noopener noreferrer">
+                {profile.href}
+              </a>
+            </div>
+          )}
+          {profileType && profile.email && (
+            <div className={styles.paragraph}>
+              <a href={`mailto:${profile.email}`}>{profile.email}</a>
+            </div>
+          )}
         </div>
       </div>
       {children}
