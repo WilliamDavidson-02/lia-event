@@ -31,6 +31,14 @@ export default function Profile() {
       return count > 0;
     };
 
+    const formatProfileData = (profile) => {
+      const companyData = profile.company_profile;
+
+      delete profile.company_profile;
+
+      return { ...profile, ...companyData };
+    };
+
     async function fetchProfileData() {
       let query = supabase
         .from("profile")
@@ -57,6 +65,10 @@ export default function Profile() {
         data.isSaved = isSaved;
       }
 
+      if (data.user_type === "company") {
+        data = formatProfileData(data);
+      }
+
       setProfileData(data);
     }
 
@@ -77,7 +89,7 @@ export default function Profile() {
             closeEdit={() => setDoEdit(false)}
           />
         ) : (
-          <section>
+          <>
             <UserCard
               profile={profileData}
               setSave={setSave}
@@ -85,8 +97,8 @@ export default function Profile() {
               openEdit={() => setDoEdit(true)}
               variant="profile"
             />
-            <ProfileAbout profileData={profileData} />
-          </section>
+            <ProfileAbout profile={profileData} />
+          </>
         ))}
     </main>
   );

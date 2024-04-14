@@ -35,7 +35,6 @@
 .profile .paragraph {
   text-align: center;
   text-decoration: underline;
-  margin-bottom: var(--m-xl);
 }
 
 .content {

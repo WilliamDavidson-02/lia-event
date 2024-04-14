@@ -88,9 +88,22 @@ export default function UserCard({
               </a>
             </div>
           )}
-          {profileType && profile.email && (
-            <div className={styles.paragraph}>
-              <a href={`mailto:${profile.email}`}>{profile.email}</a>
+          {profileType && (profile.email || profile.contact) && (
+            <div
+              className={styles.paragraph}
+              style={{ marginTop: "var(--m-lg)" }}
+            >
+              <a
+                href={`mailto:${
+                  profile.user_type === "student"
+                    ? profile.email
+                    : profile.contact
+                }`}
+              >
+                {profile.user_type === "student"
+                  ? profile.email
+                  : profile.contact}
+              </a>
             </div>
           )}
         </div>
