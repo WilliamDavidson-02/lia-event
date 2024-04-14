@@ -84,13 +84,16 @@ export default function OnboardingContextProvider({ children }) {
       const { name, area } = onboarding;
       const { email, password } = credentials;
 
+      const userEmail = email.toLowerCase().trim();
+
       // Default data
       let data = {
-        email: email.toLowerCase().trim(),
+        email: userEmail,
         password,
         options: {
           data: {
             name: sanitize(name.trim()),
+            user_email: userEmail,
             area,
             user_type: userType,
           },
@@ -99,9 +102,6 @@ export default function OnboardingContextProvider({ children }) {
 
       if (onboarding.href) {
         data.options.data.href = onboarding.href;
-      }
-      if (onboarding.employees) {
-        data.options.data.employees = onboarding.employees;
       }
       if (onboarding.keywords) {
         data.options.data.keywords = onboarding.keywords;
