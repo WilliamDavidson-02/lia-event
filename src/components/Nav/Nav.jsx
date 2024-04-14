@@ -51,7 +51,7 @@ export default function Nav() {
         {size.width <= 760 ? (
           <Spline scene="https://prod.spline.design/HVznlJBnAVDAGnbj/scene.splinecode" />
         ) : (
-          <img src={"/public/yrgo_logo_large.svg"} alt={"YRGO"} />
+          <img src={"/yrgo_logo_large.svg"} alt={"YRGO"} />
         )}
       </Link>
       <Hamburger onClick={handleNavToggle} />
