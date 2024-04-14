@@ -106,6 +106,9 @@ export default function OnboardingContextProvider({ children }) {
       if (onboarding.keywords) {
         data.options.data.keywords = onboarding.keywords;
       }
+      if (onboarding.location) {
+        data.options.data.location = onboarding.location;
+      }
       if (userType === "company") {
         data.options.data.contact = email;
       }

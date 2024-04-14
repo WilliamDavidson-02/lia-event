@@ -6,11 +6,14 @@ import { Loader2 } from "lucide-react";
 import Hamburger from "../Hamburger/Hamburger";
 import Spline from "@splinetool/react-spline";
 import NavLabel from "../NavLabel/NavLabel";
+import { useWindowSize } from "@uidotdev/usehooks";
 
 export default function Nav() {
   const { user, signOut } = useUserContext();
   const [isNavToggled, setIsNavToggled] = useState(false);
   const [isSigningOutLoading, setIsSigningOutLoading] = useState(false);
+
+  const size = useWindowSize();
 
   const nav = useRef(null);
   const backdrop = useRef(null);
@@ -45,7 +48,11 @@ export default function Nav() {
   return (
     <header className={styles.container}>
       <Link to={"/"} className={styles.logo}>
-        <Spline scene="https://prod.spline.design/HVznlJBnAVDAGnbj/scene.splinecode" />
+        {size.width <= 760 ? (
+          <Spline scene="https://prod.spline.design/HVznlJBnAVDAGnbj/scene.splinecode" />
+        ) : (
+          <img src={"/public/yrgo_logo_large.svg"} alt={"YRGO"} />
+        )}
       </Link>
       <Hamburger onClick={handleNavToggle} />
       <div
@@ -73,7 +80,7 @@ export default function Nav() {
           {user && (
             <Link
               onClick={handleNavToggle}
-              to={`/profile/${user.id}/${user?.user_metadata.user_type}`}
+              to={`/profile/${user?.user_metadata.user_type}/${user.id}`}
             >
               <NavLabel>Profile</NavLabel>
             </Link>

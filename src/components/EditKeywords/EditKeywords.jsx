@@ -6,7 +6,12 @@ import Search from "../Search/Search";
 import { areaValue } from "../../lib/areaData";
 import { CircleX } from "lucide-react";
 
-export default function EditKeywords({ handleProperty, selected = [], area }) {
+export default function EditKeywords({
+  handleProperty,
+  selected = [],
+  area,
+  variant = "default",
+}) {
   const [suggestins, setSuggestions] = useState([]);
   const [words, setWords] = useState([]);
   const [search, setSearch] = useState("");
@@ -79,12 +84,17 @@ export default function EditKeywords({ handleProperty, selected = [], area }) {
           )}
         </p>
         <Chips
+          variant={variant}
           defaultValue={selected}
           selected={selected}
           select={handleSelect}
         />
         <p className={styles.title}>Suggestions:</p>
-        <Chips defaultValue={suggestins} select={handleSelect} />
+        <Chips
+          variant={variant}
+          defaultValue={suggestins}
+          select={handleSelect}
+        />
       </div>
     </section>
   );

@@ -69,7 +69,7 @@ export default function UserList({
           {users.map((profile) => (
             <UserCard
               onClick={() =>
-                navigate(`/profile/${profile.id}/${profile.user_type}`)
+                navigate(`/profile/${profile.user_type}/${profile.id}`)
               }
               style={{ cursor: "pointer" }}
               setSave={setSave}

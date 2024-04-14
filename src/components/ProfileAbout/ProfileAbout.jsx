@@ -1,80 +1,77 @@
-import React from "react";
-import Tab from "../Tab/Tab";
-import Tabs from "../Tabs/Tabs";
+import { useEffect, useState } from "react";
+import { useWindowSize } from "@uidotdev/usehooks";
+import { useParams } from "react-router-dom";
+import ReactDOMServer from "react-dom/server";
+import mapboxgl from "mapbox-gl";
 import styles from "./ProfileAbout.module.css";
+import Map from "../Map/Map";
 import Chips from "../Chips/Chips";
 import { areaTitle, areaValue } from "../../lib/areaData";
+import MapMarker from "../MapMarker/MapMarker";
 
-export default function ProfileAbout({ profileType, profileData }) {
-  const area = profileData?.area;
+export default function ProfileAbout({ profile }) {
+  const { profileType } = useParams();
+  const [map, setMap] = useState(null);
 
-  const getAreaTitle = (value) => {
-    return areaTitle[value];
-  };
+  const size = useWindowSize();
 
-  const renderAreas = (areas) => {
-    if (areas.length === 1) {
-      // If only one area Title is selected
-      const title = getAreaTitle(areas[0]);
-      return <p key={areas[0]}>Field: {title}</p>;
-    } else if (areas.length > 1) {
-      // IF "all" separate the titles with "/"
-      const titles = areas.map((area) => getAreaTitle(area));
-      const joinedTitles = titles.join(" / ");
-      return <p>Fields: {joinedTitles}</p>;
-    } else {
-      return null;
+  useEffect(() => {
+    if (!map || !profile.location.length) return;
+
+    // Create Marker
+    const markerElement = document.createElement("div");
+    markerElement.innerHTML = ReactDOMServer.renderToString(
+      <MapMarker size={24} />
+    );
+
+    new mapboxgl.Marker({
+      draggable: false,
+      element: markerElement,
+    })
+      .setLngLat(profile.location)
+      .addTo(map);
+
+    map.setCenter(profile.location);
+    map.setZoom(14);
+  }, [map]);
+
+  const formatArea = (area) => {
+    const values = areaValue[area];
+    let titles = [];
+
+    for (const a of values) {
+      titles.push(areaTitle[a]);
     }
+
+    return titles.join(" & ");
   };
 
   return (
-    <div className={styles.container}>
+    <section className={styles.container}>
+      <div className={styles.card}>
+        <div className={styles.content}>
+          <div className={styles.title}>
+            {profileType === "company" ? "Looking for" : "Education"}
+          </div>
+          <p>{formatArea(profile.area)}</p>
+          {size.width < 760 && <div className={styles.seperator} />}
+        </div>
+        <div className={styles.content}>
+          <div className={styles.expertice}>
+            {profileType === "company" ? "Expertice wanted" : "Expertice"}
+          </div>
+          <Chips variant="transparent" defaultValue={profile.keywords} />
+          {profileType === "company" && size.width < 760 && (
+            <div className={styles.seperator} />
+          )}
+        </div>
+      </div>
       {profileType === "company" && (
-        <Tabs style={{ height: "48.125rem" }}>
-          <Tab>
-            <h3>About Us</h3>
-            {area && renderAreas(areaValue[area])}
-          </Tab>
-          <Tab>
-            <h3>What We&apos;re Looking For</h3>
-            <Chips defaultValue={profileData.keywords} />
-            <p>Fri text</p>
-          </Tab>
-          <Tab>
-            <h3>Contact</h3>
-            <p>Mail: {profileData.company_profile.contact}</p>
-          </Tab>
-        </Tabs>
+        <div className={styles.card}>
+          <div className={styles.title}>Location</div>
+          <Map getMap={(map) => setMap(map)} />
+        </div>
       )}
-
-      {profileType === "student" && (
-        <Tabs style={{ height: "48.125rem" }}>
-          <Tab>
-            <h3>About Me</h3>
-            <p>
-              Field:{" "}
-              {profileData.profile.area.map((areaTitle, index) => (
-                <React.Fragment key={index}>
-                  {areaTitle}
-                  {/* If a company has both web devs and design, adds both separated by a forward slash */}
-                  {index !== profileData.profile.area.length - 1 && "/"}
-                </React.Fragment>
-              ))}
-            </p>
-            <p>Location:</p>
-          </Tab>
-          <Tab>
-            <h3>My Skills</h3>
-            <Chips defaultValue={profileData.profile.keywords} />
-            <p>Dev/ Design</p>
-            <p>Fri text</p>
-          </Tab>
-          <Tab>
-            <h3>Kontakt</h3>
-            <p>Mail: {profileData.contact}</p>
-          </Tab>
-        </Tabs>
-      )}
-    </div>
+    </section>
   );
 }

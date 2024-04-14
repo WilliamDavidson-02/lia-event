@@ -43,7 +43,7 @@ export default function App() {
 
             <Route element={<PrivateRoute />}>
               <Route
-                path="/profile/:profileID/:profileType"
+                path="/profile/:profileType/:profileID"
                 element={<Profile />}
               />
               <Route path="/finder" element={<Finder />} />

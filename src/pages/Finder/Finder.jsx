@@ -58,7 +58,7 @@ export default function Finder() {
     }
 
     if (search.length > 0) {
-      query.ilike(getColumnName("name")`%${search}%`);
+      query.ilike(getColumnName("name"), `%${search}%`);
     }
 
     return query;
