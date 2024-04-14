@@ -7,11 +7,17 @@ import { defaultCords } from "../../lib/mapData.js";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
-export default function Map({ getMap, zoom = 11, dragPan = true, ...props }) {
+export default function Map({
+  getMap,
+  zoom = 11,
+  dragPan = true,
+  position = defaultCords,
+  ...props
+}) {
   const mapContainer = useRef(null);
   const map = useRef(null);
 
-  const [lngLat, setLngLat] = useState([defaultCords.lng, defaultCords.lat]);
+  const [lngLat, setLngLat] = useState([position.lng, position.lat]);
 
   useEffect(() => {
     if (map.current) return;
