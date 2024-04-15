@@ -35,6 +35,8 @@ export default function EditKeywords({
       }
     });
 
+    keywordsArray = keywordsArray.filter((k) => !selected.includes(k));
+
     return keywordsArray;
   };
 
