@@ -53,6 +53,7 @@
 .editImage {
   position: relative;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -60,8 +61,25 @@
   padding-bottom: 2rem;
 }
 
+.editImage label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: var(--gap-md);
+}
+
 .editImgParagraph {
   text-decoration: underline;
+}
+
+.avatar {
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 100vmax;
+  overflow: hidden;
+  border: 5px solid white;
 }
 
 .location {
