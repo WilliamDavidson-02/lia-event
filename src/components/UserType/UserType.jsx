@@ -33,7 +33,7 @@ export default function UserType() {
             className={styles.container}
             onClick={() => handleUserType("company")}
           >
-            <h1>Comapany</h1>
+            <h1>Company</h1>
           </div>
         </div>
       </div>
