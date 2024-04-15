@@ -117,7 +117,7 @@ export default function Home() {
             </div>
           </div>
           <div className={styles.card}>
-            <span className={styles.title}>Locatino</span>
+            <span className={styles.title}>Location</span>
             <div className={styles.content}>
               <Map
                 position={visualArenaCords}
