@@ -132,9 +132,9 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
       updateUserData.data.location = profileData.location;
     }
 
-    if (newPassword) {
+    /* if (newPassword) {
       updateUserData.password = newPassword;
-    }
+    } */
     console.log(updateUserData);
     const { data: userData, error: userError } = await supabase.auth.updateUser(updateUserData);
     if (userError) {
