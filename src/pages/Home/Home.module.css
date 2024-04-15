@@ -18,7 +18,7 @@
 }
 
 .countdown {
-  flex: 1 0 auto;
+  height: 70%;
 }
 
 .hero .content {
@@ -29,7 +29,7 @@
   flex: 0 1 auto;
 
   color: var(--yrgo-white);
-  max-height: 30rem;
+  height: 30%;
 }
 
 .hero .content h1 {
@@ -229,7 +229,11 @@
   }
 
   .countdown {
-    height: 44%;
+    height: 60%;
+  }
+
+  .hero .content {
+    height: 40%;
   }
 
   .hero .content {

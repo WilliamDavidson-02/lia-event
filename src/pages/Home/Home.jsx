@@ -54,9 +54,9 @@ export default function Home() {
               Meet students from webdeveloper- and digital designer courses at
               YRGO.
             </p>
-          </div>
-          <div className={styles.bounce}>
-            <div />
+            <div className={styles.bounce}>
+              <div />
+            </div>
           </div>
         </section>
         <section className={styles["how-to"]}>
