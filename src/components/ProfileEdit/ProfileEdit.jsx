@@ -1,78 +1,97 @@
+import { useState, useMemo } from "react";
+import { useParams } from "react-router-dom";
+import { useWindowSize } from "@uidotdev/usehooks";
 import supabase from "../../config/supabaseConfig";
-import Chips from "../Chips/Chips";
 import Image from "../Image/Image";
 import Input from "../Input/Input";
 import Label from "../Label/Label";
 import Radios from "../Radios/Radios";
 import styles from "./ProfileEdit.module.css";
 import onboardingMap from "../../lib/onboardingMap.json";
-import keywords from "../../lib/keywords.json";
+import Initials from "../Initials/Initials";
 import Button from "../Button/Button";
-import { useState } from "react";
 import EditKeywords from "../EditKeywords/EditKeywords";
 import GeoLocation from "../GeoLocation/GeoLocation";
-import { defaultCords } from "../../lib/mapData";
-import { useParams } from "react-router-dom";
+import useUserContext from "../../hooks/useUserContext";
+import {
+  validateEmail,
+  validateLength,
+  validateUrl,
+  sanitize,
+} from "../../lib/util";
+import Dialog from "../Dialog/Dialog";
+
+const baseUrl = import.meta.env.VITE_SUPABASE_AVATARS_BASE_URL;
 
 export default function ProfileEdit({
   profileData,
   setProfileData,
   closeEdit,
 }) {
+  const { user } = useUserContext();
   const { profileType } = useParams();
-  const [newPassword, setNewPassword] = useState({
-    password: "",
-  });
+  const [newPassword, setNewPassword] = useState("");
+  const [showDialog, setShowDialog] = useState(false);
 
-  const [imageFile, setImageFile] = useState(null);
-  const [imageURL, setImageURL] = useState(profileData.avatar);
-  const [selectedArea, setSelectedArea] = useState(profileData.area);
-
-  const [selectedKeywords, setSelectedKeywords] = useState(
-    profileData.keywords || []
+  const isNameValid = useMemo(
+    () => validateLength(profileData.name, 2, 75),
+    [profileData.name]
   );
+  const isUrlValid = useMemo(() => {
+    if (profileType === "student" && !profileData.href) return true;
+    return validateUrl(profileData.href);
+  }, [profileData.href]);
+  const isEmailValid = useMemo(
+    () => validateEmail(profileData.user_email),
+    [profileData.user_email]
+  );
+  const isContactEmailValid = useMemo(
+    () => validateEmail(profileData.contact),
+    [profileData.contact]
+  );
+  const isPasswordValid = useMemo(() => {
+    if (!newPassword) return true;
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setProfileData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+    return validateLength(newPassword, 8);
+  }, [newPassword]);
+
+  let isValid = isEmailValid && isNameValid && isPasswordValid && isUrlValid;
+  if (profileType === "company") {
+    isValid = isValid && isContactEmailValid;
+  }
+
+  const size = useWindowSize();
+
+  const handleInputChange = (prop, value) => {
+    setProfileData((prev) => ({ ...prev, [prop]: value }));
   };
 
-  console.log(profileData.area);
-
-  const handleKeywordsChange = (keywords) => {
-    setSelectedKeywords(keywords);
+  const handlePropertyChange = (prop, callback) => (value) => {
+    callback((prev) => ({ ...prev, [prop]: value }));
   };
 
-  const keywordArea = profileType === "company" ? "developer" : "design";
+  const handleImageUpload = async (event) => {
+    event.preventDefault();
 
-  const handleImageChange = (event) => {
+    if (!event.target.files && !event.target.files[0]) return;
+
     const file = event.target.files[0];
-    setImageFile(file);
 
-    const imagePreview = new FileReader();
-    imagePreview.onload = (event) => {
-      setImageURL(event.target.result);
-    };
-    imagePreview.readAsDataURL(file);
-  };
-
-  const handleEditImage = () => {
-    document.getElementById("imgUpload").click();
-  };
-
-  const handleImageUpload = async () => {
-    if (!imageFile) return;
-
-    /* get unix time to use as ID to append to uploaded files */
-    let timestampID = Math.floor(new Date().getTime() / 1000);
-
-    const avatarFileName = `${timestampID}.${imageFile.name}`;
-    const { data, error } = await supabase.storage
+    const { error: errorRemove } = await supabase.storage
       .from("avatars")
-      .upload(`public/${avatarFileName}`, imageFile, {
+      .remove([profileData.avatar]);
+
+    if (errorRemove) {
+      console.log("No image found");
+      return;
+    }
+
+    const fileName = file.name.trim().replace(/[-\s]/g, "_").toLowerCase();
+    const avatarFileName = `${new Date().getTime()}_${fileName}`;
+
+    const { error } = await supabase.storage
+      .from("avatars")
+      .upload(avatarFileName, file, {
         cacheControl: "3600",
         upsert: false,
       });
@@ -82,246 +101,249 @@ export default function ProfileEdit({
       return;
     }
 
-    /* Get the Base URL to supabase avatars bucket */
-    const avatarPrefix = import.meta.env.VITE_SUPABASE_AVATARS_BASE_URL;
-
-    let avatarURL = `${avatarPrefix}/${avatarFileName}`;
-
-    const { data: userData, error: userError } = await supabase
+    const { error: userError } = await supabase
       .from("profile")
-      .update({ avatar: avatarURL })
-      .eq("id", profileData.id);
+      .update({ avatar: avatarFileName })
+      .eq("id", user.id);
 
     if (userError) {
       console.error("Error updating user avatar", userError.message);
       return;
     }
 
-    setImageURL(avatarURL);
-  };
-
-  const onboardingQuestions = onboardingMap;
-  const areaQuestionCompany = onboardingQuestions.company[1];
-  const areaQuestionStudent = onboardingQuestions.student[1];
-
-  const handleAreaChange = (optionValue) => {
-    setSelectedArea(optionValue);
-  };
-
-  const [location, setLocation] = useState(
-    profileData.location || defaultCords
-  );
-  const handleLocationChange = (newLocation) => {
-    setLocation(newLocation);
+    setProfileData((prev) => ({ ...prev, avatar: avatarFileName }));
   };
 
   const handleSaveSettings = async (event) => {
     event.preventDefault();
-    handleImageUpload();
 
-    const { data: userData, error: userError } = await supabase
-      .from("profile")
-      .update({
-        name: profileData.name,
-        href: profileData.href,
-        //contact: profileData.mail,
-        //email,
-        //password,
-        area: selectedArea,
-        keywords: profileData.keywords,
-        //location: location,
-      })
-      .eq("id", profileData.id);
+    let { name, href, area, user_email, keywords, avatar } = profileData;
+    name = sanitize(name).trim();
+
+    let updateUserData = {
+      data: { name, href, area, user_email, keywords, avatar },
+    };
+
+    if (profileType === "company") {
+      updateUserData.data.contact = profileData.contact;
+      updateUserData.data.location = profileData.location;
+    }
+
+    let prevEmail = user.email;
+
+    if (user_email !== prevEmail) {
+      updateUserData.email = user_email;
+    }
+
+    if (newPassword) {
+      updateUserData.password = newPassword;
+    }
+
+    const { error: userError } = await supabase.auth.updateUser(updateUserData);
 
     if (userError) {
       console.error("Error updating user profile: ", userError.message);
       return;
     }
+
+    if (user_email !== prevEmail) {
+      setShowDialog(true);
+      return;
+    }
+
+    closeEdit();
+  };
+
+  const handleCloseDialog = () => {
+    setShowDialog(false);
     closeEdit();
   };
 
   return (
-    <div className={styles.container}>
-      <form className={styles.field} autoComplete="off" autoCorrect="off">
-        <div className={styles.editImage}>
-          <Image
-            src={imageURL}
-            alt="ProfileImage"
-            style={{
-              aspectRatio: 1 / 1,
-              width: "5.3rem",
-              borderRadius: "100vmax",
-              zIndex: "2",
-            }}
-          />
-          <div onClick={handleEditImage}>
-            <label className={styles.editImgParagraph}>
-              Edit profile picture
-              <input
-                id="imgUpload"
-                type="file"
-                accept="image/"
-                style={{ display: "none" }}
-                onChange={handleImageChange}
-              />
-            </label>
-          </div>
-        </div>
-        <h2>Editing Profile</h2>
-        <Label style={{ color: "white" }}>
-          Company name
-          <Input
-            style={{
-              fontSize: "1.2rem",
-              fontWeight: "600",
-            }}
-            name="name"
-            className={styles.inputField}
-            placeholder="Name"
-            onChange={handleInputChange}
-            value={profileData.name}
-          />
-        </Label>
-        {profileType === "company" && (
-          <>
-            <Label style={{ color: "white" }}>
-              Website
-              <Input
-                className={styles.inputField}
-                placeholder="Website"
-                name="href"
-                onChange={handleInputChange}
-                value={profileData.href}
-              ></Input>
-            </Label>
-            <Label style={{ color: "white" }}>
-              Contact mail
-              <Input
-                className={styles.inputField}
-                placeholder="Enter mail"
-                name="contact"
-                onChange={handleInputChange}
-                value={profileData.contact}
-              ></Input>
-            </Label>
-
-            <div className={styles.elementContainer}>
-              <h2>Login Details:</h2>
-              <Label style={{ color: "white" }}>
-                Email
-                <Input
-                  className={styles.inputField}
-                  placeholder="Enter mail"
-                  name="email"
-                  onChange={handleInputChange}
-                ></Input>
-              </Label>
-              <Label style={{ color: "white" }}>
-                Password
-                <Input
-                  className={styles.inputField}
-                  name="password"
-                  placeholder="New password"
-                  onChange={handleInputChange}
-                ></Input>
-              </Label>
+    <>
+      {showDialog && (
+        <Dialog
+          setShow={handleCloseDialog}
+          title={"We see you changed your login email. "}
+          description={
+            "Don’t forget to confirm the change from the old e-mail you provided to make the change go through."
+          }
+        />
+      )}
+      <div className={styles.container}>
+        <form className={styles.form} autoComplete="off" autoCorrect="off">
+          <div className={styles.card}>
+            <div className={styles.section}>
+              <label htmlFor={"imgUpload"} className={styles.editImage}>
+                <div className={styles.avatar}>
+                  {profileData.avatar ? (
+                    <Image
+                      src={`${baseUrl}/${profileData.avatar}`}
+                      style={{ aspectRatio: 1 / 1 }}
+                    />
+                  ) : (
+                    <Initials
+                      name={profileData.name}
+                      size={profileType && size.width >= 760 ? "lg" : "md"}
+                      style={{ aspectRatio: 1 / 1 }}
+                    />
+                  )}
+                </div>
+                <p className={styles.editImgParagraph}>Edit</p>
+                <input
+                  id="imgUpload"
+                  type="file"
+                  accept="image/"
+                  style={{ display: "none" }}
+                  onChange={handleImageUpload}
+                />
+              </label>
             </div>
-
-            <div className={styles.elementContainer}>
-              <h2>Looking for</h2>
-              <div className={styles.radioBg}>
-                <Radios
-                  variant="profile"
-                  name="area"
-                  variantInput="profileRadio"
-                  options={areaQuestionCompany.options}
-                  selected={selectedArea}
-                  handleProperty={handleAreaChange}
+            <div className={styles.section}>
+              <div className={styles.field}>
+                <Label htmlFor={"name"}>
+                  {profileType === "company" ? "Company name" : "Name"}
+                </Label>
+                <Input
+                  id="name"
+                  variant="dark-blue"
+                  isError={!isNameValid}
+                  placeholder={"Name"}
+                  onChange={(ev) => handleInputChange("name", ev.target.value)}
+                  value={profileData.name}
+                />
+              </div>
+              <div className={styles.field}>
+                <Label htmlFor={"href"}>
+                  {profileType === "company"
+                    ? "Company website"
+                    : "Portfolio link"}
+                </Label>
+                <Input
+                  variant="dark-blue"
+                  placeholder="Website"
+                  id="href"
+                  isError={!isUrlValid}
+                  onChange={(ev) => handleInputChange("href", ev.target.value)}
+                  value={profileData.href}
+                />
+              </div>
+              {profileType === "company" && (
+                <div className={styles.field}>
+                  <Label htmlFor={"contact-email"}>Contact mail</Label>
+                  <Input
+                    isError={!isContactEmailValid}
+                    variant="dark-blue"
+                    placeholder="Enter mail"
+                    id="contact-email"
+                    onChange={(ev) =>
+                      handleInputChange("contact", ev.target.value)
+                    }
+                    value={profileData.contact}
+                  />
+                </div>
+              )}
+            </div>
+            <div className={styles.section}>
+              <h2>Login details</h2>
+              <div className={styles.field}>
+                <Label htmlFor={"email"}>Email</Label>
+                <Input
+                  isError={!isEmailValid}
+                  variant="dark-blue"
+                  placeholder="Enter mail"
+                  id="email"
+                  onChange={(ev) =>
+                    handleInputChange("user_email", ev.target.value)
+                  }
+                  value={profileData.user_email}
+                />
+              </div>
+              <div className={styles.field}>
+                <Label htmlFor={"new-password"}>Password</Label>
+                <Input
+                  isError={!isPasswordValid}
+                  variant="dark-blue"
+                  id="new-password"
+                  placeholder="New password"
+                  value={newPassword}
+                  onChange={(event) => setNewPassword(event.target.value)}
                 />
               </div>
             </div>
-
-            <EditKeywords
-              name="keywords"
-              handleProperty={handleKeywordsChange}
-              selected={profileData.keywords}
-              area={keywordArea}
-            />
-            <div className={styles.elementContainer}>
-              <Label className={styles.location}>
-                <h2>Location</h2>
-                <GeoLocation handleProperty={handleLocationChange} />
-              </Label>
+          </div>
+          <div className={styles.about}>
+            <div className={styles.card}>
+              <div className={styles.section}>
+                <h2>
+                  {profileType === "company" ? "Looking for" : "Education"}
+                </h2>
+                <div className={styles.radioBg}>
+                  <Radios
+                    variant="profile"
+                    name="area"
+                    variantInput="profileRadio"
+                    options={
+                      profileType === "company"
+                        ? onboardingMap.company[1].options
+                        : onboardingMap.student[1].options
+                    }
+                    selected={profileData.area}
+                    handleProperty={handlePropertyChange(
+                      "area",
+                      setProfileData
+                    )}
+                  />
+                </div>
+                <div className={styles.keywordsContainer}>
+                  <h2>
+                    {profileType === "company"
+                      ? "Expertise wanted"
+                      : "Expertise"}
+                  </h2>
+                  <EditKeywords
+                    name="keywords"
+                    handleProperty={handlePropertyChange(
+                      "keywords",
+                      setProfileData
+                    )}
+                    selected={profileData.keywords}
+                    area={profileData.area}
+                  />
+                </div>
+              </div>
             </div>
-          </>
-        )}
-        {profileType === "student" && (
-          <>
-            <div>
-              Education
-              {}
-              <Radios
-                variant="profile"
-                variantInput="profileRadio"
-                name="area"
-                options={areaQuestionStudent.options}
-                selected={selectedArea}
-                handleProperty={handleAreaChange}
-              />
-            </div>
-            <Label>
-              <Input
-                className={styles.inputField}
-                placeholder="Website"
-                name="href"
-                value={profileData.href}
-                onChange={handleInputChange}
-              ></Input>
-            </Label>
-            <Label>
-              <Input
-                className={styles.inputField}
-                placeholder="E-mail"
-                name="contact"
-                value={profileData.contact}
-                onChange={handleInputChange}
-              ></Input>
-            </Label>
-
-            <Chips defaultValue={profileData.keywords} />
-
-            <div className={styles.loginInfo}>
-              <h2>Login Details:</h2>
-              <Label style={{ color: "white" }}>
-                Email
-                <Input
-                  className={styles.inputField}
-                  placeholder="Enter mail"
-                  name="email"
-                  onChange={handleInputChange}
-                ></Input>
-              </Label>
-              <Label style={{ color: "white" }}>
-                Password
-                <Input
-                  className={styles.inputField}
-                  name="password"
-                  placeholder="New password"
-                  onChange={handleInputChange}
-                ></Input>
-              </Label>
-            </div>
-          </>
-        )}
-        <div className={styles.buttons}>
-          <Button variant="secondary" onClick={closeEdit}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={handleSaveSettings}>
-            Save Settings
-          </Button>
-        </div>
-      </form>
-    </div>
+            {profileType === "company" && (
+              <div className={styles.card}>
+                <div className={styles.section}>
+                  <h2>Location</h2>
+                  <div className={styles.geoContainer}>
+                    <GeoLocation
+                      position={profileData.location}
+                      handleProperty={handlePropertyChange(
+                        "location",
+                        setProfileData
+                      )}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          <div className={styles.buttons}>
+            <Button variant="secondary" onClick={closeEdit}>
+              Cancel
+            </Button>
+            <Button
+              variant="primary"
+              onClick={handleSaveSettings}
+              disabled={!isValid}
+            >
+              Save Settings
+            </Button>
+          </div>
+        </form>
+      </div>
+    </>
   );
 }

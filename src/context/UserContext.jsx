@@ -31,7 +31,6 @@ export default function UserContextProvider({ children }) {
 
   const signInWithPassword = async (credentials) => {
     const { data, error } = await supabase.auth.signInWithPassword(credentials);
-
     if (error) {
       return { error };
     }
@@ -77,8 +76,8 @@ export default function UserContextProvider({ children }) {
         signOut,
         signUp,
         isLoading,
-      }}
-    >
+        getUser,
+      }}>
       {children}
     </UserContext.Provider>
   );
