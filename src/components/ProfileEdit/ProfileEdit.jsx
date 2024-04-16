@@ -191,7 +191,7 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
             </div>
           </div>
         </div>
-        <div className={styles.bottomCards}>
+        <div className={styles.about}>
           <div className={styles.card}>
             <div className={styles.section}>
               <h2>{profileType === "company" ? "Looking for" : "Education"}</h2>
@@ -222,7 +222,7 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
           </div>
           {profileType === "company" && (
             <div className={styles.card}>
-              <div className={`${styles.section} ${styles.locationDesktop}`}>
+              <div className={styles.section}>
                 <h2>Location</h2>
                 <div className={styles.geoContainer}>
                   <GeoLocation
