@@ -13,5 +13,7 @@
   .container {
     padding-top: 4.5rem;
     gap: var(--gap-lg);
+
+    height: calc(100vh - 96px);
   }
 }

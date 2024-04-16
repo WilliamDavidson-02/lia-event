@@ -13,10 +13,10 @@
 .container > div {
   position: absolute;
   height: 100%;
-  width: calc(100% + 2rem);
+  width: 100%;
 
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
 
   padding: 0 2rem;
@@ -26,28 +26,27 @@
 }
 
 .light {
-  color: var(--yrgo-black);
+  color: var(--yrgo-white);
   background: none;
 
   width: 100%;
-  top: 0;
-  left: -2rem;
+  inset: 0;
 }
 
 .dark {
-  background-color: var(--yrgo-black);
-  color: var(--yrgo-white);
+  background-color: var(--yrgo-white);
+  color: var(--yrgo-dark);
 
   top: 100%;
   width: 100%;
 }
 
 .container:hover .dark {
-  transform: translateY(-100%) translateX(-2rem);
+  transform: translateY(-100%);
   transition: all 0.3s;
 }
 
 .container:hover .light {
-  transform: translateY(100%) translateX(2rem);
+  transform: translateY(100%);
   transition: all 0.3s;
 }

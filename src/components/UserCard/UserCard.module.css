@@ -48,6 +48,7 @@
   height: 5.5rem;
   border-radius: 100vmax;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .title {
@@ -62,6 +63,7 @@
   font-weight: 400;
   line-height: 1.5rem;
   color: var(--yrgo-white);
+  word-break: break-all;
 }
 
 .paragraph a {

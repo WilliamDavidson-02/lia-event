@@ -67,6 +67,9 @@ export default function Signup() {
               autoComplete={"current-password"}
               variant="dark-grey"
             />
+            <p style={{ textAlign: "start" }} className={formStyles.paragraph}>
+              Password must be at least 8 characters long.
+            </p>
           </div>
           <div className={styles.gdpr}>
             <Input

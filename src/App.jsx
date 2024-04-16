@@ -17,6 +17,7 @@ const UpdatePassword = lazy(() =>
   import("./pages/UpdatePassword/UpdatePassword")
 );
 const NotFound = lazy(() => import("./pages/NotFound/NotFound"));
+const ConfirmEmail = lazy(() => import("./pages/ConfirmEmail/ConfirmEmail"));
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
           <Nav />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/confirm-new-email" element={<ConfirmEmail />} />
 
             <Route element={<GuestRoute />}>
               <Route
