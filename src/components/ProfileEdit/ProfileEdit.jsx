@@ -13,7 +13,12 @@ import Button from "../Button/Button";
 import EditKeywords from "../EditKeywords/EditKeywords";
 import GeoLocation from "../GeoLocation/GeoLocation";
 import useUserContext from "../../hooks/useUserContext";
-import { validateEmail, validateLength, validateUrl, sanitize } from "../../lib/util";
+import {
+  validateEmail,
+  validateLength,
+  validateUrl,
+  sanitize,
+} from "../../lib/util";
 import Dialog from "../Dialog/Dialog";
 
 const baseUrl = import.meta.env.VITE_SUPABASE_AVATARS_BASE_URL;
@@ -84,10 +89,12 @@ export default function ProfileEdit({ profile, setProfile, closeEdit }) {
     const fileName = file.name.trim().replace(/[-\s]/g, "_").toLowerCase();
     const avatarFileName = `${new Date().getTime()}_${fileName}`;
 
-    const { error } = await supabase.storage.from("avatars").upload(avatarFileName, file, {
-      cacheControl: "3600",
-      upsert: false,
-    });
+    const { error } = await supabase.storage
+      .from("avatars")
+      .upload(avatarFileName, file, {
+        cacheControl: "3600",
+        upsert: false,
+      });
 
     if (error) {
       console.error("Error uploading image", error.message);
@@ -139,7 +146,7 @@ export default function ProfileEdit({ profile, setProfile, closeEdit }) {
     const { error: userError } = await supabase.auth.updateUser(updateUserData);
 
     setIsLoading(false);
-    
+
     if (userError) {
       if (userError.status === 422) {
         setNewEmailError(true);
@@ -214,7 +221,9 @@ export default function ProfileEdit({ profile, setProfile, closeEdit }) {
             </div>
             <div className={styles.section}>
               <div className={styles.field}>
-                <Label htmlFor={"name"}>{profileType === "company" ? "Company name" : "Name"}</Label>
+                <Label htmlFor={"name"}>
+                  {profileType === "company" ? "Company name" : "Name"}
+                </Label>
                 <Input
                   id="name"
                   variant="dark-blue"
@@ -226,7 +235,9 @@ export default function ProfileEdit({ profile, setProfile, closeEdit }) {
               </div>
               <div className={styles.field}>
                 <Label htmlFor={"href"}>
-                  {profileType === "company" ? "Company website" : "Portfolio link"}
+                  {profileType === "company"
+                    ? "Company website"
+                    : "Portfolio link"}
                 </Label>
                 <Input
                   variant="dark-blue"
@@ -267,7 +278,9 @@ export default function ProfileEdit({ profile, setProfile, closeEdit }) {
                   }
                   value={form.user_email}
                 />
-                {newEmailError && <p className={styles.emailError}>Email already in use</p>}
+                {newEmailError && (
+                  <p className={styles.emailError}>Email already in use</p>
+                )}
               </div>
               <div className={styles.field}>
                 <Label htmlFor={"new-password"}>Password</Label>
@@ -285,7 +298,9 @@ export default function ProfileEdit({ profile, setProfile, closeEdit }) {
           <div className={styles.about}>
             <div className={styles.card}>
               <div className={styles.section}>
-                <h2>{profileType === "company" ? "Looking for" : "Education"}</h2>
+                <h2>
+                  {profileType === "company" ? "Looking for" : "Education"}
+                </h2>
                 <div className={styles.radioBg}>
                   <Radios
                     variant="profile"
@@ -301,7 +316,11 @@ export default function ProfileEdit({ profile, setProfile, closeEdit }) {
                   />
                 </div>
                 <div className={styles.keywordsContainer}>
-                  <h2>{profileType === "company" ? "Expertise wanted" : "Expertise"}</h2>
+                  <h2>
+                    {profileType === "company"
+                      ? "Expertise wanted"
+                      : "Expertise"}
+                  </h2>
                   <EditKeywords
                     name="keywords"
                     handleProperty={handlePropertyChange("keywords", setForm)}
@@ -327,7 +346,7 @@ export default function ProfileEdit({ profile, setProfile, closeEdit }) {
             )}
           </div>
           <div className={styles.buttons}>
-            <Button variant="secondary" onClick={handleCancel}>
+            <Button type={"button"} variant="secondary" onClick={handleCancel}>
               Cancel
             </Button>
             <Button
