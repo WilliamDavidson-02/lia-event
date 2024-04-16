@@ -7,6 +7,8 @@ import Initials from "../Initials/Initials";
 import { useParams } from "react-router-dom";
 import { useWindowSize } from "@uidotdev/usehooks";
 
+const baseUrl = import.meta.env.VITE_SUPABASE_AVATARS_BASE_URL;
+
 export default function UserCard({
   setSave,
   profile,
@@ -70,7 +72,10 @@ export default function UserCard({
       <div className={styles.content}>
         <div className={styles.avatar}>
           {profile.avatar ? (
-            <Image src={profile.avatar} style={{ aspectRatio: 1 / 1 }} />
+            <Image
+              src={`${baseUrl}/${profile.avatar}`}
+              style={{ aspectRatio: 1 / 1 }}
+            />
           ) : (
             <Initials
               name={profile.name}

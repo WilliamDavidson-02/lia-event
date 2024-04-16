@@ -42,6 +42,28 @@
   color: var(--yrgo-grey-500);
 }
 
+.dark-blue {
+  padding: 0.75rem;
+  border-radius: var(--rounded-sm);
+  border: 1px solid var(--yrgo-white);
+  background: var(--yrgo-dark-blue);
+
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+  color: var(--yrgo-white);
+
+  outline-offset: 2px;
+}
+
+.dark-blue:focus {
+  outline: 2px solid var(--yrgo-white);
+}
+
+.dark-blue::placeholder {
+  color: var(--yrgo-grey-300);
+}
+
 .lg-transparent {
   border-radius: none;
   border: none;
