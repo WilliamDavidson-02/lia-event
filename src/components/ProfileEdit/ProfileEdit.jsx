@@ -18,20 +18,31 @@ import Dialog from "../Dialog/Dialog";
 
 const baseUrl = import.meta.env.VITE_SUPABASE_AVATARS_BASE_URL;
 
-export default function ProfileEdit({ profileData, setProfileData, closeEdit }) {
+export default function ProfileEdit({ profile, setProfile, closeEdit }) {
   const { user } = useUserContext();
   const { profileType } = useParams();
+  const [form, setForm] = useState(profile);
   const [newPassword, setNewPassword] = useState("");
   const [showDialog, setShowDialog] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [newEmailError, setNewEmailError] = useState(false);
 
-  const isNameValid = useMemo(() => validateLength(profileData.name, 2, 75), [profileData.name]);
+  const isNameValid = useMemo(
+    () => validateLength(form.name, 2, 75),
+    [form.name]
+  );
   const isUrlValid = useMemo(() => {
-    if (profileType === "student" && !profileData.href) return true;
-    return validateUrl(profileData.href);
-  }, [profileData.href]);
-  const isEmailValid = useMemo(() => validateEmail(profileData.user_email), [profileData.user_email]);
-  const isContactEmailValid = useMemo(() => validateEmail(profileData.contact), [profileData.contact]);
+    if (profileType === "student" && !form.href) return true;
+    return validateUrl(form.href);
+  }, [form.href]);
+  const isEmailValid = useMemo(
+    () => validateEmail(form.user_email),
+    [form.user_email]
+  );
+  const isContactEmailValid = useMemo(
+    () => validateEmail(form.contact),
+    [form.contact]
+  );
   const isPasswordValid = useMemo(() => {
     if (!newPassword) return true;
 
@@ -39,6 +50,7 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
   }, [newPassword]);
 
   let isValid = isEmailValid && isNameValid && isPasswordValid && isUrlValid;
+
   if (profileType === "company") {
     isValid = isValid && isContactEmailValid;
   }
@@ -46,7 +58,7 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
   const size = useWindowSize();
 
   const handleInputChange = (prop, value) => {
-    setProfileData((prev) => ({ ...prev, [prop]: value }));
+    setForm((prev) => ({ ...prev, [prop]: value }));
   };
 
   const handlePropertyChange = (prop, callback) => (value) => {
@@ -60,7 +72,9 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
 
     const file = event.target.files[0];
 
-    const { error: errorRemove } = await supabase.storage.from("avatars").remove([profileData.avatar]);
+    const { error: errorRemove } = await supabase.storage
+      .from("avatars")
+      .remove([form.avatar]);
 
     if (errorRemove) {
       console.log("No image found");
@@ -90,13 +104,17 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
       return;
     }
 
-    setProfileData((prev) => ({ ...prev, avatar: avatarFileName }));
+    setForm((prev) => ({ ...prev, avatar: avatarFileName }));
   };
 
   const handleSaveSettings = async (event) => {
     event.preventDefault();
 
-    let { name, href, area, user_email, keywords, avatar } = profileData;
+    if (!isValid) return;
+
+    setIsLoading(true);
+
+    let { name, href, area, user_email, keywords, avatar } = form;
     name = sanitize(name).trim();
 
     let updateUserData = {
@@ -104,8 +122,8 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
     };
 
     if (profileType === "company") {
-      updateUserData.data.contact = profileData.contact;
-      updateUserData.data.location = profileData.location;
+      updateUserData.data.contact = form.contact;
+      updateUserData.data.location = form.location;
     }
 
     let prevEmail = user.email;
@@ -119,6 +137,9 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
     }
 
     const { error: userError } = await supabase.auth.updateUser(updateUserData);
+
+    setIsLoading(false);
+    
     if (userError) {
       if (userError.status === 422) {
         setNewEmailError(true);
@@ -131,16 +152,24 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
       setShowDialog(true);
       return;
     }
+
+    setProfile(form);
     closeEdit();
   };
 
   const handleCloseDialog = () => {
+    setProfile(form);
     setShowDialog(false);
     closeEdit();
   };
 
   const setSelected = (selected) => {
-    setProfileData((prev) => ({ ...prev, keywords: selected }));
+    setForm((prev) => ({ ...prev, keywords: selected }));
+  };
+
+  const handleCancel = () => {
+    setProfile(profile);
+    closeEdit();
   };
 
   return (
@@ -160,11 +189,14 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
             <div className={styles.section}>
               <label htmlFor={"imgUpload"} className={styles.editImage}>
                 <div className={styles.avatar}>
-                  {profileData.avatar ? (
-                    <Image src={`${baseUrl}/${profileData.avatar}`} style={{ aspectRatio: 1 / 1 }} />
+                  {form.avatar ? (
+                    <Image
+                      src={`${baseUrl}/${form.avatar}`}
+                      style={{ aspectRatio: 1 / 1 }}
+                    />
                   ) : (
                     <Initials
-                      name={profileData.name}
+                      name={form.name}
                       size={profileType && size.width >= 760 ? "lg" : "md"}
                       style={{ aspectRatio: 1 / 1 }}
                     />
@@ -189,7 +221,7 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
                   isError={!isNameValid}
                   placeholder={"Name"}
                   onChange={(ev) => handleInputChange("name", ev.target.value)}
-                  value={profileData.name}
+                  value={form.name}
                 />
               </div>
               <div className={styles.field}>
@@ -202,7 +234,7 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
                   id="href"
                   isError={!isUrlValid}
                   onChange={(ev) => handleInputChange("href", ev.target.value)}
-                  value={profileData.href}
+                  value={form.href}
                 />
               </div>
               {profileType === "company" && (
@@ -213,8 +245,10 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
                     variant="dark-blue"
                     placeholder="Enter mail"
                     id="contact-email"
-                    onChange={(ev) => handleInputChange("contact", ev.target.value)}
-                    value={profileData.contact}
+                    onChange={(ev) =>
+                      handleInputChange("contact", ev.target.value)
+                    }
+                    value={form.contact}
                   />
                 </div>
               )}
@@ -228,8 +262,10 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
                   variant="dark-blue"
                   placeholder="Enter mail"
                   id="email"
-                  onChange={(ev) => handleInputChange("user_email", ev.target.value)}
-                  value={profileData.user_email}
+                  onChange={(ev) =>
+                    handleInputChange("user_email", ev.target.value)
+                  }
+                  value={form.user_email}
                 />
                 {newEmailError && <p className={styles.emailError}>Email already in use</p>}
               </div>
@@ -260,18 +296,18 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
                         ? onboardingMap.company[1].options
                         : onboardingMap.student[1].options
                     }
-                    selected={profileData.area}
-                    handleProperty={handlePropertyChange("area", setProfileData)}
+                    selected={form.area}
+                    handleProperty={handlePropertyChange("area", setForm)}
                   />
                 </div>
                 <div className={styles.keywordsContainer}>
                   <h2>{profileType === "company" ? "Expertise wanted" : "Expertise"}</h2>
                   <EditKeywords
                     name="keywords"
-                    handleProperty={handlePropertyChange("keywords", setProfileData)}
-                    selected={profileData.keywords}
+                    handleProperty={handlePropertyChange("keywords", setForm)}
+                    selected={form.keywords}
                     setSelected={setSelected}
-                    area={profileData.area}
+                    area={form.area}
                   />
                 </div>
               </div>
@@ -282,8 +318,8 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
                   <h2>Location</h2>
                   <div className={styles.geoContainer}>
                     <GeoLocation
-                      position={profileData.location}
-                      handleProperty={handlePropertyChange("location", setProfileData)}
+                      position={form.location}
+                      handleProperty={handlePropertyChange("location", setForm)}
                     />
                   </div>
                 </div>
@@ -291,10 +327,14 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
             )}
           </div>
           <div className={styles.buttons}>
-            <Button variant="secondary" onClick={closeEdit}>
+            <Button variant="secondary" onClick={handleCancel}>
               Cancel
             </Button>
-            <Button variant="primary" onClick={handleSaveSettings} disabled={!isValid}>
+            <Button
+              variant="primary"
+              onClick={handleSaveSettings}
+              disabled={!isValid || isLoading}
+            >
               Save Settings
             </Button>
           </div>
