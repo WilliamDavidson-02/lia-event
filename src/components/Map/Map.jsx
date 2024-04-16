@@ -48,6 +48,48 @@ export default function Map({
       setLngLat([lng, lat]);
     });
 
+    map.current.on("style.load", () => {
+      // Insert the layer beneath any symbol layer.
+      const layers = map.current.getStyle().layers;
+      const labelLayerId = layers.find(
+        (layer) => layer.type === "symbol" && layer.layout["text-field"]
+      ).id;
+
+      map.current.addLayer(
+        {
+          id: "add-3d-buildings",
+          source: "composite",
+          "source-layer": "building",
+          filter: ["==", "extrude", "true"],
+          type: "fill-extrusion",
+          minzoom: 15,
+          paint: {
+            "fill-extrusion-color": "#c9c9c9",
+            "fill-extrusion-height": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              15,
+              0,
+              15.05,
+              ["get", "height"],
+            ],
+            "fill-extrusion-base": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              15,
+              0,
+              15.05,
+              ["get", "min_height"],
+            ],
+            "fill-extrusion-opacity": 0.8,
+          },
+        },
+        labelLayerId
+      );
+    });
+
     return () => {
       if (map.current) {
         map.current.remove();
