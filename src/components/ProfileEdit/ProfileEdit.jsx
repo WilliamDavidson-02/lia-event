@@ -22,6 +22,7 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
   const { user } = useUserContext();
   const { profileType } = useParams();
   const [newPassword, setNewPassword] = useState("");
+  const [showDialog, setShowDialog] = useState(false);
 
   const isNameValid = useMemo(() => validateLength(profileData.name, 2, 75), [profileData.name]);
   const isUrlValid = useMemo(() => {
@@ -106,7 +107,9 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
       updateUserData.data.location = profileData.location;
     }
 
-    if (user_email !== user.email) {
+    let prevEmail = user.email;
+
+    if (user_email !== prevEmail) {
       updateUserData.data.email = user_email;
     }
 
@@ -121,8 +124,19 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
       return;
     }
 
+    if (user_email !== prevEmail) {
+      setShowDialog(true);
+      return;
+    }
+
     closeEdit();
   };
+
+  const handleCloseDialog = () => {
+    setShowDialog(false);
+    closeEdit();
+  };
+
   return (
     <div className={styles.container}>
       <form className={styles.form} autoComplete="off" autoCorrect="off">
