@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useWindowSize } from "@uidotdev/usehooks";
 import supabase from "../../config/supabaseConfig";
@@ -14,6 +14,7 @@ import Button from "../Button/Button";
 import EditKeywords from "../EditKeywords/EditKeywords";
 import GeoLocation from "../GeoLocation/GeoLocation";
 import useUserContext from "../../hooks/useUserContext";
+import { validateEmail, validateLength, validateUrl, sanitize } from "../../lib/util";
 
 const baseUrl = import.meta.env.VITE_SUPABASE_AVATARS_BASE_URL;
 
@@ -21,6 +22,18 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
   const { user } = useUserContext();
   const { profileType } = useParams();
   const [newPassword, setNewPassword] = useState("");
+
+  const isNameValid = useMemo(() => validateLength(profileData.name, 2, 75), [profileData.name]);
+  const isUrlValid = useMemo(() => validateUrl(profileData.href));
+  const isEmailValid = useMemo(() => validateEmail(profileData.user_email), [profileData.user_email]);
+  const isContactEmailValid = useMemo(() => validateEmail(profileData.contact), [profileData.contact]);
+  const isPasswordValid = useMemo(() => {
+    if (!newPassword) return true;
+
+    return validateLength(newPassword, 8);
+  }, [newPassword]);
+
+  const isValid = isEmailValid && isNameValid && isPasswordValid && isContactEmailValid && isUrlValid;
 
   const size = useWindowSize();
 
@@ -75,7 +88,8 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
   const handleSaveSettings = async (event) => {
     event.preventDefault();
 
-    const { name, href, area, user_email, keywords, avatar } = profileData;
+    let { name, href, area, user_email, keywords, avatar } = profileData;
+    name = sanitize(name).trim();
 
     let updateUserData = {
       data: { name, href, area, user_email, keywords, avatar },
@@ -131,12 +145,12 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
             </label>
           </div>
           <div className={styles.section}>
-            <h2>Editing profile</h2>
             <div className={styles.field}>
               <Label htmlFor={"name"}>{profileType === "company" ? "Company name" : "Name"}</Label>
               <Input
                 id="name"
                 variant="dark-blue"
+                isError={!isNameValid}
                 placeholder={"Name"}
                 onChange={(ev) => handleInputChange("name", ev.target.value)}
                 value={profileData.name}
@@ -150,6 +164,7 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
                 variant="dark-blue"
                 placeholder="Website"
                 id="href"
+                isError={!isUrlValid}
                 onChange={(ev) => handleInputChange("href", ev.target.value)}
                 value={profileData.href}
               />
@@ -158,6 +173,7 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
               <div className={styles.field}>
                 <Label htmlFor={"contact-email"}>Contact mail</Label>
                 <Input
+                  isError={!isContactEmailValid}
                   variant="dark-blue"
                   placeholder="Enter mail"
                   id="contact-email"
@@ -172,6 +188,7 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
             <div className={styles.field}>
               <Label htmlFor={"email"}>Email</Label>
               <Input
+                isError={!isEmailValid}
                 variant="dark-blue"
                 placeholder="Enter mail"
                 id="email"
@@ -182,6 +199,7 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
             <div className={styles.field}>
               <Label htmlFor={"new-password"}>Password</Label>
               <Input
+                isError={!isPasswordValid}
                 variant="dark-blue"
                 id="new-password"
                 placeholder="New password"
@@ -238,7 +256,7 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
           <Button variant="secondary" onClick={closeEdit}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleSaveSettings}>
+          <Button variant="primary" onClick={handleSaveSettings} disabled={!isValid}>
             Save Settings
           </Button>
         </div>

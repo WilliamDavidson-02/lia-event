@@ -143,6 +143,10 @@
   grid-row: span 12;
 }
 
+.error {
+  border: 2px solid red;
+}
+
 @media (min-width: 760px) {
   .card {
     border-radius: var(--rounded-md);
@@ -173,6 +177,10 @@
   .form > div:first-child .section:nth-child(1) {
     justify-content: center;
     align-items: center;
+  }
+
+  .form > div:first-child .section:nth-child(2) {
+    justify-content: flex-end;
   }
 
   .editImage {
