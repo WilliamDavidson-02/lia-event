@@ -85,8 +85,8 @@ export default function Profile() {
       {profileData &&
         (doEdit ? (
           <ProfileEdit
-            profileData={profileData}
-            setProfileData={setProfileData}
+            profile={profileData}
+            setProfile={setProfileData}
             closeEdit={() => setDoEdit(false)}
           />
         ) : (

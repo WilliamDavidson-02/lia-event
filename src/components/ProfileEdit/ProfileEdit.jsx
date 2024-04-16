@@ -23,31 +23,29 @@ import Dialog from "../Dialog/Dialog";
 
 const baseUrl = import.meta.env.VITE_SUPABASE_AVATARS_BASE_URL;
 
-export default function ProfileEdit({
-  profileData,
-  setProfileData,
-  closeEdit,
-}) {
+export default function ProfileEdit({ profile, setProfile, closeEdit }) {
   const { user } = useUserContext();
   const { profileType } = useParams();
+  const [form, setForm] = useState(profile);
   const [newPassword, setNewPassword] = useState("");
   const [showDialog, setShowDialog] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const isNameValid = useMemo(
-    () => validateLength(profileData.name, 2, 75),
-    [profileData.name]
+    () => validateLength(form.name, 2, 75),
+    [form.name]
   );
   const isUrlValid = useMemo(() => {
-    if (profileType === "student" && !profileData.href) return true;
-    return validateUrl(profileData.href);
-  }, [profileData.href]);
+    if (profileType === "student" && !form.href) return true;
+    return validateUrl(form.href);
+  }, [form.href]);
   const isEmailValid = useMemo(
-    () => validateEmail(profileData.user_email),
-    [profileData.user_email]
+    () => validateEmail(form.user_email),
+    [form.user_email]
   );
   const isContactEmailValid = useMemo(
-    () => validateEmail(profileData.contact),
-    [profileData.contact]
+    () => validateEmail(form.contact),
+    [form.contact]
   );
   const isPasswordValid = useMemo(() => {
     if (!newPassword) return true;
@@ -56,6 +54,7 @@ export default function ProfileEdit({
   }, [newPassword]);
 
   let isValid = isEmailValid && isNameValid && isPasswordValid && isUrlValid;
+
   if (profileType === "company") {
     isValid = isValid && isContactEmailValid;
   }
@@ -63,7 +62,7 @@ export default function ProfileEdit({
   const size = useWindowSize();
 
   const handleInputChange = (prop, value) => {
-    setProfileData((prev) => ({ ...prev, [prop]: value }));
+    setForm((prev) => ({ ...prev, [prop]: value }));
   };
 
   const handlePropertyChange = (prop, callback) => (value) => {
@@ -79,7 +78,7 @@ export default function ProfileEdit({
 
     const { error: errorRemove } = await supabase.storage
       .from("avatars")
-      .remove([profileData.avatar]);
+      .remove([form.avatar]);
 
     if (errorRemove) {
       console.log("No image found");
@@ -111,13 +110,17 @@ export default function ProfileEdit({
       return;
     }
 
-    setProfileData((prev) => ({ ...prev, avatar: avatarFileName }));
+    setForm((prev) => ({ ...prev, avatar: avatarFileName }));
   };
 
   const handleSaveSettings = async (event) => {
     event.preventDefault();
 
-    let { name, href, area, user_email, keywords, avatar } = profileData;
+    if (!isValid) return;
+
+    setIsLoading(true);
+
+    let { name, href, area, user_email, keywords, avatar } = form;
     name = sanitize(name).trim();
 
     let updateUserData = {
@@ -125,8 +128,8 @@ export default function ProfileEdit({
     };
 
     if (profileType === "company") {
-      updateUserData.data.contact = profileData.contact;
-      updateUserData.data.location = profileData.location;
+      updateUserData.data.contact = form.contact;
+      updateUserData.data.location = form.location;
     }
 
     let prevEmail = user.email;
@@ -141,6 +144,8 @@ export default function ProfileEdit({
 
     const { error: userError } = await supabase.auth.updateUser(updateUserData);
 
+    setIsLoading(false);
+
     if (userError) {
       console.error("Error updating user profile: ", userError.message);
       return;
@@ -151,16 +156,23 @@ export default function ProfileEdit({
       return;
     }
 
+    setProfile(form);
     closeEdit();
   };
 
   const handleCloseDialog = () => {
+    setProfile(form);
     setShowDialog(false);
     closeEdit();
   };
 
   const setSelected = (selected) => {
-    setProfileData((prev) => ({ ...prev, keywords: selected }));
+    setForm((prev) => ({ ...prev, keywords: selected }));
+  };
+
+  const handleCancel = () => {
+    setProfile(profile);
+    closeEdit();
   };
 
   return (
@@ -180,14 +192,14 @@ export default function ProfileEdit({
             <div className={styles.section}>
               <label htmlFor={"imgUpload"} className={styles.editImage}>
                 <div className={styles.avatar}>
-                  {profileData.avatar ? (
+                  {form.avatar ? (
                     <Image
-                      src={`${baseUrl}/${profileData.avatar}`}
+                      src={`${baseUrl}/${form.avatar}`}
                       style={{ aspectRatio: 1 / 1 }}
                     />
                   ) : (
                     <Initials
-                      name={profileData.name}
+                      name={form.name}
                       size={profileType && size.width >= 760 ? "lg" : "md"}
                       style={{ aspectRatio: 1 / 1 }}
                     />
@@ -214,7 +226,7 @@ export default function ProfileEdit({
                   isError={!isNameValid}
                   placeholder={"Name"}
                   onChange={(ev) => handleInputChange("name", ev.target.value)}
-                  value={profileData.name}
+                  value={form.name}
                 />
               </div>
               <div className={styles.field}>
@@ -229,7 +241,7 @@ export default function ProfileEdit({
                   id="href"
                   isError={!isUrlValid}
                   onChange={(ev) => handleInputChange("href", ev.target.value)}
-                  value={profileData.href}
+                  value={form.href}
                 />
               </div>
               {profileType === "company" && (
@@ -243,7 +255,7 @@ export default function ProfileEdit({
                     onChange={(ev) =>
                       handleInputChange("contact", ev.target.value)
                     }
-                    value={profileData.contact}
+                    value={form.contact}
                   />
                 </div>
               )}
@@ -260,7 +272,7 @@ export default function ProfileEdit({
                   onChange={(ev) =>
                     handleInputChange("user_email", ev.target.value)
                   }
-                  value={profileData.user_email}
+                  value={form.user_email}
                 />
               </div>
               <div className={styles.field}>
@@ -292,11 +304,8 @@ export default function ProfileEdit({
                         ? onboardingMap.company[1].options
                         : onboardingMap.student[1].options
                     }
-                    selected={profileData.area}
-                    handleProperty={handlePropertyChange(
-                      "area",
-                      setProfileData
-                    )}
+                    selected={form.area}
+                    handleProperty={handlePropertyChange("area", setForm)}
                   />
                 </div>
                 <div className={styles.keywordsContainer}>
@@ -307,13 +316,10 @@ export default function ProfileEdit({
                   </h2>
                   <EditKeywords
                     name="keywords"
-                    handleProperty={handlePropertyChange(
-                      "keywords",
-                      setProfileData
-                    )}
-                    selected={profileData.keywords}
+                    handleProperty={handlePropertyChange("keywords", setForm)}
+                    selected={form.keywords}
                     setSelected={setSelected}
-                    area={profileData.area}
+                    area={form.area}
                   />
                 </div>
               </div>
@@ -324,11 +330,8 @@ export default function ProfileEdit({
                   <h2>Location</h2>
                   <div className={styles.geoContainer}>
                     <GeoLocation
-                      position={profileData.location}
-                      handleProperty={handlePropertyChange(
-                        "location",
-                        setProfileData
-                      )}
+                      position={form.location}
+                      handleProperty={handlePropertyChange("location", setForm)}
                     />
                   </div>
                 </div>
@@ -336,13 +339,13 @@ export default function ProfileEdit({
             )}
           </div>
           <div className={styles.buttons}>
-            <Button variant="secondary" onClick={closeEdit}>
+            <Button variant="secondary" onClick={handleCancel}>
               Cancel
             </Button>
             <Button
               variant="primary"
               onClick={handleSaveSettings}
-              disabled={!isValid}
+              disabled={!isValid || isLoading}
             >
               Save Settings
             </Button>
