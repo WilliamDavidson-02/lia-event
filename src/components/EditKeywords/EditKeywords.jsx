@@ -9,6 +9,7 @@ import { CircleX } from "lucide-react";
 export default function EditKeywords({
   handleProperty,
   selected = [],
+  setSelected,
   area,
   variant = "default",
 }) {
@@ -19,7 +20,11 @@ export default function EditKeywords({
   useEffect(() => {
     const keywords = getKeywords(area);
 
-    setSuggestions(keywords.filter((k) => !selected.includes(k)));
+    const currentSelected = selected;
+
+    setSelected(currentSelected.filter((s) => keywords.includes(s)));
+
+    setSuggestions(keywords.filter((k) => !currentSelected.includes(k)));
     setWords(keywords);
   }, [area]);
 

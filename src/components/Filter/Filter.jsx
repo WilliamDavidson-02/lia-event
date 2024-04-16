@@ -126,6 +126,7 @@ export default function Filter({
                   handleFilterOptions("keywords", words)
                 }
                 selected={filterOptions.keywords}
+                setSelected={(words) => handleFilterOptions("keywords", words)}
                 area={"all"}
                 variant="dark"
               />

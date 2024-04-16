@@ -64,6 +64,7 @@ export default function OnboardingQuestions() {
             <EditKeywords
               handleProperty={setOnboardingValues}
               selected={onboarding[currentField.property]}
+              setSelected={setOnboardingValues}
               area={onboarding.area}
             />
           )}
