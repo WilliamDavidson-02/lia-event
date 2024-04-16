@@ -142,11 +142,10 @@ export default function ProfileEdit({
             </label>
           </div>
           <div className={styles.section}>
+            <h2>Editing profile</h2>
             <div className={styles.field}>
               <Label htmlFor={"name"}>
-                {profileType === "company"
-                  ? "Company name"
-                  : "What's your name"}
+                {profileType === "company" ? "Company name" : "Name"}
               </Label>
               <Input
                 id="name"
@@ -220,12 +219,19 @@ export default function ProfileEdit({
                   variant="profile"
                   name="area"
                   variantInput="profileRadio"
-                  options={onboardingMap.company[1].options}
+                  options={
+                    profileType === "company"
+                      ? onboardingMap.company[1].options
+                      : onboardingMap.student[1].options
+                  }
                   selected={profileData.area}
                   handleProperty={handlePropertyChange("area", setProfileData)}
                 />
               </div>
               <div className={styles.keywordsContainer}>
+                <h2>
+                  {profileType === "company" ? "Expertise wanted" : "Expertise"}
+                </h2>
                 <EditKeywords
                   name="keywords"
                   handleProperty={handlePropertyChange(

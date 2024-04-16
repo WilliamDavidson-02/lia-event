@@ -20,9 +20,7 @@ export default function ProfileAbout({ profile }) {
 
     // Create Marker
     const markerElement = document.createElement("div");
-    markerElement.innerHTML = ReactDOMServer.renderToString(
-      <MapMarker size={24} />
-    );
+    markerElement.innerHTML = ReactDOMServer.renderToString(<MapMarker size={24} />);
 
     new mapboxgl.Marker({
       draggable: false,
@@ -50,20 +48,16 @@ export default function ProfileAbout({ profile }) {
     <section className={styles.container}>
       <div className={styles.card}>
         <div className={styles.content}>
-          <div className={styles.title}>
-            {profileType === "company" ? "Looking for" : "Education"}
-          </div>
+          <div className={styles.title}>{profileType === "company" ? "Looking for" : "Education"}</div>
           <p>{formatArea(profile.area)}</p>
           {size.width < 760 && <div className={styles.seperator} />}
         </div>
         <div className={styles.content}>
           <div className={styles.expertice}>
-            {profileType === "company" ? "Expertice wanted" : "Expertice"}
+            {profileType === "company" ? "Expertise wanted" : "Expertise"}
           </div>
           <Chips variant="transparent" defaultValue={profile.keywords} />
-          {profileType === "company" && size.width < 760 && (
-            <div className={styles.seperator} />
-          )}
+          {profileType === "company" && size.width < 760 && <div className={styles.seperator} />}
         </div>
       </div>
       {profileType === "company" && (
