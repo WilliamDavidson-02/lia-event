@@ -139,4 +139,34 @@
     width: 13rem;
     height: 13rem;
   }
+
+  .card {
+    flex-direction: row;
+    flex: 1;
+    padding: var(--p-lg);
+    border-radius: var(--rounded-md);
+    border: var(--backdrop-border);
+    background-color: var(--backdrop-background);
+    backdrop-filter: var(--backdrop-backdrop-filter);
+    margin-bottom: 0;
+  }
+
+  .bottomCards {
+    display: flex;
+    flex-direction: row;
+    gap: var(--gap-md);
+  }
+
+  .locationDesktop {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    gap: var(--gap-lg);
+  }
+
+  .geoContainer {
+    display: grid;
+    aspect-ratio: 1/1;
+  }
 }
