@@ -78,8 +78,7 @@ export default function Home() {
             </div>
             <div className={styles.footer}>
               <Button onClick={() => navigate("/onboarding")}>
-                Attend
-                <ArrowUpRight />
+                Attend the event
               </Button>
             </div>
           </div>
@@ -95,19 +94,17 @@ export default function Home() {
           <div className={styles.card}>
             <span className={styles.title}>Event information</span>
             <div className={styles.content}>
+              <CalendarCheck size={64} />
               <div>
-                <CalendarCheck size={64} />
-                <div>
-                  <span>Date: April 24</span>
-                  <span>Time: 16:00 – 18:00</span>
-                </div>
-                <p>
-                  Join us for an exciting networking event where leading
-                  companies and talented individuals come together to explore
-                  opportunities in the IT and design industries. Don&apos;t miss
-                  out on this chance to connect with our top-tier talent!
-                </p>
+                <span>Date: April 24</span>
+                <span>Time: 16:00 – 18:00</span>
               </div>
+              <p>
+                Join us for an exciting networking event where leading companies
+                and talented individuals come together to explore opportunities
+                in the IT and design industries. Don&apos;t miss out on this
+                chance to connect with our top-tier talent!
+              </p>
               {size.width >= 760 && (
                 <Button onClick={() => navigate("/onboarding")}>
                   Attend
