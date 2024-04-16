@@ -143,8 +143,10 @@
   grid-row: span 12;
 }
 
-.error {
-  border: 2px solid red;
+.emailError {
+  color: red;
+  font-weight: bold;
+  font-size: 0.8rem;
 }
 
 @media (min-width: 760px) {
