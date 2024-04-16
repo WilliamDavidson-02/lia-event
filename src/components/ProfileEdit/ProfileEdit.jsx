@@ -305,7 +305,7 @@ export default function ProfileEdit({ profile, setProfile, closeEdit }) {
                   variant="dark-blue"
                   id="new-password"
                   placeholder="New password"
-                  autoComplete={"off"}
+                  autoComplete={"new-password"}
                   type={"password"}
                   value={newPassword}
                   onChange={(event) => setNewPassword(event.target.value)}
