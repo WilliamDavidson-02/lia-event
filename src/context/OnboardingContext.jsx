@@ -125,7 +125,7 @@ export default function OnboardingContextProvider({ children }) {
         return;
       }
 
-      navigate("/");
+      navigate("/finder");
     }
   };
 
