@@ -57,8 +57,8 @@ export default function ProfileAbout({ profile }) {
           {size.width < 760 && <div className={styles.seperator} />}
         </div>
         <div className={styles.content}>
-          <div className={styles.expertice}>
-            {profileType === "company" ? "Expertice wanted" : "Expertice"}
+          <div className={styles.expertise}>
+            {profileType === "company" ? "Expertise wanted" : "Expertise"}
           </div>
           <Chips variant="transparent" defaultValue={profile.keywords} />
           {profileType === "company" && size.width < 760 && (

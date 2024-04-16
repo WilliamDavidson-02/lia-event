@@ -22,7 +22,7 @@
 .onboarding {
   gap: var(--gap-lg);
   padding: var(--p-md) var(--p-lg);
-  border-bottom: 1px solid var(--yrgo-white);
+  border-bottom: var(--backdrop-border);
 }
 
 .onboarding label {

@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import useUserContext from "../../hooks/useUserContext";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import supabase from "../../config/supabaseConfig";
 
 import styles from "./Profile.module.css";
 import ProfileAbout from "../../components/ProfileAbout/ProfileAbout";
 import UserCard from "../../components/UserCard/UserCard";
 import ProfileEdit from "../../components/ProfileEdit/ProfileEdit";
+import Button from "../../components/Button/Button";
 
 export default function Profile() {
   const { user } = useUserContext();
@@ -40,11 +41,7 @@ export default function Profile() {
     };
 
     async function fetchProfileData() {
-      let query = supabase
-        .from("profile")
-        .select()
-        .eq("id", profileID)
-        .single();
+      let query = supabase.from("profile").select().eq("id", profileID).single();
 
       if (profileType === "company") {
         query = query.select("*, company_profile(*)");
@@ -100,6 +97,12 @@ export default function Profile() {
             <ProfileAbout profile={profileData} />
           </>
         ))}
+
+      <Button variant="tertiary">
+        <Link to="#" onClick={() => navigate(-1)}>
+          Back
+        </Link>
+      </Button>
     </main>
   );
 }
