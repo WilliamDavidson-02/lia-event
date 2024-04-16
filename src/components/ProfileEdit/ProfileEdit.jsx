@@ -24,7 +24,10 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
   const [newPassword, setNewPassword] = useState("");
 
   const isNameValid = useMemo(() => validateLength(profileData.name, 2, 75), [profileData.name]);
-  const isUrlValid = useMemo(() => validateUrl(profileData.href));
+  const isUrlValid = useMemo(() => {
+    if (profileType === "student" && !profileData.href) return true;
+    return validateUrl(profileData.href);
+  }, [profileData.href]);
   const isEmailValid = useMemo(() => validateEmail(profileData.user_email), [profileData.user_email]);
   const isContactEmailValid = useMemo(() => validateEmail(profileData.contact), [profileData.contact]);
   const isPasswordValid = useMemo(() => {
@@ -33,7 +36,10 @@ export default function ProfileEdit({ profileData, setProfileData, closeEdit }) 
     return validateLength(newPassword, 8);
   }, [newPassword]);
 
-  const isValid = isEmailValid && isNameValid && isPasswordValid && isContactEmailValid && isUrlValid;
+  let isValid = isEmailValid && isNameValid && isPasswordValid && isUrlValid;
+  if (profileType === "company") {
+    isValid = isValid && isContactEmailValid;
+  }
 
   const size = useWindowSize();
 
