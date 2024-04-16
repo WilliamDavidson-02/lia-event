@@ -1,0 +1,43 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(0, 0, 0, 0.5);
+  padding: var(--p-md);
+}
+
+.content {
+  padding: var(--p-xl);
+  border-radius: var(--rounded-md);
+  border: var(--backdrop-border);
+  background-color: var(--backdrop-background);
+  backdrop-filter: var(--backdrop-backdrop-filter);
+  color: var(--yrgo-white);
+
+  max-width: 33rem;
+}
+
+.content h3 {
+  font-size: 1.9375rem;
+  font-weight: 700;
+  line-height: 2.25rem;
+  margin-bottom: var(--m-sm);
+}
+
+.content p {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.875rem;
+}
+
+.content button {
+  margin-top: var(--m-xl);
+  width: 100%;
+}
