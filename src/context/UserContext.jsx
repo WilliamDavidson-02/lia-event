@@ -12,7 +12,7 @@ export default function UserContextProvider({ children }) {
   }, []);
 
   const signUp = async (credentials) => {
-    const { error } = await supabase.auth.signUp(credentials);
+    const { data, error } = await supabase.auth.signUp(credentials);
 
     if (error) return { error };
 
@@ -26,27 +26,25 @@ export default function UserContextProvider({ children }) {
       return error;
     }
 
+    setUser(data.user);
     return { error };
   };
 
   const signInWithPassword = async (credentials) => {
     const { data, error } = await supabase.auth.signInWithPassword(credentials);
-    if (error) {
-      return { error };
-    }
+
+    if (error) return { error };
 
     setUser(data.user);
-
     return { error: null };
   };
 
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
 
-    if (!error) {
-      setUser(null);
-    }
+    if (!error) setUser(null);
   };
+
   const getUser = async () => {
     const {
       data: { session },
@@ -76,8 +74,8 @@ export default function UserContextProvider({ children }) {
         signOut,
         signUp,
         isLoading,
-        getUser,
-      }}>
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

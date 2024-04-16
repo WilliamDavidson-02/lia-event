@@ -20,6 +20,7 @@ import {
   sanitize,
 } from "../../lib/util";
 import Dialog from "../Dialog/Dialog";
+import { Loader } from "lucide-react";
 
 const baseUrl = import.meta.env.VITE_SUPABASE_AVATARS_BASE_URL;
 
@@ -30,6 +31,7 @@ export default function ProfileEdit({ profile, setProfile, closeEdit }) {
   const [newPassword, setNewPassword] = useState("");
   const [showDialog, setShowDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isUploading, setisUploading] = useState(false);
   const [newEmailError, setNewEmailError] = useState(false);
 
   const isNameValid = useMemo(
@@ -75,6 +77,8 @@ export default function ProfileEdit({ profile, setProfile, closeEdit }) {
 
     if (!event.target.files && !event.target.files[0]) return;
 
+    setisUploading(true);
+
     const file = event.target.files[0];
 
     const { error: errorRemove } = await supabase.storage
@@ -82,6 +86,7 @@ export default function ProfileEdit({ profile, setProfile, closeEdit }) {
       .remove([form.avatar]);
 
     if (errorRemove) {
+      setisUploading(false);
       console.log("No image found");
       return;
     }
@@ -97,6 +102,7 @@ export default function ProfileEdit({ profile, setProfile, closeEdit }) {
       });
 
     if (error) {
+      setisUploading(false);
       console.error("Error uploading image", error.message);
       return;
     }
@@ -105,6 +111,8 @@ export default function ProfileEdit({ profile, setProfile, closeEdit }) {
       .from("profile")
       .update({ avatar: avatarFileName })
       .eq("id", user.id);
+
+    setisUploading(false);
 
     if (userError) {
       console.error("Error updating user avatar", userError.message);
@@ -196,6 +204,14 @@ export default function ProfileEdit({ profile, setProfile, closeEdit }) {
             <div className={styles.section}>
               <label htmlFor={"imgUpload"} className={styles.editImage}>
                 <div className={styles.avatar}>
+                  {isUploading && (
+                    <div className={styles.uploading}>
+                      <Loader
+                        className={"loader"}
+                        style={{ width: "100%", height: "100%" }}
+                      />
+                    </div>
+                  )}
                   {form.avatar ? (
                     <Image
                       src={`${baseUrl}/${form.avatar}`}
@@ -213,7 +229,7 @@ export default function ProfileEdit({ profile, setProfile, closeEdit }) {
                 <input
                   id="imgUpload"
                   type="file"
-                  accept="image/"
+                  accept="image/jpeg, image/png, image/webp, image/gif, image/jpg"
                   style={{ display: "none" }}
                   onChange={handleImageUpload}
                 />

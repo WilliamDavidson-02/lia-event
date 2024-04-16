@@ -37,7 +37,7 @@ export default function Signup() {
 
   return (
     <main className={styles.container}>
-      <Form onSubmit={handleSubmit}>
+      <Form autoComplete={"off"} onSubmit={handleSubmit}>
         <h1 className={formStyles.title}>Get started</h1>
         <div className={formStyles.content}>
           <div className={formStyles.field}>
