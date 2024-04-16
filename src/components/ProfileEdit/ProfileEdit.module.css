@@ -5,11 +5,10 @@
   border-radius: var(--rounded-md);
   background-color: none;
   color: var(--yrgo-white);
-  padding: var(--p-md);
   gap: var(--gap-md);
 }
 
-.field {
+.form {
   display: flex;
   flex-direction: column;
   /* border: var(--backdrop-border);
@@ -20,22 +19,6 @@
   gap: var(--gap-lg);
 }
 
-.inputField {
-  font-family: "Inter", sans-serif;
-  border: 1px solid var(--yrgo-white);
-  background-color: rgba(0, 26, 82, 0.6);
-  backdrop-filter: none;
-  border-radius: var(--rounded-md);
-  color: var(--yrgo-white);
-  padding: var(--p-sm);
-  box-shadow: none;
-  margin-top: 0.25rem;
-  border-radius: 0.75em;
-  width: 100%;
-  font-size: 1rem;
-  font-weight: 400;
-}
-
 .elementContainer {
   display: flex;
   flex-direction: column;
@@ -44,7 +27,7 @@
 }
 
 .radioBg {
-  background-color: rgba(0, 26, 82, 0.6);
+  background-color: var(--yrgo-dark-blue);
   border-radius: 0.75em;
   padding: var(--p-sm);
   border: 1px solid white;
@@ -53,6 +36,7 @@
 .editImage {
   width: fit-content;
   margin: 0 auto;
+  cursor: pointer;
 
   display: flex;
   flex-direction: column;
@@ -60,9 +44,6 @@
   align-items: center;
   flex-direction: column;
   gap: var(--gap-md);
-
-  padding-bottom: 2rem;
-  cursor: pointer;
 }
 
 .editImage label {
@@ -87,6 +68,24 @@
 }
 
 .card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-3xl);
+  margin-bottom: var(--m-3xl);
+}
+
+.form .card:nth-last-child(2) {
+  margin-bottom: 0;
+}
+
+.card:nth-child(2) .section section {
+  padding: 0;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
 }
 
 .field {
@@ -117,19 +116,26 @@
 }
 
 .geoContainer {
-  height: 500px;
   display: grid;
   grid-template-rows: repeat(12, 1fr);
   gap: var(--gap-md);
-}
-
-.geoContainer > h2 {
-  grid-row: span 1;
+  aspect-ratio: 1/1;
 }
 
 .geoContainer > div {
-  grid-row: span 11;
+  grid-row: span 12;
   padding: 0;
+}
+
+.keywordsContainer {
+  display: grid;
+  grid-template-rows: repeat(12, 1fr);
+
+  max-height: 620px;
+}
+
+.keywordsContainer > section {
+  grid-row: span 12;
 }
 
 @media (min-width: 760px) {

@@ -113,7 +113,7 @@ export default function ProfileEdit({
   };
   return (
     <div className={styles.container}>
-      <form className={styles.field} autoComplete="off" autoCorrect="off">
+      <form className={styles.form} autoComplete="off" autoCorrect="off">
         <div className={styles.card}>
           <div className={styles.section}>
             <label htmlFor={"imgUpload"} className={styles.editImage}>
@@ -149,12 +149,8 @@ export default function ProfileEdit({
                   : "What's your name"}
               </Label>
               <Input
-                style={{
-                  fontSize: "1.2rem",
-                  fontWeight: "600",
-                }}
                 id="name"
-                className={styles.inputField}
+                variant="dark-blue"
                 placeholder={"Name"}
                 onChange={(ev) => handleInputChange("name", ev.target.value)}
                 value={profileData.name}
@@ -167,7 +163,7 @@ export default function ProfileEdit({
                   : "Portfolio link"}
               </Label>
               <Input
-                className={styles.inputField}
+                variant="dark-blue"
                 placeholder="Website"
                 id="href"
                 onChange={(ev) => handleInputChange("href", ev.target.value)}
@@ -178,7 +174,7 @@ export default function ProfileEdit({
               <div className={styles.field}>
                 <Label htmlFor={"contact-email"}>Contact mail</Label>
                 <Input
-                  className={styles.inputField}
+                  variant="dark-blue"
                   placeholder="Enter mail"
                   id="contact-email"
                   onChange={(ev) =>
@@ -190,10 +186,11 @@ export default function ProfileEdit({
             )}
           </div>
           <div className={styles.section}>
+            <h2>Login details</h2>
             <div className={styles.field}>
               <Label htmlFor={"email"}>Email</Label>
               <Input
-                className={styles.inputField}
+                variant="dark-blue"
                 placeholder="Enter mail"
                 id="email"
                 onChange={(ev) =>
@@ -205,44 +202,54 @@ export default function ProfileEdit({
             <div className={styles.field}>
               <Label htmlFor={"new-password"}>Password</Label>
               <Input
-                className={styles.inputField}
+                variant="dark-blue"
                 id="new-password"
                 placeholder="New password"
+                value={newPassword}
                 onChange={(event) => setNewPassword(event.target.value)}
               />
             </div>
           </div>
         </div>
         <div className={styles.card}>
-          <h2>{profileType === "company" ? "Looking for" : "Education"}</h2>
-          <div className={styles.radioBg}>
-            <Radios
-              variant="profile"
-              name="area"
-              variantInput="profileRadio"
-              options={onboardingMap.company[1].options}
-              selected={profileData.area}
-              handleProperty={handlePropertyChange("area", setProfileData)}
-            />
+          <div className={styles.section}>
+            <h2>{profileType === "company" ? "Looking for" : "Education"}</h2>
+            <div className={styles.radioBg}>
+              <Radios
+                variant="profile"
+                name="area"
+                variantInput="profileRadio"
+                options={onboardingMap.company[1].options}
+                selected={profileData.area}
+                handleProperty={handlePropertyChange("area", setProfileData)}
+              />
+            </div>
+            <div className={styles.keywordsContainer}>
+              <EditKeywords
+                name="keywords"
+                handleProperty={handlePropertyChange(
+                  "keywords",
+                  setProfileData
+                )}
+                selected={profileData.keywords}
+                area={profileData.area}
+              />
+            </div>
           </div>
-          <EditKeywords
-            name="keywords"
-            handleProperty={handlePropertyChange("keywords", setProfileData)}
-            selected={profileData.keywords}
-            area={profileData.area}
-          />
         </div>
         {profileType === "company" && (
           <div className={styles.card}>
-            <h2>Location</h2>
-            <div className={styles.geoContainer}>
-              <GeoLocation
-                position={profileData.location}
-                handleProperty={handlePropertyChange(
-                  "location",
-                  setProfileData
-                )}
-              />
+            <div className={styles.section}>
+              <h2>Location</h2>
+              <div className={styles.geoContainer}>
+                <GeoLocation
+                  position={profileData.location}
+                  handleProperty={handlePropertyChange(
+                    "location",
+                    setProfileData
+                  )}
+                />
+              </div>
             </div>
           </div>
         )}

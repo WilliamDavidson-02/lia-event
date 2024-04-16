@@ -19,7 +19,7 @@ export default function EditKeywords({
   useEffect(() => {
     const keywords = getKeywords(area);
 
-    setSuggestions(keywords);
+    setSuggestions(keywords.filter((k) => !selected.includes(k)));
     setWords(keywords);
   }, [area]);
 
@@ -34,8 +34,6 @@ export default function EditKeywords({
         keywordsArray = [...keywordsArray, ...keywords[item]];
       }
     });
-
-    keywordsArray = keywordsArray.filter((k) => !selected.includes(k));
 
     return keywordsArray;
   };
