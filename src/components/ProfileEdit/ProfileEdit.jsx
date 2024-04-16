@@ -211,48 +211,50 @@ export default function ProfileEdit({
             </div>
           </div>
         </div>
-        <div className={styles.card}>
-          <div className={styles.section}>
-            <h2>{profileType === "company" ? "Looking for" : "Education"}</h2>
-            <div className={styles.radioBg}>
-              <Radios
-                variant="profile"
-                name="area"
-                variantInput="profileRadio"
-                options={onboardingMap.company[1].options}
-                selected={profileData.area}
-                handleProperty={handlePropertyChange("area", setProfileData)}
-              />
-            </div>
-            <div className={styles.keywordsContainer}>
-              <EditKeywords
-                name="keywords"
-                handleProperty={handlePropertyChange(
-                  "keywords",
-                  setProfileData
-                )}
-                selected={profileData.keywords}
-                area={profileData.area}
-              />
-            </div>
-          </div>
-        </div>
-        {profileType === "company" && (
+        <div className={styles.about}>
           <div className={styles.card}>
             <div className={styles.section}>
-              <h2>Location</h2>
-              <div className={styles.geoContainer}>
-                <GeoLocation
-                  position={profileData.location}
+              <h2>{profileType === "company" ? "Looking for" : "Education"}</h2>
+              <div className={styles.radioBg}>
+                <Radios
+                  variant="profile"
+                  name="area"
+                  variantInput="profileRadio"
+                  options={onboardingMap.company[1].options}
+                  selected={profileData.area}
+                  handleProperty={handlePropertyChange("area", setProfileData)}
+                />
+              </div>
+              <div className={styles.keywordsContainer}>
+                <EditKeywords
+                  name="keywords"
                   handleProperty={handlePropertyChange(
-                    "location",
+                    "keywords",
                     setProfileData
                   )}
+                  selected={profileData.keywords}
+                  area={profileData.area}
                 />
               </div>
             </div>
           </div>
-        )}
+          {profileType === "company" && (
+            <div className={styles.card}>
+              <div className={styles.section}>
+                <h2>Location</h2>
+                <div className={styles.geoContainer}>
+                  <GeoLocation
+                    position={profileData.location}
+                    handleProperty={handlePropertyChange(
+                      "location",
+                      setProfileData
+                    )}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
         <div className={styles.buttons}>
           <Button variant="secondary" onClick={closeEdit}>
             Cancel
