@@ -124,6 +124,7 @@ export default function Home() {
                 style={{ height: "29.3125rem" }}
                 zoom={16}
                 dragPan={false}
+                interactive={false}
                 getMap={(map) => setMap(map)}
               />
               <span>Visual Arena</span>

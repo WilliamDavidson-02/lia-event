@@ -11,6 +11,7 @@ export default function Map({
   getMap,
   zoom = 11,
   dragPan = true,
+  interactive = true,
   position = defaultCords,
   ...props
 }) {
@@ -29,6 +30,7 @@ export default function Map({
       zoom: zoom,
       attributionControl: false,
       dragPan: dragPan,
+      interactive: interactive,
     });
 
     // GeoLocation needs acces to map.current
