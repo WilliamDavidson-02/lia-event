@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useWindowSize } from "@uidotdev/usehooks";
 import supabase from "../../config/supabaseConfig";
@@ -159,6 +159,10 @@ export default function ProfileEdit({
     closeEdit();
   };
 
+  const setSelected = (selected) => {
+    setProfileData((prev) => ({ ...prev, keywords: selected }));
+  };
+
   return (
     <>
       {showDialog && (
@@ -308,6 +312,7 @@ export default function ProfileEdit({
                       setProfileData
                     )}
                     selected={profileData.keywords}
+                    setSelected={setSelected}
                     area={profileData.area}
                   />
                 </div>
