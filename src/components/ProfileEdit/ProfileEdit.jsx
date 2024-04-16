@@ -17,11 +17,7 @@ import useUserContext from "../../hooks/useUserContext";
 
 const baseUrl = import.meta.env.VITE_SUPABASE_AVATARS_BASE_URL;
 
-export default function ProfileEdit({
-  profileData,
-  setProfileData,
-  closeEdit,
-}) {
+export default function ProfileEdit({ profileData, setProfileData, closeEdit }) {
   const { user } = useUserContext();
   const { profileType } = useParams();
   const [newPassword, setNewPassword] = useState("");
@@ -43,9 +39,7 @@ export default function ProfileEdit({
 
     const file = event.target.files[0];
 
-    const { error: errorRemove } = await supabase.storage
-      .from("avatars")
-      .remove([profileData.avatar]);
+    const { error: errorRemove } = await supabase.storage.from("avatars").remove([profileData.avatar]);
 
     if (errorRemove) {
       console.log("No image found");
@@ -55,12 +49,10 @@ export default function ProfileEdit({
     const fileName = file.name.trim().replace(/[-\s]/g, "_").toLowerCase();
     const avatarFileName = `${new Date().getTime()}_${fileName}`;
 
-    const { error } = await supabase.storage
-      .from("avatars")
-      .upload(avatarFileName, file, {
-        cacheControl: "3600",
-        upsert: false,
-      });
+    const { error } = await supabase.storage.from("avatars").upload(avatarFileName, file, {
+      cacheControl: "3600",
+      upsert: false,
+    });
 
     if (error) {
       console.error("Error uploading image", error.message);
@@ -119,10 +111,7 @@ export default function ProfileEdit({
             <label htmlFor={"imgUpload"} className={styles.editImage}>
               <div className={styles.avatar}>
                 {profileData.avatar ? (
-                  <Image
-                    src={`${baseUrl}/${profileData.avatar}`}
-                    style={{ aspectRatio: 1 / 1 }}
-                  />
+                  <Image src={`${baseUrl}/${profileData.avatar}`} style={{ aspectRatio: 1 / 1 }} />
                 ) : (
                   <Initials
                     name={profileData.name}
@@ -142,12 +131,9 @@ export default function ProfileEdit({
             </label>
           </div>
           <div className={styles.section}>
+            <h2>Editing profile</h2>
             <div className={styles.field}>
-              <Label htmlFor={"name"}>
-                {profileType === "company"
-                  ? "Company name"
-                  : "What's your name"}
-              </Label>
+              <Label htmlFor={"name"}>{profileType === "company" ? "Company name" : "Name"}</Label>
               <Input
                 id="name"
                 variant="dark-blue"
@@ -158,9 +144,7 @@ export default function ProfileEdit({
             </div>
             <div className={styles.field}>
               <Label htmlFor={"href"}>
-                {profileType === "company"
-                  ? "Company website"
-                  : "Portfolio link"}
+                {profileType === "company" ? "Company website" : "Portfolio link"}
               </Label>
               <Input
                 variant="dark-blue"
@@ -177,9 +161,7 @@ export default function ProfileEdit({
                   variant="dark-blue"
                   placeholder="Enter mail"
                   id="contact-email"
-                  onChange={(ev) =>
-                    handleInputChange("contact", ev.target.value)
-                  }
+                  onChange={(ev) => handleInputChange("contact", ev.target.value)}
                   value={profileData.contact}
                 />
               </div>
@@ -193,9 +175,7 @@ export default function ProfileEdit({
                 variant="dark-blue"
                 placeholder="Enter mail"
                 id="email"
-                onChange={(ev) =>
-                  handleInputChange("user_email", ev.target.value)
-                }
+                onChange={(ev) => handleInputChange("user_email", ev.target.value)}
                 value={profileData.user_email}
               />
             </div>
@@ -219,18 +199,20 @@ export default function ProfileEdit({
                 variant="profile"
                 name="area"
                 variantInput="profileRadio"
-                options={onboardingMap.company[1].options}
+                options={
+                  profileType === "company"
+                    ? onboardingMap.company[1].options
+                    : onboardingMap.student[1].options
+                }
                 selected={profileData.area}
                 handleProperty={handlePropertyChange("area", setProfileData)}
               />
             </div>
             <div className={styles.keywordsContainer}>
+              <h2>{profileType === "company" ? "Expertise wanted" : "Expertise"}</h2>
               <EditKeywords
                 name="keywords"
-                handleProperty={handlePropertyChange(
-                  "keywords",
-                  setProfileData
-                )}
+                handleProperty={handlePropertyChange("keywords", setProfileData)}
                 selected={profileData.keywords}
                 area={profileData.area}
               />
@@ -244,10 +226,7 @@ export default function ProfileEdit({
               <div className={styles.geoContainer}>
                 <GeoLocation
                   position={profileData.location}
-                  handleProperty={handlePropertyChange(
-                    "location",
-                    setProfileData
-                  )}
+                  handleProperty={handlePropertyChange("location", setProfileData)}
                 />
               </div>
             </div>

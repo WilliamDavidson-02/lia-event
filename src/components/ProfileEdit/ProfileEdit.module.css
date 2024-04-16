@@ -11,10 +11,6 @@
 .form {
   display: flex;
   flex-direction: column;
-  /* border: var(--backdrop-border);
-  background-color: var(--backdrop-background);
-  backdrop-filter: var(--backdrop-backdrop-filter);
-  border-radius: var(--rounded-md); */
   color: var(--yrgo-white);
   gap: var(--gap-lg);
 }
