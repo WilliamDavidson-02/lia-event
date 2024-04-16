@@ -245,7 +245,7 @@ export default function ProfileEdit({ profile, setProfile, closeEdit }) {
                   id="href"
                   isError={!isUrlValid}
                   onChange={(ev) => handleInputChange("href", ev.target.value)}
-                  value={form.href}
+                  value={form.href || ""}
                 />
               </div>
               {profileType === "company" && (
