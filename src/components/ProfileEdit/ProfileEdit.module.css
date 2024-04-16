@@ -86,6 +86,22 @@
   border: 5px solid var(--yrgo-white);
 }
 
+.card {
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+}
+
+.field label {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: normal;
+  color: var(--yrgo-white);
+}
+
 .location {
   display: flex;
   flex-direction: column;
@@ -113,6 +129,7 @@
 
 .geoContainer > div {
   grid-row: span 11;
+  padding: 0;
 }
 
 @media (min-width: 760px) {
