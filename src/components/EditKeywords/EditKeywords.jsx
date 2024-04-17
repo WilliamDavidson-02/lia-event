@@ -18,7 +18,7 @@ export default function EditKeywords({
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    const keywords = getKeywords(area);
+    const keywords = filterForDuplicates(getKeywords(area));
 
     const currentSelected = selected;
 
@@ -27,6 +27,18 @@ export default function EditKeywords({
     setSuggestions(keywords.filter((k) => !currentSelected.includes(k)));
     setWords(keywords);
   }, [area]);
+
+  const filterForDuplicates = (words) => {
+    let filteredWords = [];
+
+    words.forEach((w) => {
+      if (!filteredWords.includes(w)) {
+        filteredWords.push(w);
+      }
+    });
+
+    return filteredWords;
+  };
 
   const getKeywords = (area) => {
     const keywordProps = areaValue[area];
