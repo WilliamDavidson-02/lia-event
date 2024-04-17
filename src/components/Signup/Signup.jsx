@@ -49,7 +49,7 @@ export default function Signup() {
               id={"email"}
               value={email}
               onChange={(ev) => handleOnChange("email", ev.target.value)}
-              autoComplete={"email"}
+              autoComplete={"off"}
               variant="dark-grey"
               isError={error}
             />
@@ -61,10 +61,10 @@ export default function Signup() {
               tabIndex={2}
               type={"password"}
               placeholder={"iloveyrgo"}
+              autoComplete={"new-password"}
               id={"password"}
               value={password}
               onChange={(ev) => handleOnChange("password", ev.target.value)}
-              autoComplete={"current-password"}
               variant="dark-grey"
             />
             <p style={{ textAlign: "start" }} className={formStyles.paragraph}>
