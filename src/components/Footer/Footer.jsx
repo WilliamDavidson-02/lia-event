@@ -25,25 +25,29 @@ export default function Footer() {
         <div className={styles.profiles}>
           <div className={styles["social-card"]}>
             <div className={styles.text}>Digital Designer</div>
-            <Image
-              src="/yrgo_logo.svg"
-              style={{
-                width: "5rem",
-                aspectRatio: 1 / 1,
-                borderRadius: "100vmax",
-              }}
-            />
+            <Link to="https://www.instagram.com/yrgo_digital_designer/">
+              <Image
+                src="/yrgo_logo.svg"
+                style={{
+                  width: "5rem",
+                  aspectRatio: 1 / 1,
+                  borderRadius: "100vmax",
+                }}
+              />
+            </Link>
           </div>
           <div className={styles["social-card"]}>
             <div className={styles.text}>Web Developer</div>
-            <Image
-              src="/yrgo_logo.svg"
-              style={{
-                width: "5rem",
-                aspectRatio: 1 / 1,
-                borderRadius: "100vmax",
-              }}
-            />
+            <Link to="https://www.yrgo.se/program/webbutvecklare/">
+              <Image
+                src="/yrgo_logo.svg"
+                style={{
+                  width: "5rem",
+                  aspectRatio: 1 / 1,
+                  borderRadius: "100vmax",
+                }}
+              />
+            </Link>
           </div>
         </div>
       </div>

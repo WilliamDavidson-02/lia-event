@@ -53,6 +53,7 @@
   .container {
     flex-direction: row;
     gap: var(--gap-lg);
+    max-height: 30rem;
   }
 
   .card {
